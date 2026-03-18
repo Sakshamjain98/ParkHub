@@ -9,6 +9,7 @@ const plugins = [
 
 const config: CodegenConfig = {
   overwrite: true,
+  ignoreNoDocuments: true,
   schema: '../../apps/api/src/schema.gql',
   watch: true,
   generates: {

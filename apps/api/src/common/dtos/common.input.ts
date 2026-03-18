@@ -144,6 +144,8 @@ export class LocationFilterInput {
 
 @ArgsType()
 export class PaginationInput {
+  @Field(() => Int, { nullable: true })
   take?: number
+  @Field(() => Int, { nullable: true })
   skip?: number
 }

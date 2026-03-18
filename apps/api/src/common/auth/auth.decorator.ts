@@ -14,6 +14,10 @@ export const AllowAuthenticated = (...roles: Role[]) =>
   applyDecorators(SetMetadata('roles', roles), UseGuards(AuthGuard))
 
 export const GetUser = createParamDecorator((data, ctx: ExecutionContext) => {
+  if (ctx.getType<string>() === 'http') {
+    return ctx.switchToHttp().getRequest().user
+  }
+
   const context = GqlExecutionContext.create(ctx)
   return context.getContext().req.user
 })

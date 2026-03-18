@@ -45,6 +45,19 @@ $ pnpm run start:dev
 $ pnpm run start:prod
 ```
 
+## Logging and Rotation
+
+- Application logs are written as JSON lines to `LOG_FILE_PATH` (default: `./logs/api.log` in local dev).
+- A ready-to-use logrotate policy is provided at `logrotate/autospace-api.conf`.
+- The policy rotates logs daily and keeps the last 30 days.
+
+### Enable logrotate on Linux
+
+```bash
+sudo cp logrotate/autospace-api.conf /etc/logrotate.d/autospace-api
+sudo logrotate -f /etc/logrotate.d/autospace-api
+```
+
 ## Test
 
 ```bash

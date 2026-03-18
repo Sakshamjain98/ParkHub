@@ -4,11 +4,8 @@ mutation RegisterWithCredentials(
   registerWithCredentials(
     registerWithCredentialsInput: $registerWithCredentialsInput
   ) {
-    updatedAt
-    uid
     name
     image
-    createdAt
   }
 }
 
@@ -46,7 +43,6 @@ mutation Login($loginInput: LoginInput!) {
   login(loginInput: $loginInput) {
     token
     user {
-      uid
       name
       image
     }

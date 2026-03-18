@@ -39,7 +39,7 @@ export const RegisterForm = ({ className, role }: ISignupFormProps) => {
         }
 
         if (data) {
-          alert(`User ${data.registerWithCredentials.uid} created. 🎉`)
+          alert(`User ${data.registerWithCredentials.name || formData.email} created. 🎉`)
           signIn('credentials', {
             email: formData.email,
             password: formData.password,

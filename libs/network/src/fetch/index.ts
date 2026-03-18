@@ -28,22 +28,54 @@ export async function fetchGraphQL<TData, V>({
   config,
   token,
 }: GraphqlRequestOptions<TData, V>): Promise<FetchResult<TData>> {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL
+  if (!apiUrl) {
+    return { error: 'NEXT_PUBLIC_API_URL is not configured' }
+  }
+
   const query = print(document)
 
-  return await fetch(process.env.NEXT_PUBLIC_API_URL + '/graphql', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : null),
-    },
-    body: JSON.stringify({ query, variables }),
-    ...config,
-  }).then(async (res) => {
-    const { data, errors } = await res.json()
-    if (errors) {
-      console.log('Error', JSON.stringify(errors))
-      return { error: JSON.stringify(errors[0].message) }
+  try {
+    const res = await fetch(apiUrl + '/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : null),
+      },
+      body: JSON.stringify({ query, variables }),
+      ...config,
+    })
+
+    const rawResponse = await res.text()
+    if (!rawResponse) {
+      return {
+        error: `Empty response from GraphQL API (status ${res.status})`,
+      }
     }
-    return { data }
-  })
+
+    let parsedResponse: { data?: TData; errors?: Array<{ message?: string }> }
+    try {
+      parsedResponse = JSON.parse(rawResponse)
+    } catch {
+      return {
+        error: `Invalid GraphQL response: ${rawResponse.slice(0, 160)}`,
+      }
+    }
+
+    const firstError = parsedResponse.errors?.[0]?.message
+    if (!res.ok) {
+      return {
+        error:
+          firstError || `GraphQL API request failed with status ${res.status}`,
+      }
+    }
+
+    if (firstError) {
+      return { error: firstError }
+    }
+
+    return { data: parsedResponse.data }
+  } catch (error) {
+    return { error: error instanceof Error ? error.message : 'Network error' }
+  }
 }

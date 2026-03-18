@@ -9,6 +9,7 @@ import { JwtService } from '@nestjs/jwt'
 import { Reflector } from '@nestjs/core'
 import { Role } from 'src/common/types'
 import { PrismaService } from 'src/common/prisma/prisma.service'
+import { jwtSecrets } from './jwt-secrets'
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -18,12 +19,24 @@ export class AuthGuard implements CanActivate {
     private readonly prisma: PrismaService,
   ) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const ctx = GqlExecutionContext.create(context)
-    const req = ctx.getContext().req
+    const req = this.getRequest(context)
+
+    if (!req) {
+      throw new UnauthorizedException('Unable to resolve request context.')
+    }
 
     await this.authenticateUser(req)
 
     return this.authorizeUser(req, context)
+  }
+
+  private getRequest(context: ExecutionContext) {
+    if (context.getType<string>() === 'http') {
+      return context.switchToHttp().getRequest()
+    }
+
+    const gqlContext = GqlExecutionContext.create(context).getContext()
+    return gqlContext?.req
   }
 
   private async authenticateUser(req: any): Promise<void> {
@@ -36,7 +49,23 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
-      const payload = await this.jwtService.verify(token)
+      let payload: { uid?: string } | null = null
+      for (const secret of jwtSecrets.allForVerify) {
+        try {
+          payload = await this.jwtService.verify(token, {
+            secret,
+            algorithms: ['HS256'],
+          })
+          break
+        } catch {
+          // Try next key for rotation support.
+        }
+      }
+
+      if (!payload) {
+        throw new UnauthorizedException('Invalid token signature.')
+      }
+
       const uid = payload.uid
       if (!uid) {
         throw new UnauthorizedException(
@@ -51,11 +80,9 @@ export class AuthGuard implements CanActivate {
         )
       }
 
-      console.log('jwt payload: ', payload)
       req.user = payload
-    } catch (err) {
-      console.error('Token validation error:', err)
-      throw err
+    } catch {
+      throw new UnauthorizedException('Invalid or expired token.')
     }
 
     if (!req.user) {

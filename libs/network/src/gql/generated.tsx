@@ -1889,11 +1889,8 @@ export type RegisterWithCredentialsMutation = {
   __typename?: 'Mutation'
   registerWithCredentials: {
     __typename?: 'User'
-    updatedAt: any
-    uid: string
     name?: string | null
     image?: string | null
-    createdAt: any
   }
 }
 
@@ -1933,7 +1930,6 @@ export type LoginMutation = {
     token: string
     user: {
       __typename?: 'User'
-      uid: string
       name?: string | null
       image?: string | null
     }
@@ -2860,11 +2856,8 @@ export const RegisterWithCredentialsDocument = {
             selectionSet: {
               kind: 'SelectionSet',
               selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'updatedAt' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'uid' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'image' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
               ],
             },
           },
@@ -3095,7 +3088,6 @@ export const LoginDocument = {
                   selectionSet: {
                     kind: 'SelectionSet',
                     selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'uid' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'image' } },
                     ],

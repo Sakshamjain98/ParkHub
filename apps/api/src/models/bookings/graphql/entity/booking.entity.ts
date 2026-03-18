@@ -1,4 +1,4 @@
-import { Field, ObjectType, registerEnumType } from '@nestjs/graphql'
+import { Field, Int, ObjectType, registerEnumType } from '@nestjs/graphql'
 import { $Enums, Booking as BookingType } from '@prisma/client'
 import { RestrictProperties } from 'src/common/dtos/common.input'
 
@@ -8,15 +8,21 @@ registerEnumType($Enums.BookingStatus, {
 
 @ObjectType()
 export class Booking implements RestrictProperties<Booking, BookingType> {
+  @Field(() => Int)
   id: number
+  @Field()
   createdAt: Date
+  @Field()
   updatedAt: Date
   @Field({ nullable: true })
   pricePerHour: number
   @Field({ nullable: true })
   totalPrice: number
+  @Field()
   startTime: Date
+  @Field()
   endTime: Date
+  @Field()
   vehicleNumber: string
   @Field({ nullable: true })
   phoneNumber: string
@@ -24,7 +30,9 @@ export class Booking implements RestrictProperties<Booking, BookingType> {
   passcode: string
   @Field(() => $Enums.BookingStatus)
   status: $Enums.BookingStatus
+  @Field(() => Int)
   slotId: number
+  @Field()
   customerId: string
   // Todo Add below to make optional fields optional.
   // @Field({ nullable: true })

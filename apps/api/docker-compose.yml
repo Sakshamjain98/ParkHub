@@ -11,5 +11,24 @@ services:
       POSTGRES_PASSWORD: password
     volumes:
       - db_data_autospace:/var/lib/postgresql/data
+  redis:
+    container_name: autospace_redis
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_data_autospace:/data
+  edge-proxy:
+    container_name: autospace_edge_proxy
+    image: nginx:1.27-alpine
+    restart: always
+    ports:
+      - 8080:8080
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/nginx.conf:ro
+    extra_hosts:
+      - host.docker.internal:host-gateway
 volumes:
   db_data_autospace:
+  redis_data_autospace:

@@ -13,7 +13,11 @@ import { CreateGarageInput } from './dtos/create-garage.input'
 import { UpdateGarageInput } from './dtos/update-garage.input'
 import { checkRowLevelPermission } from 'src/common/auth/util'
 import { GetUserType } from 'src/common/types'
-import { AllowAuthenticated, GetUser } from 'src/common/auth/auth.decorator'
+import {
+  AllowAuthenticated,
+  GetUser,
+  Public,
+} from 'src/common/auth/auth.decorator'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { Slot } from 'src/models/slots/graphql/entity/slot.entity'
 import { Address } from 'src/models/addresses/graphql/entity/address.entity'
@@ -81,6 +85,7 @@ export class GaragesResolver {
     description:
       'Search garages by location, date range, and slot constraints.',
   })
+  @Public()
   async searchGarages(
     @Args('dateFilter') dateFilter: DateFilterInput,
     @Args('locationFilter') locationFilter: LocationFilterInput,
@@ -166,6 +171,7 @@ export class GaragesResolver {
   @ResolveField(() => [MinimalSlotGroupBy], {
     name: 'availableSlots',
   })
+  @Public()
   async availableSlots(
     @Parent() garage: Garage,
     @Args('slotsFilter', { nullable: true }) slotsFilter: SlotWhereInput,
@@ -241,6 +247,7 @@ export class GaragesResolver {
   }
 
   @ResolveField(() => Verification, { nullable: true })
+  @Public()
   async verification(@Parent() parent: Garage) {
     return this.prisma.verification.findUnique({
       where: { garageId: parent.id },
@@ -253,6 +260,7 @@ export class GaragesResolver {
   }
 
   @ResolveField(() => Address, { nullable: true })
+  @Public()
   address(@Parent() garage: Garage) {
     return this.prisma.address.findFirst({ where: { garageId: garage.id } })
   }

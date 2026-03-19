@@ -10,19 +10,27 @@ export const useSearchLocation = () => {
   const [debouncedSearchText] = useDebounce(searchText, 400)
 
   useEffect(() => {
+    if (!debouncedSearchText?.trim()) {
+      setLocationInfo([])
+      setLoading(false)
+      return
+    }
+
     setLoading(true)
 
     fetch(
-      `https://api.mapbox.com/geocoding/v5/mapbox.places/${debouncedSearchText}.json?fuzzyMatch=true&access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`,
+      `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=8&q=${encodeURIComponent(
+        debouncedSearchText,
+      )}`,
     )
       .then((response) => response.json())
       .then((data) => {
-        const filtered = data.features?.map((x: any) => ({
-          placeName: x.place_name,
-          latLng: [x.center[1], x.center[0]],
+        const filtered = data?.map((x: any) => ({
+          placeName: x.display_name,
+          latLng: [parseFloat(x.lat), parseFloat(x.lon)],
         }))
 
-        setLocationInfo(filtered)
+        setLocationInfo(filtered || [])
       })
       .finally(() => setLoading(false))
   }, [debouncedSearchText])

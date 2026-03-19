@@ -13,6 +13,8 @@ import { GqlExecutionContext } from '@nestjs/graphql'
 export const AllowAuthenticated = (...roles: Role[]) =>
   applyDecorators(SetMetadata('roles', roles), UseGuards(AuthGuard))
 
+export const Public = () => SetMetadata('isPublic', true)
+
 export const GetUser = createParamDecorator((data, ctx: ExecutionContext) => {
   if (ctx.getType<string>() === 'http') {
     return ctx.switchToHttp().getRequest().user

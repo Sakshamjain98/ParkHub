@@ -8,6 +8,7 @@ import {
   registerEnumType,
 } from '@nestjs/graphql'
 import { Prisma } from '@prisma/client'
+import { IsNumber } from 'class-validator'
 
 export type RestrictProperties<T, U> = {
   [K in keyof T]: K extends keyof U ? T[K] : never
@@ -129,15 +130,19 @@ export class AggregateCountOutput {
 
 @InputType()
 export class LocationFilterInput {
+  @IsNumber()
   @Field(() => Float)
   ne_lat: number
 
+  @IsNumber()
   @Field(() => Float)
   ne_lng: number
 
+  @IsNumber()
   @Field(() => Float)
   sw_lat: number
 
+  @IsNumber()
   @Field(() => Float)
   sw_lng: number
 }

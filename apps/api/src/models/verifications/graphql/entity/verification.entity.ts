@@ -8,8 +8,11 @@ export class Verification
 {
   @Field()
   createdAt: Date
+  @Field()
   updatedAt: Date
+  @Field()
   verified: boolean
+  @Field()
   adminId: string
   @Field()
   garageId: number

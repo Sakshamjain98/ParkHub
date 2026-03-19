@@ -29,7 +29,7 @@ export const ShowGarages = () => {
     return (
       <Panel
         position="center-center"
-        className="bg-white/50 shadow border-white border backdrop-blur-sm"
+        className="bg-white shadow border border-gray-200"
       >
         <div className="flex items-center justify-center gap-2 ">
           <IconInfoCircle /> <div>{error.message}</div>
@@ -41,7 +41,7 @@ export const ShowGarages = () => {
     return (
       <Panel
         position="center-center"
-        className="bg-white/50 shadow border-white border backdrop-blur-sm"
+        className="bg-white shadow border border-gray-200"
       >
         <div className="flex items-center justify-center gap-2 ">
           <IconInfoCircle /> <div>No parking slots found in this area.</div>

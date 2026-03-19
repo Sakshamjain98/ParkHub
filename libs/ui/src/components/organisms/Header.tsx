@@ -2,15 +2,13 @@
 import { BaseComponent, MenuItem, Role } from '@ParkHub/util/types'
 import { Brand } from '../atoms/Brand'
 import { Container } from '../atoms/Container'
-import { useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { Sidebar } from './Sidebar'
-import { UserInfo } from '../molecules/UserInfo'
 import { LogoutButton } from '../molecules/LogoutButton'
 import { Button } from '../atoms/Button'
-import { useDialogState } from '@ParkHub/util/hooks/dialog'
 import { NavSidebar } from './NavSidebar'
 import { Menus } from './Menus'
+import { usePathname } from 'next/navigation'
 
 export type IHeaderProps = {
   type?: Role
@@ -20,12 +18,25 @@ export type IHeaderProps = {
 export const Header = ({ type, menuItems }: IHeaderProps) => {
   const session = useSession()
   const uid = session?.data?.user?.uid
-  let [open, setOpen] = useDialogState(false)
+  const pathname = usePathname()
+
+  const mobileLinkItems = [
+    { label: 'Home', href: '/' },
+    ...menuItems.filter(({ href }) => href !== '/').slice(0, 2),
+  ]
+
+  const mobileActions: Array<
+    { kind: 'link'; label: string; href: string } | { kind: 'logout'; label: string }
+  > = [...mobileLinkItems.map((item) => ({ kind: 'link' as const, ...item }))]
+
+  if (mobileActions.length < 3) {
+    mobileActions.push({ kind: 'logout', label: 'Logout' })
+  }
 
   return (
     <header>
-      <nav className="fixed z-40 top-0 w-full border-b border-white/20 bg-black/35 shadow-md backdrop-blur-xl">
-        <Container className="relative flex items-center justify-between h-16 py-2 gap-3 sm:gap-8 md:gap-16">
+      <nav className="fixed z-40 top-0 w-full border-b border-gray-200 bg-white shadow-md">
+        <Container className="relative flex items-center justify-between h-16 py-2 px-3 sm:px-4 md:px-6 gap-3 sm:gap-6 md:gap-8">
           <Link href="/" aria-label="Home" className="w-auto z-50">
             <Brand type={type} className="hidden h-10 sm:block" />
             <Brand type={type} shortForm className="block sm:hidden" />
@@ -33,21 +44,22 @@ export const Header = ({ type, menuItems }: IHeaderProps) => {
           <div className="flex items-center gap-2">
             {uid ? (
               <div className="flex items-center gap-2 sm:gap-4 md:gap-6">
-                <div className="mr-1 flex gap-2 text-sm sm:mr-4 md:mr-6 md:gap-3">
+                <div className="mr-1 hidden lg:flex gap-2 text-sm sm:mr-4 md:mr-6 md:gap-3">
                   <Menus menuItems={menuItems} />
                 </div>
-
-                <NavSidebar menuItems={menuItems} />
+                <div className="hidden lg:block">
+                  <LogoutButton />
+                </div>
               </div>
             ) : (
               <>
                 <Link href="/register">
-                  <Button variant="outlined" className="hidden md:block">
+                  <Button variant="outlined" size="sm">
                     Register
                   </Button>
                 </Link>
                 <Link href="/login">
-                  <Button>Log in</Button>
+                  <Button size="sm">Log in</Button>
                 </Link>
               </>
             )}
@@ -55,6 +67,52 @@ export const Header = ({ type, menuItems }: IHeaderProps) => {
         </Container>
       </nav>
       <div className="h-16" />
+      {uid ? (
+        <div className="fixed inset-x-0 bottom-0 z-40 bg-transparent lg:hidden">
+          <Container className="px-3 pb-3 pt-2 sm:px-4">
+            <div className="grid grid-cols-4 gap-2">
+              {mobileActions.slice(0, 3).map((action) => {
+                if (action.kind === 'logout') {
+                  return (
+                    <button
+                      key={action.label}
+                      onClick={() => signOut()}
+                      className="rounded-full border border-gray-300 bg-white/95 px-2 py-2 text-xs font-medium shadow-sm backdrop-blur"
+                    >
+                      {action.label}
+                    </button>
+                  )
+                }
+
+                const active =
+                  pathname === action.href ||
+                  (action.href !== '/' && pathname?.startsWith(action.href))
+
+                return (
+                  <Link
+                    key={`${action.label}-${action.href}`}
+                    href={action.href}
+                    className={`rounded-full border px-2 py-2 text-center text-xs font-medium ${
+                      active
+                        ? 'border-black bg-black text-white'
+                        : 'border-gray-300 bg-white/95 text-black shadow-sm backdrop-blur'
+                    }`}
+                  >
+                    {action.label}
+                  </Link>
+                )
+              })}
+
+              <NavSidebar
+                menuItems={menuItems}
+                buttonClassName="w-full rounded-full border border-gray-300 bg-white/95 px-2 py-2 text-xs font-medium shadow-sm backdrop-blur"
+                buttonContent="Menu"
+              />
+            </div>
+          </Container>
+        </div>
+      ) : null}
+      {uid ? <div className="h-20 lg:hidden" /> : null}
     </header>
   )
 }

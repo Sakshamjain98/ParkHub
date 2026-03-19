@@ -1,7 +1,7 @@
 import { useDebounce } from '@ParkHub/util/hooks/async'
 import { LatLng, LngLatTuple } from '@ParkHub/util/types'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Source, Layer } from 'react-map-gl'
+import { Source, Layer } from 'react-map-gl/maplibre'
 
 export const Directions = ({
   origin,
@@ -40,17 +40,14 @@ export const Directions = ({
     prevDestinationRef.current = destinationDebounced
     ;(async () => {
       const response = await fetch(
-        `https://api.mapbox.com/directions/v5/mapbox/driving/${originDebounced.lng},${originDebounced.lat};${destinationDebounced.lng},${destinationDebounced.lat}?access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}&steps=true&overview=simplified`,
+        `https://router.project-osrm.org/route/v1/driving/${originDebounced.lng},${originDebounced.lat};${destinationDebounced.lng},${destinationDebounced.lat}?steps=true&overview=full&geometries=geojson`,
       )
 
       const data = await response.json()
 
-      const coordinates =
-        data?.routes[0]?.legs[0]?.steps?.map(
-          (step: { maneuver: { location: any } }) => step.maneuver.location,
-        ) || []
+      const coordinates = data?.routes?.[0]?.geometry?.coordinates || []
 
-      const newDistance = data.routes[0].distance || 0
+      const newDistance = data?.routes?.[0]?.distance || 0
 
       setCoordinates(coordinates)
 
@@ -78,7 +75,7 @@ export const Directions = ({
       <Layer
         id={sourceId}
         type="line"
-        source="my-data"
+        source={sourceId}
         paint={{
           'line-color': 'rgb(0,0,0)',
           'line-width': 2,

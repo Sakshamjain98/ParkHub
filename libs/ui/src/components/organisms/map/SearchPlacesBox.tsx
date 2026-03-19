@@ -1,5 +1,5 @@
 import { LocationInfo, ViewState } from '@ParkHub/util/types'
-import { useMap } from 'react-map-gl'
+import { useMap } from 'react-map-gl/maplibre'
 import { Autocomplete } from '../../atoms/Autocomplete'
 import { useSearchLocation } from '@ParkHub/util/hooks/location'
 import { majorCitiesLocationInfo } from '@ParkHub/util/constants'

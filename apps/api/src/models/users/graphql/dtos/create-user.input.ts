@@ -7,6 +7,13 @@ import {
 } from '@nestjs/graphql'
 import { User } from '../entity/user.entity'
 import { AuthProviderType } from '@prisma/client'
+import {
+  IsEmail,
+  IsEnum,
+  IsOptional,
+  IsString,
+  MinLength,
+} from 'class-validator'
 
 registerEnumType(AuthProviderType, {
   name: 'AuthProviderType',
@@ -18,6 +25,20 @@ export class RegisterWithProviderInput extends PickType(
   ['uid', 'name', 'image'],
   InputType,
 ) {
+  @IsString()
+  @Field()
+  uid: string
+
+  @IsString()
+  @Field({ nullable: true })
+  name: string
+
+  @IsOptional()
+  @IsString()
+  @Field({ nullable: true })
+  image: string
+
+  @IsEnum(AuthProviderType)
   @Field(() => AuthProviderType)
   type: AuthProviderType
 }
@@ -28,8 +49,21 @@ export class RegisterWithCredentialsInput extends PickType(
   ['name', 'image'],
   InputType,
 ) {
+  @IsString()
+  @Field({ nullable: true })
+  name: string
+
+  @IsOptional()
+  @IsString()
+  @Field({ nullable: true })
+  image: string
+
+  @IsEmail()
   @Field()
   email: string
+
+  @IsString()
+  @MinLength(6)
   @Field()
   password: string
 }

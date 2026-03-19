@@ -21,12 +21,13 @@ export const RegisterForm = ({ className, role }: ISignupFormProps) => {
     formState: { errors },
   } = useFormRegister()
 
-  const [registerWithCredentials, { loading, data }] = useMutation(
+  const [registerWithCredentials, { loading }] = useMutation(
     RegisterWithCredentialsDocument,
   )
 
   return (
     <Form
+      className="gap-4"
       onSubmit={handleSubmit(async (formData) => {
         const { data, errors } = await registerWithCredentials({
           variables: {
@@ -48,40 +49,43 @@ export const RegisterForm = ({ className, role }: ISignupFormProps) => {
         }
       })}
     >
-      <HtmlLabel title="Email" error={errors.email?.message}>
+      <HtmlLabel className="text-white" title="Email" error={errors.email?.message}>
         <HtmlInput
-          className="text-black"
-          placeholder="Enter the email."
+          className="border-white/20 bg-white/10 text-white placeholder:text-white/50 focus:border-primary"
+          placeholder="Enter your email"
           {...register('email')}
         />
       </HtmlLabel>
-      <HtmlLabel title="Password" error={errors.password?.message}>
+      <HtmlLabel className="text-white" title="Password" error={errors.password?.message}>
         <HtmlInput
-          className="text-black"
+          className="border-white/20 bg-white/10 text-white placeholder:text-white/50 focus:border-primary"
           type="password"
-          placeholder="······"
+          placeholder="Create a password"
           {...register('password')}
         />
       </HtmlLabel>
-      <HtmlLabel title="Display name" error={errors.name?.message}>
+      <HtmlLabel className="text-white" title="Display name" error={errors.name?.message}>
         <HtmlInput
-          className="text-black"
-          placeholder="Enter your name."
+          className="border-white/20 bg-white/10 text-white placeholder:text-white/50 focus:border-primary"
+          placeholder="Enter your display name"
           {...register('name')}
         />
       </HtmlLabel>
       {Object.keys(errors).length ? (
-        <div className="text-xs text-gray-600">
+        <div className="text-xs text-red-300">
           Please fix the above {Object.keys(errors).length} errors
         </div>
       ) : null}
-      <Button type="submit" fullWidth loading={loading}>
+      <Button type="submit" fullWidth size="lg" loading={loading}>
         Register
       </Button>
-      <div className="mt-4 text-sm ">
-        Already have an ParkHub account?
+      <div className="mt-1 text-sm text-white/80">
+        Already have a ParkHub account?
         <br />
-        <Link href="/login" className="font-bold underline underline-offset-4">
+        <Link
+          href="/login"
+          className="font-semibold text-primary underline underline-offset-4"
+        >
           Login
         </Link>{' '}
         now.

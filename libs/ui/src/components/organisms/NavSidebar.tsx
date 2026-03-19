@@ -1,8 +1,8 @@
 'use client'
 import { IconMenu2 } from '@tabler/icons-react'
-import Link from 'next/link'
 import { Sidebar } from './Sidebar'
 import { useDialogState } from '@ParkHub/util/hooks/dialog'
+import { ReactNode } from 'react'
 
 import { MenuItem } from '@ParkHub/util/types'
 import { LogoutButton } from '../molecules/LogoutButton'
@@ -11,9 +11,15 @@ import { Menus } from './Menus'
 
 export interface INavSidebarProps {
   menuItems: MenuItem[]
+  buttonClassName?: string
+  buttonContent?: ReactNode
 }
 
-export const NavSidebar = ({ menuItems }: INavSidebarProps) => {
+export const NavSidebar = ({
+  menuItems,
+  buttonClassName = 'p-2 md:hidden',
+  buttonContent,
+}: INavSidebarProps) => {
   const [open, setOpen] = useDialogState()
 
   return (
@@ -21,10 +27,10 @@ export const NavSidebar = ({ menuItems }: INavSidebarProps) => {
       <button
         type="button"
         onClick={() => setOpen((state) => !state)}
-        className="p-2"
+        className={buttonClassName}
         aria-label="Open main menu"
       >
-        <IconMenu2 className="w-5 h-5" />
+        {buttonContent || <IconMenu2 className="w-5 h-5" />}
       </button>
       <Sidebar open={open} setOpen={setOpen}>
         <div className="flex flex-col items-start space-y-1">

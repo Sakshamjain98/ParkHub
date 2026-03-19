@@ -1,4 +1,4 @@
-import { useMapboxDirections } from '@ParkHub/util/hooks/directions'
+import { useMapDirections } from '@ParkHub/util/hooks/directions'
 import { LatLng } from '@ParkHub/util/types'
 import { isLatLng } from '@ParkHub/util'
 import { ReactNode } from 'react'
@@ -23,7 +23,7 @@ export const ValetTripCard = ({
   booking,
   children,
 }: IValetTripCardProps) => {
-  const { data, distance, error, loading } = useMapboxDirections(start, end)
+  const { data, distance, error, loading } = useMapDirections(start, end)
 
   if (!isLatLng(start) || !isLatLng(end)) {
     return (

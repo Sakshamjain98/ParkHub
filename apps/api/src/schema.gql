@@ -60,6 +60,9 @@ type Customer {
 
 type Verification {
   createdAt: DateTime!
+  updatedAt: DateTime!
+  verified: Boolean!
+  adminId: String!
   garageId: Float!
 }
 
@@ -761,6 +764,7 @@ type SlotTypeCount {
 
 type Slot {
   displayName: String
+  pricePerHour: Float!
   length: Float
   width: Float
   height: Float
@@ -785,7 +789,9 @@ type Address {
 }
 
 type MinimalSlotGroupBy {
+  pricePerHour: Float!
   type: SlotType!
+  count: Float!
 }
 
 type ValetAssignment {
@@ -1311,6 +1317,7 @@ input RegisterWithCredentialsInput {
 input RegisterWithProviderInput {
   image: String
   name: String
+  uid: String!
   type: AuthProviderType!
 }
 
@@ -1401,6 +1408,7 @@ input UpdateAddressInput {
 
 input CreateSlotInput {
   displayName: String
+  pricePerHour: Float!
   length: Float
   width: Float
   height: Float
@@ -1409,6 +1417,7 @@ input CreateSlotInput {
 
 input UpdateSlotInput {
   displayName: String
+  pricePerHour: Float
   length: Float
   width: Float
   height: Float
@@ -1454,9 +1463,11 @@ input UpdateReviewInput {
 }
 
 input CreateVerificationInput {
+  verified: Boolean!
   garageId: Float!
 }
 
 input UpdateVerificationInput {
+  verified: Boolean
   garageId: Float
 }

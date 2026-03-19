@@ -1,17 +1,20 @@
+"use client"
+
 import { LatLng } from '@ParkHub/util/types'
-import polyline from '@mapbox/polyline'
-import Image from 'next/image'
+import { Layer, Source } from 'react-map-gl/maplibre'
+import { Map } from './Map'
+import { Marker } from './MapMarker'
 
 export const StaticMapDirections = ({
   start,
   end,
-  padding = [100, 100, 100],
+  padding = 100,
   coordinates,
   className = 'w-full shadow-xl aspect-square',
 }: {
   start: LatLng
   end: LatLng
-  padding?: [number, number, number]
+  padding?: number
   coordinates: [number, number][]
   className?: string
 }) => {
@@ -19,41 +22,66 @@ export const StaticMapDirections = ({
     return <div className="w-full bg-gray-100 shadow-xl aspect-square" />
   }
 
-  const encodedPolyline = polyline.fromGeoJSON({
-    type: 'Feature',
+  const routeData = {
+    type: 'Feature' as const,
+    properties: {},
     geometry: {
-      type: 'LineString',
+      type: 'LineString' as const,
       coordinates,
     },
-    properties: {},
-  })
+  }
 
-  const boundingBox = [
-    Math.min(start.lng, end.lng),
-    Math.min(start.lat, end.lat),
-    Math.max(start.lng, end.lng),
-    Math.max(start.lat, end.lat),
-  ].join(',')
-
-  const paddingString = padding.join(',')
-
-  const url = `https://api.mapbox.com/styles/v1/iamkarthick/clk4em1h900i201pf3jvuei21/static/pin-s-a+000(${
-    start.lng
-  },${start.lat}),pin-s-b+000(${end.lng},${
-    end.lat
-  }),path-2+000(${encodeURIComponent(
-    encodedPolyline,
-  )})/[${boundingBox}]/600x600?padding=${paddingString}&access_token=${
-    process.env.NEXT_PUBLIC_MAPBOX_TOKEN
-  }`
+  const minLng = Math.min(start.lng, end.lng)
+  const minLat = Math.min(start.lat, end.lat)
+  const maxLng = Math.max(start.lng, end.lng)
+  const maxLat = Math.max(start.lat, end.lat)
 
   return (
-    <Image
-      width={300}
-      height={300}
-      src={url}
-      alt="Map"
-      className={` ${className}`}
-    />
+    <div className={`${className} overflow-hidden`}>
+      <Map
+        initialViewState={{
+          latitude: (start.lat + end.lat) / 2,
+          longitude: (start.lng + end.lng) / 2,
+          zoom: 11,
+        }}
+        height="100%"
+        dragPan={false}
+        dragRotate={false}
+        doubleClickZoom={false}
+        touchZoomRotate={false}
+        keyboard={false}
+        interactive={false}
+        onLoad={(e) => {
+          e.target.fitBounds(
+            [
+              [minLng, minLat],
+              [maxLng, maxLat],
+            ],
+            {
+              padding: {
+                top: padding,
+                right: padding,
+                bottom: padding,
+                left: padding,
+              },
+              duration: 0,
+            },
+          )
+        }}
+      >
+        <Source id="static-route" type="geojson" data={routeData}>
+          <Layer
+            id="static-route-line"
+            type="line"
+            paint={{
+              'line-color': 'rgb(0,0,0)',
+              'line-width': 2,
+            }}
+          />
+        </Source>
+        <Marker latitude={start.lat} longitude={start.lng} />
+        <Marker latitude={end.lat} longitude={end.lng} />
+      </Map>
+    </div>
   )
 }

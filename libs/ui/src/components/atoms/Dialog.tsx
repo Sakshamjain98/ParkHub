@@ -44,7 +44,7 @@ export const Dialog = ({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black/30 backdrop-blur-sm" />
+          <div className="fixed inset-0 bg-black/40" />
         </TransitionChild>
 
         <div className="fixed inset-0 overflow-y-auto">
@@ -63,7 +63,7 @@ export const Dialog = ({
               >
                 <button
                   type="button"
-                  className="absolute top-1 right-1 flex items-center justify-center w-8 h-8 rounded-lg transition hover:bg-white/30"
+                  className="absolute top-1 right-1 flex items-center justify-center w-8 h-8 rounded-lg transition hover:bg-gray-100"
                   onClick={() => setOpen(false)}
                 >
                   <IconX className="text-gray-700" />

@@ -24,6 +24,7 @@ export const LoginForm = ({ className }: ILoginFormProps) => {
 
   return (
     <Form
+      className="gap-4"
       onSubmit={handleSubmit(async (data) => {
         const { email, password } = data
         setLoading(true)
@@ -43,30 +44,30 @@ export const LoginForm = ({ className }: ILoginFormProps) => {
         }
       })}
     >
-      <HtmlLabel title="Email" error={errors.email?.message}>
+      <HtmlLabel className="text-white" title="Email" error={errors.email?.message}>
         <HtmlInput
-          className="text-black"
+          className="border-white/20 bg-white/10 text-white placeholder:text-white/50 focus:border-primary"
           {...register('email')}
-          placeholder="email"
+          placeholder="Enter your email"
         />
       </HtmlLabel>
-      <HtmlLabel title="Password" error={errors.password?.message}>
+      <HtmlLabel className="text-white" title="Password" error={errors.password?.message}>
         <HtmlInput
-          className="text-black"
+          className="border-white/20 bg-white/10 text-white placeholder:text-white/50 focus:border-primary"
           type="password"
           {...register('password')}
-          placeholder="******"
+          placeholder="Enter your password"
         />
       </HtmlLabel>
-      <Button type="submit" loading={loading}>
-        Submit
+      <Button type="submit" fullWidth size="lg" loading={loading}>
+        Login
       </Button>
-      <div className="mt-4 text-sm">
-        Do not have an ParkHub account?
+      <div className="mt-1 text-sm text-white/80">
+        Don&apos;t have a ParkHub account?
         <br />
         <Link
           href="/register"
-          className="font-bold underline underline-offset-4"
+          className="font-semibold text-primary underline underline-offset-4"
         >
           Create one
         </Link>{' '}

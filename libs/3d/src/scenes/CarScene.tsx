@@ -7,6 +7,7 @@ import {
   WORLD_END,
   WORLD_START,
   roadColor,
+  sceneBackgroundColor,
 } from '../util/constants'
 import * as THREE from 'three'
 import { Square } from '../components/Square'
@@ -17,7 +18,7 @@ import { BuildingSet } from '../components/BuildingSet'
 export const CarScene = ({
   children,
   camera,
-  className = 'h-[calc(100vh-2rem)]',
+  className = 'h-full w-full',
   orbitControls = true,
   hideAllComments = false,
 }: {
@@ -29,8 +30,9 @@ export const CarScene = ({
 }) => {
   return (
     <Canvas
+      className={className}
       style={{
-        background: '#000000',
+        background: sceneBackgroundColor,
       }}
     >
       {camera || (

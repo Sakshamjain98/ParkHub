@@ -3,7 +3,7 @@ import { useCallback } from 'react'
 import { Map } from '../organisms/map/Map'
 import { Panel } from '../organisms/map/Panel'
 import { DefaultZoomControls } from '../organisms/map/ZoomControls'
-import { ViewStateChangeEvent } from 'react-map-gl'
+import { ViewStateChangeEvent } from 'react-map-gl/maplibre'
 import { initialViewState } from '@ParkHub/util/constants'
 import { SearchPlaceBox } from '../organisms/map/SearchPlacesBox'
 import { useFormContext } from 'react-hook-form'
@@ -42,6 +42,7 @@ export const SearchPage = () => {
 
   return (
     <Map
+      height="100%"
       onLoad={(e) => handleMapChange(e.target)}
       onDragEnd={(e) => handleMapChange(e.target)}
       onZoomEnd={(e) => handleMapChange(e.target)}
@@ -51,7 +52,7 @@ export const SearchPage = () => {
       <Panel position="left-top">
         <div className="flex flex-col items-stretch">
           <SearchPlaceBox />
-          <div className="flex relative pl-1 flex-col mt-1 bg-white/40 items-center gap-1 backdrop-blur-sm">
+          <div className="flex relative pl-1 flex-col mt-1 bg-white border border-gray-200 shadow items-center gap-1">
             <div className=" absolute left-[1px] top-1/2 -translate-y-1/2 ">
               <IconArrowDown className="p-1" />
             </div>

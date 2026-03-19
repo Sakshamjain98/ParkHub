@@ -60,7 +60,7 @@ export const BookSlotPopup = ({
   const [booking, setBooking] = useState(false)
 
   return (
-    <div className="flex gap-2 text-left border-t-2 border-white bg-white/50 backdrop-blur-sm">
+    <div className="flex gap-2 text-left border-t-2 border-gray-200 bg-white">
       <Form
         onSubmit={handleSubmit(async (data) => {
           if (!uid) {

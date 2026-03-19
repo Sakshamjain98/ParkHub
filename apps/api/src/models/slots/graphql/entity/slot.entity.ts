@@ -1,4 +1,4 @@
-import { Field, Int, ObjectType, registerEnumType } from '@nestjs/graphql'
+import { Field, Float, Int, ObjectType, registerEnumType } from '@nestjs/graphql'
 import { $Enums, Slot as SlotType } from '@prisma/client'
 import { RestrictProperties } from 'src/common/dtos/common.input'
 
@@ -14,6 +14,7 @@ export class Slot implements RestrictProperties<Slot, SlotType> {
 
   @Field({ nullable: true })
   displayName: string
+  @Field(() => Float)
   pricePerHour: number
   @Field({ nullable: true })
   length: number

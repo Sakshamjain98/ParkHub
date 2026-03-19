@@ -37,7 +37,7 @@ export const Sidebar = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" />
+            <div className="absolute inset-0 bg-black/40" />
           </TransitionChild>
         ) : null}
 

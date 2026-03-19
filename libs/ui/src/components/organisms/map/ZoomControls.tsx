@@ -2,12 +2,12 @@ import { MouseEventHandler, ReactNode } from 'react'
 
 import { IconMinus, IconParking, IconPlus } from '@tabler/icons-react'
 
-import { useMap } from 'react-map-gl'
+import { useMap } from 'react-map-gl/maplibre'
 
 export interface IZoomControlsProps {}
 
 const MapControls = ({ children }: { children: ReactNode }) => (
-  <div className="flex flex-col overflow-hidden gap-0.5 space-y rounded shadow-lg divide-primary-800 backdrop-blur-sm">
+  <div className="flex flex-col overflow-hidden gap-0.5 space-y rounded shadow-lg divide-primary-800 bg-white border border-gray-200">
     {children}
   </div>
 )
@@ -20,7 +20,7 @@ const ZoomControlButton = ({
   onClick: MouseEventHandler<HTMLButtonElement>
 }) => (
   <button
-    className=" hover:bg-white bg-white/40"
+    className="hover:bg-gray-50 bg-white"
     type="button"
     onClick={onClick}
   >

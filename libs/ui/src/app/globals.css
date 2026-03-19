@@ -28,43 +28,26 @@
 
 @layer components {
   .glass-panel {
-    @apply rounded-2xl border border-white/45 bg-white/30 shadow-lg backdrop-blur-md;
+    @apply rounded-2xl border border-gray-200 bg-white shadow-lg;
   }
 
   .glass-icon {
-    @apply border border-white/45 bg-white/50 backdrop-blur;
+    @apply border border-gray-200 bg-white;
   }
 
   .glass-surface {
-    @apply rounded-2xl border border-white/35 bg-white/25 shadow-md backdrop-blur-md;
+    @apply rounded-2xl border border-gray-200 bg-white shadow-md;
   }
 }
 
 @layer utilities {
   .glass-elevated {
-    @apply border border-white/45 bg-white/35 shadow-xl backdrop-blur-lg;
+    @apply border border-gray-200 bg-white shadow-xl;
   }
 }
 
-:is(main section article aside nav header footer)
-  :is(.bg-white, .bg-gray-25, .bg-gray-50, .bg-primary) {
-  background-color: rgb(255 255 255 / 0.28) !important;
-  border: 1px solid rgb(255 255 255 / 0.35);
-  backdrop-filter: blur(10px);
-}
-
-:is(input, select, textarea) {
-  background-color: rgb(255 255 255 / 0.5) !important;
-  border: 1px solid rgb(255 255 255 / 0.45) !important;
-  backdrop-filter: blur(8px);
-}
-
-:is(button, [role='button']) {
-  backdrop-filter: blur(8px);
-}
-
 .Toastify__toast {
-  @apply rounded-2xl border border-white/45 bg-white/70 font-sans shadow-lg backdrop-blur-md;
+  @apply rounded-2xl border border-gray-200 bg-white font-sans shadow-lg;
 }
 
 .Toastify__progress-bar-theme--light {

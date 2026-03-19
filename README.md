@@ -18,7 +18,7 @@ Before you begin, ensure you have the following installed on your system:
 Clone the repository to your local machine using Git.
 
 ```bash
-git clone https://github.com/karthickthankyou/ParkHub-workshop.git
+git clone https://github.com/Sakshamjain98/ParkHub.git
 cd ParkHub-workshop
 ```
 

@@ -1,6 +1,6 @@
 'use client'
-import { CarScene } from '@autospace/3d/src/scenes/CarScene'
-import { RotatingCamera } from '@autospace/3d/src/components/camera/Rotating'
+import { CarScene } from '@ParkHub/3d/src/scenes/CarScene'
+import { RotatingCamera } from '@ParkHub/3d/src/components/camera/Rotating'
 import { IconArrowBack } from '@tabler/icons-react'
 import Link from 'next/link'
 import { ReactNode } from 'react'

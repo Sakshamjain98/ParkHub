@@ -16,7 +16,7 @@ const ENABLE_APOLLO_STUDIO_CORS =
   'true'
 const LOGROTATE_BINARY = process.env.LOGROTATE_BINARY || 'logrotate'
 const LOGROTATE_CONFIG_PATH =
-  process.env.LOGROTATE_CONFIG_PATH || '/etc/logrotate.d/autospace-api'
+  process.env.LOGROTATE_CONFIG_PATH || '/etc/logrotate.d/ParkHub-api'
 
 const LOGROTATE_BINARY_CANDIDATES = [
   LOGROTATE_BINARY,
@@ -26,8 +26,8 @@ const LOGROTATE_BINARY_CANDIDATES = [
 
 const LOGROTATE_CONFIG_CANDIDATES = [
   LOGROTATE_CONFIG_PATH,
-  '/opt/homebrew/etc/logrotate.d/autospace-api',
-  '/usr/local/etc/logrotate.d/autospace-api',
+  '/opt/homebrew/etc/logrotate.d/ParkHub-api',
+  '/usr/local/etc/logrotate.d/ParkHub-api',
 ]
 
 const resolveExistingPath = (candidates: string[]) => {
@@ -170,9 +170,9 @@ async function bootstrap() {
   })
 
   const config = new DocumentBuilder()
-    .setTitle('Autospace | Saksham Jain')
+    .setTitle('ParkHub | Saksham Jain')
     .setDescription(
-      `The Autospace API.
+      `The ParkHub API.
 <h2>Looking for the graphql api?</h2>
 Go to <a href="/graphql" target="_blank">/graphql</a>.
 Or,

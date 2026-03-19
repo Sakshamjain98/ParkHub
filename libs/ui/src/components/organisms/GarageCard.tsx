@@ -1,4 +1,4 @@
-import { GaragesQuery } from '@autospace/network/src/gql/generated'
+import { GaragesQuery } from '@ParkHub/network/src/gql/generated'
 import { AutoImageChanger } from './AutoImageChanger'
 import Link from 'next/link'
 import { IconTypes } from '../molecules/IconTypes'

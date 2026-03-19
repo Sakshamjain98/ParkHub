@@ -1,4 +1,4 @@
-import { SlotType } from '@autospace/network/src/gql/generated'
+import { SlotType } from '@ParkHub/network/src/gql/generated'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, FormProvider } from 'react-hook-form'
 import { z } from 'zod'

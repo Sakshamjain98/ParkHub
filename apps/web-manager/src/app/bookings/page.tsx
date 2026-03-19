@@ -1,6 +1,6 @@
-import { IsLoggedIn } from '@autospace/ui/src/components/organisms/IsLoggedIn'
-import { IsManager } from '@autospace/ui/src/components/organisms/IsManager'
-import { ListGarageBookings } from '@autospace/ui/src/components/templates/ListGarageBookings'
+import { IsLoggedIn } from '@ParkHub/ui/src/components/organisms/IsLoggedIn'
+import { IsManager } from '@ParkHub/ui/src/components/organisms/IsManager'
+import { ListGarageBookings } from '@ParkHub/ui/src/components/templates/ListGarageBookings'
 
 export default function Page({
   searchParams,

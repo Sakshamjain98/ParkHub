@@ -1,4 +1,4 @@
-import { AdminsQuery } from '@autospace/network/src/gql/generated'
+import { AdminsQuery } from '@ParkHub/network/src/gql/generated'
 import { ReactNode } from 'react'
 import { useSession } from 'next-auth/react'
 import { format } from 'date-fns'

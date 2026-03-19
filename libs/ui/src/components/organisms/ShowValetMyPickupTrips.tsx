@@ -1,10 +1,10 @@
-import { useTakeSkip } from '@autospace/util/hooks/pagination'
+import { useTakeSkip } from '@ParkHub/util/hooks/pagination'
 import { useQuery } from '@apollo/client'
 import {
   BookingStatus,
   MyPickupTripsDocument,
   SortOrder,
-} from '@autospace/network/src/gql/generated'
+} from '@ParkHub/network/src/gql/generated'
 import { ShowData } from './ShowData'
 import { ValetTripCard } from './ValetTripCard'
 import { Reveal } from '../molecules/Reveal'

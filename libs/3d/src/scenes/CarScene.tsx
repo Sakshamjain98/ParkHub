@@ -30,8 +30,7 @@ export const CarScene = ({
   return (
     <Canvas
       style={{
-        background:
-          'linear-gradient(to top right, hsl(0, 0%, 8%), hsl(52, 0%, 18%))',
+        background: '#000000',
       }}
     >
       {camera || (
@@ -72,6 +71,7 @@ export const CarScene = ({
       <Spawner
         spawnInterval={8.2}
         duration={WORLD_DURATION - 6}
+        initialCount={3}
         startPosition={new THREE.Vector3(WORLD_START, 0, -10)}
         endPosition={new THREE.Vector3(WORLD_END, 0, -10)}
       >
@@ -80,6 +80,7 @@ export const CarScene = ({
       <Spawner
         spawnInterval={4.3}
         duration={WORLD_DURATION - 12}
+        initialCount={4}
         startPosition={new THREE.Vector3(WORLD_START, 0, -6)}
         endPosition={new THREE.Vector3(WORLD_END, 0, -6)}
       >
@@ -88,6 +89,7 @@ export const CarScene = ({
       <Spawner
         spawnInterval={7.4}
         duration={WORLD_DURATION - 18}
+        initialCount={3}
         startPosition={new THREE.Vector3(WORLD_START, 0, -2)}
         endPosition={new THREE.Vector3(WORLD_END, 0, -2)}
       >
@@ -97,6 +99,7 @@ export const CarScene = ({
       <Spawner
         spawnInterval={9.8}
         duration={WORLD_DURATION - 18}
+        initialCount={3}
         endPosition={new THREE.Vector3(WORLD_START, 0, 2)}
         startPosition={new THREE.Vector3(WORLD_END, 0, 2)}
       >
@@ -105,6 +108,7 @@ export const CarScene = ({
       <Spawner
         spawnInterval={7}
         duration={WORLD_DURATION - 12}
+        initialCount={4}
         endPosition={new THREE.Vector3(WORLD_START, 0, 6)}
         startPosition={new THREE.Vector3(WORLD_END, 0, 6)}
       >

@@ -1,4 +1,4 @@
-import { MenuItem } from '@autospace/util/types'
+import { MenuItem } from '@ParkHub/util/types'
 import Link from 'next/link'
 
 export interface IMenuItemProps {

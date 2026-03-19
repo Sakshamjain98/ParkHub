@@ -1,6 +1,6 @@
-import { SlotType } from '@autospace/network/src/gql/generated'
+import { SlotType } from '@ParkHub/network/src/gql/generated'
 import { z } from 'zod'
-import { toLocalISOString } from '@autospace/util/date'
+import { toLocalISOString } from '@ParkHub/util/date'
 import { ReactNode } from 'react'
 import { DefaultValues, useForm, FormProvider, Form } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'

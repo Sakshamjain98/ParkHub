@@ -1,4 +1,4 @@
-import { SearchGaragesQueryVariables } from '@autospace/network/src/gql/generated'
+import { SearchGaragesQueryVariables } from '@ParkHub/network/src/gql/generated'
 import { FormTypeSearchGarage } from '../searchGarages'
 import { useState, useEffect } from 'react'
 import {
@@ -6,7 +6,7 @@ import {
   useFormContext,
   useWatch,
 } from 'react-hook-form'
-import { useDebounce } from '@autospace/util/hooks/async'
+import { useDebounce } from '@ParkHub/util/hooks/async'
 import { intFilter } from './util'
 
 type FormData = Partial<

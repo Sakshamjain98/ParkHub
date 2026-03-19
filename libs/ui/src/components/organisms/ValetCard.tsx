@@ -1,4 +1,4 @@
-import { CompanyValetsQuery } from '@autospace/network/src/gql/generated'
+import { CompanyValetsQuery } from '@ParkHub/network/src/gql/generated'
 import { format } from 'date-fns'
 import Image from 'next/image'
 

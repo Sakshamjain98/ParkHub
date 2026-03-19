@@ -29,7 +29,7 @@ async function clearDatabase() {
 async function seedCompanies() {
   await prisma.company.createMany({
     data: Array.from({ length: MIN_ENTRIES }, (_, index) => ({
-      displayName: `Autospace Company ${index + 1}`,
+      displayName: `ParkHub Company ${index + 1}`,
       description: `Seeded company ${index + 1}`,
     })),
   })
@@ -73,7 +73,7 @@ async function seedRoleUsers(companyIds: number[]) {
   await prisma.credentials.createMany({
     data: allUsers.map((uid, index) => ({
       uid,
-      email: `${uid}@seed.autospace.dev`,
+      email: `${uid}@seed.ParkHub.dev`,
       passwordHash: `seed-hash-${index + 1}`,
     })),
   })

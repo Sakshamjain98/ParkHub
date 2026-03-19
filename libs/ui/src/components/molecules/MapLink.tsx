@@ -1,4 +1,4 @@
-import { LatLng } from '@autospace/util/types'
+import { LatLng } from '@ParkHub/util/types'
 import { IconMap2 } from '@tabler/icons-react'
 import Link from 'next/link'
 import { ReactNode } from 'react'

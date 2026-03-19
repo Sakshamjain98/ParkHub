@@ -6,7 +6,7 @@ import {
   GetAuthProviderDocument,
   LoginDocument,
   RegisterWithProviderDocument,
-} from '@autospace/network/src/gql/generated'
+} from '@ParkHub/network/src/gql/generated'
 import { fetchGraphQL } from '../fetch'
 import * as jwt from 'jsonwebtoken'
 import { JWT } from 'next-auth/jwt'

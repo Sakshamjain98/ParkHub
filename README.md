@@ -1,6 +1,6 @@
-# Autospace Workshop
+# ParkHub Workshop
 
-This repository contains the Autospace Workshop project, which includes multiple applications and libraries. This guide will help you set up the project locally and run the applications.
+This repository contains the ParkHub Workshop project, which includes multiple applications and libraries. This guide will help you set up the project locally and run the applications.
 
 ## Prerequisites
 
@@ -18,8 +18,8 @@ Before you begin, ensure you have the following installed on your system:
 Clone the repository to your local machine using Git.
 
 ```bash
-git clone https://github.com/karthickthankyou/autospace-workshop.git
-cd autospace-workshop
+git clone https://github.com/karthickthankyou/ParkHub-workshop.git
+cd ParkHub-workshop
 ```
 
 ### 2. Install Dependencies

@@ -2,9 +2,9 @@
 import { IconMenu2 } from '@tabler/icons-react'
 import Link from 'next/link'
 import { Sidebar } from './Sidebar'
-import { useDialogState } from '@autospace/util/hooks/dialog'
+import { useDialogState } from '@ParkHub/util/hooks/dialog'
 
-import { MenuItem } from '@autospace/util/types'
+import { MenuItem } from '@ParkHub/util/types'
 import { LogoutButton } from '../molecules/LogoutButton'
 import { UserInfo } from '../molecules/UserInfo'
 import { Menus } from './Menus'

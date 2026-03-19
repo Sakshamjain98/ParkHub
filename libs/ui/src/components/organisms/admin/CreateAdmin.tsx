@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Button } from '../../atoms/Button'
 import { Dialog } from '../../atoms/Dialog'
-import { useFormUid } from '@autospace/forms/src/createUid'
+import { useFormUid } from '@ParkHub/forms/src/createUid'
 import { Form } from '../../atoms/Form'
 import { HtmlLabel } from '../../atoms/HtmlLabel'
 import { HtmlInput } from '../../atoms/HtmlInput'
@@ -9,7 +9,7 @@ import { useMutation } from '@apollo/client'
 import {
   CreateAdminDocument,
   namedOperations,
-} from '@autospace/network/src/gql/generated'
+} from '@ParkHub/network/src/gql/generated'
 
 export const CreateAdmin = () => {
   const [open, setOpen] = useState(false)

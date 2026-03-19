@@ -1,4 +1,4 @@
-import { LatLng } from '@autospace/util/types'
+import { LatLng } from '@ParkHub/util/types'
 import polyline from '@mapbox/polyline'
 import Image from 'next/image'
 

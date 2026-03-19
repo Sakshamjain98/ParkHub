@@ -11,6 +11,7 @@ interface SpawnerProps {
   spawnInterval: number
   children: ReactNode
   paused?: boolean
+  initialCount?: number
 }
 
 export const Spawner = ({
@@ -20,8 +21,18 @@ export const Spawner = ({
   children,
   duration = WORLD_DURATION,
   paused = false,
+  initialCount = 0,
 }: SpawnerProps) => {
-  const [elements, setElements] = useState<Array<SpawnedElement>>([])
+  const [elements, setElements] = useState<Array<SpawnedElement>>(() => {
+    if (initialCount <= 0) {
+      return []
+    }
+
+    return Array.from({ length: initialCount }, (_, index) => ({
+      id: Date.now() + index,
+      progress: (index + 1) / (initialCount + 1),
+    }))
+  })
   const lastSpawnTime = useRef<number>(Date.now())
 
   useFrame((_, delta) => {

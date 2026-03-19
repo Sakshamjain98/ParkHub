@@ -1,4 +1,4 @@
-import { ManageAdmins } from '@autospace/ui/src/components/templates/ManageAdmins'
+import { ManageAdmins } from '@ParkHub/ui/src/components/templates/ManageAdmins'
 
 export default function Page() {
   return <ManageAdmins />

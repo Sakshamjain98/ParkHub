@@ -2,7 +2,7 @@ import {
   BookingStatus,
   CreateBookingTimelineDocument,
   namedOperations,
-} from '@autospace/network/src/gql/generated'
+} from '@ParkHub/network/src/gql/generated'
 import { useMutation } from '@apollo/client'
 import { Button } from '../atoms/Button'
 

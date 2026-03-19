@@ -1,5 +1,5 @@
 'use client'
-import { ValetMeDocument } from '@autospace/network/src/gql/generated'
+import { ValetMeDocument } from '@ParkHub/network/src/gql/generated'
 import { useQuery } from '@apollo/client'
 import { LoaderPanel } from '../molecules/Loader'
 import { AlertSection } from '../molecules/AlertSection'

@@ -2,7 +2,7 @@ import {
   AssignValetDocument,
   BookingStatus,
   namedOperations,
-} from '@autospace/network/src/gql/generated'
+} from '@ParkHub/network/src/gql/generated'
 import { ReactNode } from 'react'
 import { useMutation } from '@apollo/client'
 import { toast } from '../molecules/Toast'

@@ -1,5 +1,5 @@
 {
-  "name": "@autospace/ui",
+  "name": "@ParkHub/ui",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,8 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@autospace/forms": "*",
-    "@autospace/util": "*",
+    "@ParkHub/forms": "*",
+    "@ParkHub/util": "*",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@headlessui/react": "^2.0.3",

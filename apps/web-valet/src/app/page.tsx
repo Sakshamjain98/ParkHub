@@ -1,7 +1,7 @@
 'use client'
-import { IsLoggedIn } from '@autospace/ui/src/components/organisms/IsLoggedIn'
-import { IsValet } from '@autospace/ui/src/components/organisms/IsValet'
-import { ValetHome } from '@autospace/ui/src/components/templates/ValetHome'
+import { IsLoggedIn } from '@ParkHub/ui/src/components/organisms/IsLoggedIn'
+import { IsValet } from '@ParkHub/ui/src/components/organisms/IsValet'
+import { ValetHome } from '@ParkHub/ui/src/components/templates/ValetHome'
 
 export default function Home() {
   return (

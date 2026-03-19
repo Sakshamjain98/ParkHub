@@ -5,6 +5,219 @@ __metadata:
   version: 8
   cacheKey: 10c0
 
+"@ParkHub/3d@workspace:libs/3d":
+  version: 0.0.0-use.local
+  resolution: "@ParkHub/3d@workspace:libs/3d"
+  dependencies:
+    "@react-three/drei": "npm:^9.105.6"
+    "@react-three/fiber": "npm:^8.16.6"
+    "@types/three": "npm:^0.164.0"
+    three: "npm:^0.164.1"
+  languageName: unknown
+  linkType: soft
+
+"@ParkHub/api@workspace:apps/api":
+  version: 0.0.0-use.local
+  resolution: "@ParkHub/api@workspace:apps/api"
+  dependencies:
+    "@apollo/server": "npm:^4.10.2"
+    "@nestjs/apollo": "npm:^12.1.0"
+    "@nestjs/cli": "npm:^10.4.9"
+    "@nestjs/common": "npm:^9.0.0"
+    "@nestjs/config": "npm:^3.2.1"
+    "@nestjs/core": "npm:^9.0.0"
+    "@nestjs/graphql": "npm:^12.1.1"
+    "@nestjs/jwt": "npm:^10.2.0"
+    "@nestjs/platform-express": "npm:^9.0.0"
+    "@nestjs/schematics": "npm:^9.0.0"
+    "@nestjs/swagger": "npm:^7.3.1"
+    "@nestjs/testing": "npm:^9.0.0"
+    "@nestjs/throttler": "npm:^4.2.1"
+    "@prisma/client": "npm:5.13.0"
+    "@types/express": "npm:^4.17.13"
+    "@types/jest": "npm:29.5.0"
+    "@types/node": "npm:18.15.11"
+    "@types/supertest": "npm:^2.0.11"
+    "@typescript-eslint/eslint-plugin": "npm:^5.0.0"
+    "@typescript-eslint/parser": "npm:^5.0.0"
+    bcryptjs: "npm:^2.4.3"
+    class-transformer: "npm:^0.5.1"
+    class-validator: "npm:^0.14.1"
+    eslint: "npm:^8.0.1"
+    eslint-config-prettier: "npm:^8.3.0"
+    eslint-plugin-prettier: "npm:^4.0.0"
+    graphql: "npm:^16.8.1"
+    helmet: "npm:^7.1.0"
+    ioredis: "npm:^5.4.1"
+    jest: "npm:29.5.0"
+    pino: "npm:^9.3.2"
+    prettier: "npm:^2.3.2"
+    prisma: "npm:^5.11.0"
+    reflect-metadata: "npm:^0.1.13"
+    rxjs: "npm:^7.2.0"
+    source-map-support: "npm:^0.5.20"
+    stripe: "npm:^15.6.0"
+    supertest: "npm:^6.1.3"
+    ts-jest: "npm:29.0.5"
+    ts-loader: "npm:^9.2.3"
+    ts-node: "npm:^10.0.0"
+    tsconfig-paths: "npm:4.2.0"
+    typescript: "npm:^4.7.4"
+    uuid: "npm:^9.0.1"
+  languageName: unknown
+  linkType: soft
+
+"@ParkHub/forms@npm:*, @ParkHub/forms@workspace:libs/forms":
+  version: 0.0.0-use.local
+  resolution: "@ParkHub/forms@workspace:libs/forms"
+  dependencies:
+    "@hookform/resolvers": "npm:^3.3.4"
+    react-hook-form: "npm:^7.51.4"
+    zod: "npm:^3.23.6"
+  languageName: unknown
+  linkType: soft
+
+"@ParkHub/network@npm:*, @ParkHub/network@workspace:libs/network":
+  version: 0.0.0-use.local
+  resolution: "@ParkHub/network@workspace:libs/network"
+  dependencies:
+    "@apollo/client": "npm:^3.10.2"
+    "@graphql-codegen/cli": "npm:^5.0.2"
+    "@graphql-codegen/named-operations-object": "npm:^3.0.0"
+    "@graphql-codegen/typed-document-node": "npm:^5.0.6"
+    "@parcel/watcher": "npm:^2.4.1"
+    "@types/jsonwebtoken": "npm:^9.0.6"
+    jsonwebtoken: "npm:^9.0.2"
+  peerDependencies:
+    react: ^18.3.1
+  languageName: unknown
+  linkType: soft
+
+"@ParkHub/sample-lib@npm:*, @ParkHub/sample-lib@workspace:libs/sample-lib":
+  version: 0.0.0-use.local
+  resolution: "@ParkHub/sample-lib@workspace:libs/sample-lib"
+  languageName: unknown
+  linkType: soft
+
+"@ParkHub/ui@npm:*, @ParkHub/ui@workspace:libs/ui":
+  version: 0.0.0-use.local
+  resolution: "@ParkHub/ui@workspace:libs/ui"
+  dependencies:
+    "@ParkHub/forms": "npm:*"
+    "@ParkHub/util": "npm:*"
+    "@emotion/react": "npm:^11.11.4"
+    "@emotion/styled": "npm:^11.11.5"
+    "@headlessui/react": "npm:^2.0.3"
+    "@mapbox/polyline": "npm:^1.2.1"
+    "@mui/material": "npm:^5.15.17"
+    "@stripe/stripe-js": "npm:^3.4.0"
+    "@types/mapbox__polyline": "npm:^1.0.5"
+    "@types/node": "npm:^20"
+    "@types/react": "npm:^18"
+    "@types/react-dom": "npm:^18"
+    eslint: "npm:^8"
+    eslint-config-next: "npm:14.2.3"
+    mapbox-gl: "npm:^3.3.0"
+    next: "npm:14.2.3"
+    next-auth: "npm:^4.24.13"
+    postcss: "npm:^8"
+    react: "npm:^18"
+    react-dom: "npm:^18"
+    react-map-gl: "npm:^7.1.7"
+    react-toastify: "npm:^10.0.5"
+    tailwindcss: "npm:^3.4.1"
+    typescript: "npm:^5"
+  languageName: unknown
+  linkType: soft
+
+"@ParkHub/util@npm:*, @ParkHub/util@workspace:libs/util":
+  version: 0.0.0-use.local
+  resolution: "@ParkHub/util@workspace:libs/util"
+  dependencies:
+    "@types/pluralize": "npm:^0.0.33"
+    date-fns: "npm:^3.6.0"
+    pluralize: "npm:^8.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@ParkHub/web-admin@workspace:apps/web-admin":
+  version: 0.0.0-use.local
+  resolution: "@ParkHub/web-admin@workspace:apps/web-admin"
+  dependencies:
+    "@types/node": "npm:^20"
+    "@types/react": "npm:^18"
+    "@types/react-dom": "npm:^18"
+    eslint: "npm:^8"
+    eslint-config-next: "npm:14.2.3"
+    next: "npm:14.2.3"
+    postcss: "npm:^8"
+    react: "npm:^18"
+    react-dom: "npm:^18"
+    tailwindcss: "npm:^3.4.1"
+    typescript: "npm:^5"
+  languageName: unknown
+  linkType: soft
+
+"@ParkHub/web-manager@workspace:apps/web-manager":
+  version: 0.0.0-use.local
+  resolution: "@ParkHub/web-manager@workspace:apps/web-manager"
+  dependencies:
+    "@types/node": "npm:^20"
+    "@types/react": "npm:^18"
+    "@types/react-dom": "npm:^18"
+    eslint: "npm:^8"
+    eslint-config-next: "npm:14.2.3"
+    next: "npm:14.2.3"
+    postcss: "npm:^8"
+    react: "npm:^18"
+    react-dom: "npm:^18"
+    tailwindcss: "npm:^3.4.1"
+    typescript: "npm:^5"
+  languageName: unknown
+  linkType: soft
+
+"@ParkHub/web-valet@workspace:apps/web-valet":
+  version: 0.0.0-use.local
+  resolution: "@ParkHub/web-valet@workspace:apps/web-valet"
+  dependencies:
+    "@types/node": "npm:^20"
+    "@types/react": "npm:^18"
+    "@types/react-dom": "npm:^18"
+    eslint: "npm:^8"
+    eslint-config-next: "npm:14.2.3"
+    next: "npm:14.2.3"
+    postcss: "npm:^8"
+    react: "npm:^18"
+    react-dom: "npm:^18"
+    tailwindcss: "npm:^3.4.1"
+    typescript: "npm:^5"
+  languageName: unknown
+  linkType: soft
+
+"@ParkHub/web@workspace:apps/web":
+  version: 0.0.0-use.local
+  resolution: "@ParkHub/web@workspace:apps/web"
+  dependencies:
+    "@ParkHub/network": "npm:*"
+    "@ParkHub/sample-lib": "npm:*"
+    "@ParkHub/ui": "npm:*"
+    "@tabler/icons-react": "npm:^3.3.0"
+    "@types/node": "npm:^20"
+    "@types/react": "npm:^18"
+    "@types/react-dom": "npm:^18"
+    autoprefixer: "npm:^10.0.1"
+    eslint: "npm:^8"
+    eslint-config-next: "npm:14.1.4"
+    next: "npm:14.1.4"
+    next-auth: "npm:^4.24.13"
+    postcss: "npm:^8"
+    react: "npm:^18"
+    react-dom: "npm:^18"
+    tailwindcss: "npm:^3.3.0"
+    typescript: "npm:^5"
+  languageName: unknown
+  linkType: soft
+
 "@alloc/quick-lru@npm:^5.2.0":
   version: 5.2.0
   resolution: "@alloc/quick-lru@npm:5.2.0"
@@ -396,219 +609,6 @@ __metadata:
   checksum: 10c0/cd69134005ef5ea570d55631c8be59b593e2dda2207f616d30618f948af6ee5d227b857aefd56c535e8f7f3ade47083e4e7795b5ee014a6732011c6e5f9eb08f
   languageName: node
   linkType: hard
-
-"@autospace/3d@workspace:libs/3d":
-  version: 0.0.0-use.local
-  resolution: "@autospace/3d@workspace:libs/3d"
-  dependencies:
-    "@react-three/drei": "npm:^9.105.6"
-    "@react-three/fiber": "npm:^8.16.6"
-    "@types/three": "npm:^0.164.0"
-    three: "npm:^0.164.1"
-  languageName: unknown
-  linkType: soft
-
-"@autospace/api@workspace:apps/api":
-  version: 0.0.0-use.local
-  resolution: "@autospace/api@workspace:apps/api"
-  dependencies:
-    "@apollo/server": "npm:^4.10.2"
-    "@nestjs/apollo": "npm:^12.1.0"
-    "@nestjs/cli": "npm:^10.4.9"
-    "@nestjs/common": "npm:^9.0.0"
-    "@nestjs/config": "npm:^3.2.1"
-    "@nestjs/core": "npm:^9.0.0"
-    "@nestjs/graphql": "npm:^12.1.1"
-    "@nestjs/jwt": "npm:^10.2.0"
-    "@nestjs/platform-express": "npm:^9.0.0"
-    "@nestjs/schematics": "npm:^9.0.0"
-    "@nestjs/swagger": "npm:^7.3.1"
-    "@nestjs/testing": "npm:^9.0.0"
-    "@nestjs/throttler": "npm:^4.2.1"
-    "@prisma/client": "npm:5.13.0"
-    "@types/express": "npm:^4.17.13"
-    "@types/jest": "npm:29.5.0"
-    "@types/node": "npm:18.15.11"
-    "@types/supertest": "npm:^2.0.11"
-    "@typescript-eslint/eslint-plugin": "npm:^5.0.0"
-    "@typescript-eslint/parser": "npm:^5.0.0"
-    bcryptjs: "npm:^2.4.3"
-    class-transformer: "npm:^0.5.1"
-    class-validator: "npm:^0.14.1"
-    eslint: "npm:^8.0.1"
-    eslint-config-prettier: "npm:^8.3.0"
-    eslint-plugin-prettier: "npm:^4.0.0"
-    graphql: "npm:^16.8.1"
-    helmet: "npm:^7.1.0"
-    ioredis: "npm:^5.4.1"
-    jest: "npm:29.5.0"
-    pino: "npm:^9.3.2"
-    prettier: "npm:^2.3.2"
-    prisma: "npm:^5.11.0"
-    reflect-metadata: "npm:^0.1.13"
-    rxjs: "npm:^7.2.0"
-    source-map-support: "npm:^0.5.20"
-    stripe: "npm:^15.6.0"
-    supertest: "npm:^6.1.3"
-    ts-jest: "npm:29.0.5"
-    ts-loader: "npm:^9.2.3"
-    ts-node: "npm:^10.0.0"
-    tsconfig-paths: "npm:4.2.0"
-    typescript: "npm:^4.7.4"
-    uuid: "npm:^9.0.1"
-  languageName: unknown
-  linkType: soft
-
-"@autospace/forms@npm:*, @autospace/forms@workspace:libs/forms":
-  version: 0.0.0-use.local
-  resolution: "@autospace/forms@workspace:libs/forms"
-  dependencies:
-    "@hookform/resolvers": "npm:^3.3.4"
-    react-hook-form: "npm:^7.51.4"
-    zod: "npm:^3.23.6"
-  languageName: unknown
-  linkType: soft
-
-"@autospace/network@npm:*, @autospace/network@workspace:libs/network":
-  version: 0.0.0-use.local
-  resolution: "@autospace/network@workspace:libs/network"
-  dependencies:
-    "@apollo/client": "npm:^3.10.2"
-    "@graphql-codegen/cli": "npm:^5.0.2"
-    "@graphql-codegen/named-operations-object": "npm:^3.0.0"
-    "@graphql-codegen/typed-document-node": "npm:^5.0.6"
-    "@parcel/watcher": "npm:^2.4.1"
-    "@types/jsonwebtoken": "npm:^9.0.6"
-    jsonwebtoken: "npm:^9.0.2"
-  peerDependencies:
-    react: ^18.3.1
-  languageName: unknown
-  linkType: soft
-
-"@autospace/sample-lib@npm:*, @autospace/sample-lib@workspace:libs/sample-lib":
-  version: 0.0.0-use.local
-  resolution: "@autospace/sample-lib@workspace:libs/sample-lib"
-  languageName: unknown
-  linkType: soft
-
-"@autospace/ui@npm:*, @autospace/ui@workspace:libs/ui":
-  version: 0.0.0-use.local
-  resolution: "@autospace/ui@workspace:libs/ui"
-  dependencies:
-    "@autospace/forms": "npm:*"
-    "@autospace/util": "npm:*"
-    "@emotion/react": "npm:^11.11.4"
-    "@emotion/styled": "npm:^11.11.5"
-    "@headlessui/react": "npm:^2.0.3"
-    "@mapbox/polyline": "npm:^1.2.1"
-    "@mui/material": "npm:^5.15.17"
-    "@stripe/stripe-js": "npm:^3.4.0"
-    "@types/mapbox__polyline": "npm:^1.0.5"
-    "@types/node": "npm:^20"
-    "@types/react": "npm:^18"
-    "@types/react-dom": "npm:^18"
-    eslint: "npm:^8"
-    eslint-config-next: "npm:14.2.3"
-    mapbox-gl: "npm:^3.3.0"
-    next: "npm:14.2.3"
-    next-auth: "npm:^4.24.13"
-    postcss: "npm:^8"
-    react: "npm:^18"
-    react-dom: "npm:^18"
-    react-map-gl: "npm:^7.1.7"
-    react-toastify: "npm:^10.0.5"
-    tailwindcss: "npm:^3.4.1"
-    typescript: "npm:^5"
-  languageName: unknown
-  linkType: soft
-
-"@autospace/util@npm:*, @autospace/util@workspace:libs/util":
-  version: 0.0.0-use.local
-  resolution: "@autospace/util@workspace:libs/util"
-  dependencies:
-    "@types/pluralize": "npm:^0.0.33"
-    date-fns: "npm:^3.6.0"
-    pluralize: "npm:^8.0.0"
-  languageName: unknown
-  linkType: soft
-
-"@autospace/web-admin@workspace:apps/web-admin":
-  version: 0.0.0-use.local
-  resolution: "@autospace/web-admin@workspace:apps/web-admin"
-  dependencies:
-    "@types/node": "npm:^20"
-    "@types/react": "npm:^18"
-    "@types/react-dom": "npm:^18"
-    eslint: "npm:^8"
-    eslint-config-next: "npm:14.2.3"
-    next: "npm:14.2.3"
-    postcss: "npm:^8"
-    react: "npm:^18"
-    react-dom: "npm:^18"
-    tailwindcss: "npm:^3.4.1"
-    typescript: "npm:^5"
-  languageName: unknown
-  linkType: soft
-
-"@autospace/web-manager@workspace:apps/web-manager":
-  version: 0.0.0-use.local
-  resolution: "@autospace/web-manager@workspace:apps/web-manager"
-  dependencies:
-    "@types/node": "npm:^20"
-    "@types/react": "npm:^18"
-    "@types/react-dom": "npm:^18"
-    eslint: "npm:^8"
-    eslint-config-next: "npm:14.2.3"
-    next: "npm:14.2.3"
-    postcss: "npm:^8"
-    react: "npm:^18"
-    react-dom: "npm:^18"
-    tailwindcss: "npm:^3.4.1"
-    typescript: "npm:^5"
-  languageName: unknown
-  linkType: soft
-
-"@autospace/web-valet@workspace:apps/web-valet":
-  version: 0.0.0-use.local
-  resolution: "@autospace/web-valet@workspace:apps/web-valet"
-  dependencies:
-    "@types/node": "npm:^20"
-    "@types/react": "npm:^18"
-    "@types/react-dom": "npm:^18"
-    eslint: "npm:^8"
-    eslint-config-next: "npm:14.2.3"
-    next: "npm:14.2.3"
-    postcss: "npm:^8"
-    react: "npm:^18"
-    react-dom: "npm:^18"
-    tailwindcss: "npm:^3.4.1"
-    typescript: "npm:^5"
-  languageName: unknown
-  linkType: soft
-
-"@autospace/web@workspace:apps/web":
-  version: 0.0.0-use.local
-  resolution: "@autospace/web@workspace:apps/web"
-  dependencies:
-    "@autospace/network": "npm:*"
-    "@autospace/sample-lib": "npm:*"
-    "@autospace/ui": "npm:*"
-    "@tabler/icons-react": "npm:^3.3.0"
-    "@types/node": "npm:^20"
-    "@types/react": "npm:^18"
-    "@types/react-dom": "npm:^18"
-    autoprefixer: "npm:^10.0.1"
-    eslint: "npm:^8"
-    eslint-config-next: "npm:14.1.4"
-    next: "npm:14.1.4"
-    next-auth: "npm:^4.24.13"
-    postcss: "npm:^8"
-    react: "npm:^18"
-    react-dom: "npm:^18"
-    tailwindcss: "npm:^3.3.0"
-    typescript: "npm:^5"
-  languageName: unknown
-  linkType: soft
 
 "@babel/code-frame@npm:^7.0.0, @babel/code-frame@npm:^7.12.13, @babel/code-frame@npm:^7.16.7, @babel/code-frame@npm:^7.23.5, @babel/code-frame@npm:^7.24.2":
   version: 7.24.2
@@ -5483,6 +5483,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ParkHub@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "ParkHub@workspace:."
+  dependencies:
+    husky: "npm:^8.0.0"
+    nx: "npm:18.3.4"
+    prettier: "npm:^2.3.2"
+    typescript: "npm:^5.4.3"
+  languageName: unknown
+  linkType: soft
+
 "abbrev@npm:^4.0.0":
   version: 4.0.0
   resolution: "abbrev@npm:4.0.0"
@@ -6005,17 +6016,6 @@ __metadata:
   checksum: 10c0/fe0178eb8b1da4f15c6535cd329926609b22d1811e047371dccce50563623f8075dd06fb167daff059e4228da651b0bdff6d9b44281541eaf0ce0b79125bfd19
   languageName: node
   linkType: hard
-
-"autospace@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "autospace@workspace:."
-  dependencies:
-    husky: "npm:^8.0.0"
-    nx: "npm:18.3.4"
-    prettier: "npm:^2.3.2"
-    typescript: "npm:^5.4.3"
-  languageName: unknown
-  linkType: soft
 
 "available-typed-arrays@npm:^1.0.7":
   version: 1.0.7

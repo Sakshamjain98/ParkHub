@@ -1,5 +1,5 @@
-import { LoginForm } from '@autospace/ui/src/components/templates/LoginForm'
-import { AuthLayout } from '@autospace/ui/src/components/molecules/AuthLayout'
+import { LoginForm } from '@ParkHub/ui/src/components/templates/LoginForm'
+import { AuthLayout } from '@ParkHub/ui/src/components/molecules/AuthLayout'
 
 export default function Page() {
   return (

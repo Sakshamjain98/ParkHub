@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/client'
 import {
   RemoveAdminDocument,
   namedOperations,
-} from '@autospace/network/src/gql/generated'
+} from '@ParkHub/network/src/gql/generated'
 import { Button } from '../../atoms/Button'
 import { IconTrash } from '@tabler/icons-react'
 import { Dialog } from '../../atoms/Dialog'

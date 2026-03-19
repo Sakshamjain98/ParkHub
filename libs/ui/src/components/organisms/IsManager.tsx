@@ -1,6 +1,6 @@
 'use client'
-import { MyCompanyDocument } from '@autospace/network/src/gql/generated'
-import { BaseComponent } from '@autospace/util/types'
+import { MyCompanyDocument } from '@ParkHub/network/src/gql/generated'
+import { BaseComponent } from '@ParkHub/util/types'
 import { useQuery } from '@apollo/client'
 import { LoaderPanel } from '../molecules/Loader'
 import { AlertSection } from '../molecules/AlertSection'

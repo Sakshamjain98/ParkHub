@@ -34,7 +34,7 @@ type AlertEntry = Record<string, unknown> & {
 @Injectable()
 export class StructuredLoggerService implements OnModuleDestroy {
   private readonly redisUrl = process.env.REDIS_URL
-  private readonly streamName = process.env.LOG_STREAM_NAME || 'autospace:logs'
+  private readonly streamName = process.env.LOG_STREAM_NAME || 'ParkHub:logs'
   private readonly streamMaxLen = Number(process.env.LOG_STREAM_MAXLEN || 50000)
   private readonly logFilePath =
     process.env.LOG_FILE_PATH || `${process.cwd()}/logs/api.log`
@@ -189,7 +189,7 @@ export class StructuredLoggerService implements OnModuleDestroy {
 
   private buildAlertPayload(entry: Record<string, unknown>) {
     const normalized: AlertEntry = {
-      source: 'autospace-api',
+      source: 'ParkHub-api',
       severity: entry.statusCode === 429 ? 'warning' : 'critical',
       timestamp: new Date().toISOString(),
       ...entry,
@@ -210,7 +210,7 @@ export class StructuredLoggerService implements OnModuleDestroy {
         blocks: [
           {
             type: 'section',
-            text: { type: 'mrkdwn', text: `*Autospace API Alert*\n${summary}` },
+            text: { type: 'mrkdwn', text: `*ParkHub API Alert*\n${summary}` },
           },
           {
             type: 'section',
@@ -231,7 +231,7 @@ export class StructuredLoggerService implements OnModuleDestroy {
         content: summary,
         embeds: [
           {
-            title: 'Autospace API Alert',
+            title: 'ParkHub API Alert',
             description: summary,
             color: normalized.severity === 'warning' ? 16766720 : 15158332,
             timestamp: String(normalized.timestamp),

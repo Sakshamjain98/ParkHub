@@ -1,4 +1,4 @@
-import { authOptions } from '@autospace/network/src/config/authOptions'
+import { authOptions } from '@ParkHub/network/src/config/authOptions'
 import NextAuth from 'next-auth'
 
 const handler = NextAuth(authOptions)

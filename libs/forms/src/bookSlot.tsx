@@ -1,4 +1,4 @@
-import { SlotType } from '@autospace/network/src/gql/generated'
+import { SlotType } from '@ParkHub/network/src/gql/generated'
 import { z } from 'zod'
 import { isEndTimeValid, isStartTimeValid } from './util'
 import { DefaultValues, FormProvider, useForm } from 'react-hook-form'

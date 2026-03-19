@@ -2,7 +2,7 @@
 import { Tab, Tabs, TabPanel } from '../molecules/Tabs'
 import { useState } from 'react'
 import { ShowCustomerBookings } from '../organisms/ShowCustomerBookings'
-import { BookingStatus } from '@autospace/network/src/gql/generated'
+import { BookingStatus } from '@ParkHub/network/src/gql/generated'
 
 export const ListCustomerBookings = () => {
   const [value, setValue] = useState<0 | 1>(1)

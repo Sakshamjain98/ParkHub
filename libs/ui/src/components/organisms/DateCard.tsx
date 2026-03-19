@@ -1,4 +1,4 @@
-import { differenceInTime, getTimeUnits } from '@autospace/util/date'
+import { differenceInTime, getTimeUnits } from '@ParkHub/util/date'
 import { IconArrowRightRhombus } from '@tabler/icons-react'
 import { format } from 'date-fns'
 

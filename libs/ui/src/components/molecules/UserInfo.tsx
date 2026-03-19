@@ -1,4 +1,4 @@
-import { BaseComponent } from '@autospace/util/types'
+import { BaseComponent } from '@ParkHub/util/types'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 

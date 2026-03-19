@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { Tab, TabPanel, Tabs } from '../molecules/Tabs'
 import { ShowGarageBookings } from '../organisms/ShowGarageBookings'
-import { BookingStatus } from '@autospace/network/src/gql/generated'
+import { BookingStatus } from '@ParkHub/network/src/gql/generated'
 
 export interface IListBookingsProps {
   garageId: number

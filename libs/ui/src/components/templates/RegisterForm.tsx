@@ -1,8 +1,8 @@
 'use client'
-import { Role } from '@autospace/util/types'
-import { useFormRegister } from '@autospace/forms/src/register'
+import { Role } from '@ParkHub/util/types'
+import { useFormRegister } from '@ParkHub/forms/src/register'
 import { useMutation } from '@apollo/client'
-import { RegisterWithCredentialsDocument } from '@autospace/network/src/gql/generated'
+import { RegisterWithCredentialsDocument } from '@ParkHub/network/src/gql/generated'
 import { Form } from '../atoms/Form'
 import { signIn } from 'next-auth/react'
 import { HtmlLabel } from '../atoms/HtmlLabel'
@@ -79,7 +79,7 @@ export const RegisterForm = ({ className, role }: ISignupFormProps) => {
         Register
       </Button>
       <div className="mt-4 text-sm ">
-        Already have an autospace account?
+        Already have an ParkHub account?
         <br />
         <Link href="/login" className="font-bold underline underline-offset-4">
           Login

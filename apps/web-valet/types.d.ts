@@ -1,1 +1,1 @@
-import '@autospace/network/next-auth'
+import '@ParkHub/network/next-auth'

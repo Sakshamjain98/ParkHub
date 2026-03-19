@@ -6,7 +6,7 @@ import {
   formatDate,
   formatTime,
   getTimeUnits,
-} from '@autospace/util/date'
+} from '@ParkHub/util/date'
 
 export interface IDateRangeBookingInfoProps {
   startTime?: string

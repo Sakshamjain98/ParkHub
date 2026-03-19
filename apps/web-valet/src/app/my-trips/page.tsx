@@ -1,7 +1,7 @@
 'use client'
-import { IsLoggedIn } from '@autospace/ui/src/components/organisms/IsLoggedIn'
-import { IsValet } from '@autospace/ui/src/components/organisms/IsValet'
-import { ValetTrips } from '@autospace/ui/src/components/templates/ValetTrips'
+import { IsLoggedIn } from '@ParkHub/ui/src/components/organisms/IsLoggedIn'
+import { IsValet } from '@ParkHub/ui/src/components/organisms/IsValet'
+import { ValetTrips } from '@ParkHub/ui/src/components/templates/ValetTrips'
 
 export default function Page() {
   return (

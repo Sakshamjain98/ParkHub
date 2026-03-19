@@ -1,4 +1,4 @@
-import { TotalPrice } from '@autospace/util/types'
+import { TotalPrice } from '@ParkHub/util/types'
 import { CreateBookingInput } from 'src/models/bookings/graphql/dtos/create-booking.input'
 import { IsNotEmpty, IsObject, IsString } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'

@@ -1,6 +1,6 @@
-import { useTakeSkip } from '@autospace/util/hooks/pagination'
+import { useTakeSkip } from '@ParkHub/util/hooks/pagination'
 import { useQuery } from '@apollo/client'
-import { CompanyValetsDocument } from '@autospace/network/src/gql/generated'
+import { CompanyValetsDocument } from '@ParkHub/network/src/gql/generated'
 import { ShowData } from './ShowData'
 import { ValetCard } from './ValetCard'
 

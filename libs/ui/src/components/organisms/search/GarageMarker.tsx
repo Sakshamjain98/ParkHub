@@ -1,12 +1,12 @@
-import { SearchGaragesQuery } from '@autospace/network/src/gql/generated'
-import { useKeypress } from '@autospace/util/hooks/keys'
+import { SearchGaragesQuery } from '@ParkHub/network/src/gql/generated'
+import { useKeypress } from '@ParkHub/util/hooks/keys'
 import { useState } from 'react'
 import { Marker } from '../map/MapMarker'
 import { Dialog } from '../../atoms/Dialog'
 import { ParkingIcon } from '../../atoms/ParkingIcon'
-import { FormProviderBookSlot } from '@autospace/forms/src/bookSlot'
+import { FormProviderBookSlot } from '@ParkHub/forms/src/bookSlot'
 import { useWatch } from 'react-hook-form'
-import { FormTypeSearchGarage } from '@autospace/forms/src/searchGarages'
+import { FormTypeSearchGarage } from '@ParkHub/forms/src/searchGarages'
 import { BookSlotPopup } from '../BookSlotPopup'
 
 export const GarageMarker = ({

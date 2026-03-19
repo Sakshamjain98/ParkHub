@@ -1,4 +1,4 @@
-import { BookingsForGarageQuery } from '@autospace/network/src/gql/generated'
+import { BookingsForGarageQuery } from '@ParkHub/network/src/gql/generated'
 import { TitleStrongValue, TitleValue } from '../atoms/TitleValue'
 import { Reveal } from '../molecules/Reveal'
 import { StartEndDateCard } from './DateCard'

@@ -3,13 +3,13 @@ import {
   FormProviderCreateGarage,
   FormTypeCreateGarage,
   useFormCreateGarage,
-} from '@autospace/forms/src/createGarage'
+} from '@ParkHub/forms/src/createGarage'
 import { useMutation } from '@apollo/client'
-import { useCloudinaryUpload } from '@autospace/util/hooks/cloudinary'
+import { useCloudinaryUpload } from '@ParkHub/util/hooks/cloudinary'
 import {
   CreateGarageDocument,
   namedOperations,
-} from '@autospace/network/src/gql/generated'
+} from '@ParkHub/network/src/gql/generated'
 import { Form } from '../atoms/Form'
 import { HtmlLabel } from '../atoms/HtmlLabel'
 import { HtmlInput } from '../atoms/HtmlInput'
@@ -18,10 +18,10 @@ import { HtmlTextArea } from '../atoms/HtmlTextArea'
 import { ImagePreview } from '../organisms/ImagePreview'
 import { Controller } from 'react-hook-form'
 import { Map } from '../organisms/map/Map'
-import { initialViewState } from '@autospace/util/constants'
+import { initialViewState } from '@ParkHub/util/constants'
 import { Panel } from '../organisms/map/Panel'
 import { SearchPlaceBox } from '../organisms/map/SearchPlacesBox'
-import { ViewState } from '@autospace/util/types'
+import { ViewState } from '@ParkHub/util/types'
 import { CenterOfMap, DefaultZoomControls } from '../organisms/map/ZoomControls'
 import { useFormContext } from 'react-hook-form'
 import { AddSlots, GarageMapMarker } from '../organisms/CreateGarageComponents'

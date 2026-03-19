@@ -1,5 +1,5 @@
 'use client'
-import { useFormLogin } from '@autospace/forms/src/login'
+import { useFormLogin } from '@ParkHub/forms/src/login'
 import { Form } from '../atoms/Form'
 import { HtmlLabel } from '../atoms/HtmlLabel'
 import { HtmlInput } from '../atoms/HtmlInput'
@@ -62,7 +62,7 @@ export const LoginForm = ({ className }: ILoginFormProps) => {
         Submit
       </Button>
       <div className="mt-4 text-sm">
-        Do not have an autospace account?
+        Do not have an ParkHub account?
         <br />
         <Link
           href="/register"

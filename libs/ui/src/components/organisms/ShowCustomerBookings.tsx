@@ -1,8 +1,8 @@
 import {
   BookingStatus,
   BookingsForCustomerDocument,
-} from '@autospace/network/src/gql/generated'
-import { useTakeSkip } from '@autospace/util/hooks/pagination'
+} from '@ParkHub/network/src/gql/generated'
+import { useTakeSkip } from '@ParkHub/util/hooks/pagination'
 import { useSession } from 'next-auth/react'
 import { useLazyQuery, useQuery } from '@apollo/client'
 import { useEffect } from 'react'

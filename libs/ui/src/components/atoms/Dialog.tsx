@@ -44,7 +44,7 @@ export const Dialog = ({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black/20 backdrop-blur-sm" />
+          <div className="fixed inset-0 bg-black/30 backdrop-blur-sm" />
         </TransitionChild>
 
         <div className="fixed inset-0 overflow-y-auto">
@@ -59,18 +59,18 @@ export const Dialog = ({
               leaveTo="opacity-0 scale-95"
             >
               <DialogPanel
-                className={`w-full  p-4 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl ${widthClassName}`}
+                className={`glass-panel w-full border border-white/40 p-4 overflow-hidden text-left align-middle transition-all transform shadow-xl ${widthClassName}`}
               >
                 <button
                   type="button"
-                  className="absolute top-0 right-0 flex items-center justify-center w-8 h-8 hover:bg-black/10"
+                  className="absolute top-1 right-1 flex items-center justify-center w-8 h-8 rounded-lg transition hover:bg-white/30"
                   onClick={() => setOpen(false)}
                 >
-                  <IconX className="text-gray-600" />
+                  <IconX className="text-gray-700" />
                 </button>
                 <DialogTitle
                   as="h3"
-                  className="mb-4 text-lg font-medium leading-6 text-gray-900"
+                  className="mb-4 pr-8 text-lg font-semibold leading-6 text-gray-900"
                 >
                   {title}
                 </DialogTitle>

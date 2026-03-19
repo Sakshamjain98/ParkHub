@@ -11,6 +11,9 @@ import { json, raw, urlencoded } from 'express'
 const port = process.env.PORT || 3000
 const LOGROTATE_SELF_CHECK =
   String(process.env.LOGROTATE_SELF_CHECK || 'true').toLowerCase() !== 'false'
+const ENABLE_APOLLO_STUDIO_CORS =
+  String(process.env.ENABLE_APOLLO_STUDIO_CORS || 'false').toLowerCase() ===
+  'true'
 const LOGROTATE_BINARY = process.env.LOGROTATE_BINARY || 'logrotate'
 const LOGROTATE_CONFIG_PATH =
   process.env.LOGROTATE_CONFIG_PATH || '/etc/logrotate.d/autospace-api'
@@ -119,6 +122,10 @@ async function bootstrap() {
     .split(',')
     .map((x) => x.trim())
     .filter(Boolean)
+
+  if (ENABLE_APOLLO_STUDIO_CORS) {
+    corsOrigins.push('https://studio.apollographql.com')
+  }
 
   app.enableCors({
     origin: corsOrigins,

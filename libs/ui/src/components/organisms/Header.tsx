@@ -28,6 +28,7 @@ export const Header = ({ type, menuItems }: IHeaderProps) => {
   const mobileActions = mobileLinkItems
 
   const showMobileMenu = type !== 'admin'
+  const searchMenuItem = menuItems.find(({ href }) => href === '/search')
 
   return (
     <header>
@@ -49,6 +50,13 @@ export const Header = ({ type, menuItems }: IHeaderProps) => {
               </div>
             ) : (
               <>
+                {searchMenuItem ? (
+                  <Link href={searchMenuItem.href}>
+                    <Button variant="outlined" size="sm">
+                      Search
+                    </Button>
+                  </Link>
+                ) : null}
                 <Link href="/register">
                   <Button variant="outlined" size="sm">
                     Register

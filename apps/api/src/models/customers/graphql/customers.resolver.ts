@@ -26,7 +26,7 @@ export class CustomersResolver {
   ) {}
 
   @AllowAuthenticated()
-  @Mutation(() => Customer)
+  @Mutation(() => Customer, { description: 'Create a customer profile.' })
   createCustomer(
     @Args('createCustomerInput') args: CreateCustomerInput,
     @GetUser() user: GetUserType,
@@ -35,18 +35,26 @@ export class CustomersResolver {
     return this.customersService.create(args)
   }
 
-  @Query(() => [Customer], { name: 'customers' })
+  @AllowAuthenticated()
+  @Query(() => [Customer], {
+    name: 'customers',
+    description: 'List customers with optional filtering and pagination.',
+  })
   findAll(@Args() args: FindManyCustomerArgs) {
     return this.customersService.findAll(args)
   }
 
-  @Query(() => Customer, { name: 'customer' })
+  @AllowAuthenticated()
+  @Query(() => Customer, {
+    name: 'customer',
+    description: 'Get a single customer by unique criteria.',
+  })
   findOne(@Args() args: FindUniqueCustomerArgs) {
     return this.customersService.findOne(args)
   }
 
   @AllowAuthenticated()
-  @Mutation(() => Customer)
+  @Mutation(() => Customer, { description: 'Update an existing customer.' })
   async updateCustomer(
     @Args('updateCustomerInput') args: UpdateCustomerInput,
     @GetUser() user: GetUserType,
@@ -59,7 +67,7 @@ export class CustomersResolver {
   }
 
   @AllowAuthenticated()
-  @Mutation(() => Customer)
+  @Mutation(() => Customer, { description: 'Delete an existing customer.' })
   async removeCustomer(
     @Args() args: FindUniqueCustomerArgs,
     @GetUser() user: GetUserType,

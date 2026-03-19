@@ -136,6 +136,8 @@ model Garage {
     Verification Verification?
     Reviews      Review[]
     Slots        Slot[]
+
+    @@index([companyId])
 }
 
 model Address {
@@ -168,6 +170,8 @@ model Slot {
     garageId Int
     Garage   Garage    @relation(fields: [garageId], references: [id])
     Bookings Booking[]
+
+    @@index([garageId])
 }
 
 model Booking {
@@ -194,6 +198,8 @@ model Booking {
     BookingTimeline BookingTimeline[]
 
     @@index([startTime, endTime])
+    @@index([slotId])
+    @@index([customerId])
 }
 
 model ValetAssignment {
@@ -211,6 +217,9 @@ model ValetAssignment {
     PickupValet   Valet?  @relation("PickupValet", fields: [pickupValetId], references: [uid])
     ReturnValet   Valet?  @relation("ReturnValet", fields: [returnValetId], references: [uid])
     Booking       Booking @relation(fields: [bookingId], references: [id])
+
+    @@index([pickupValetId])
+    @@index([returnValetId])
 }
 
 model BookingTimeline {
@@ -229,6 +238,8 @@ model BookingTimeline {
     Manager   Manager? @relation(fields: [managerId], references: [uid])
 
     @@index([bookingId])
+    @@index([valetId])
+    @@index([managerId])
 }
 
 model Review {
@@ -244,6 +255,9 @@ model Review {
 
     garageId Int
     Garage   Garage @relation(fields: [garageId], references: [id])
+
+    @@index([customerId])
+    @@index([garageId])
 }
 
 model Verification {
@@ -256,6 +270,8 @@ model Verification {
     garageId Int    @id
     Admin    Admin  @relation(fields: [adminId], references: [uid])
     Garage   Garage @relation(fields: [garageId], references: [id])
+
+    @@index([adminId])
 }
 
 enum SlotType {

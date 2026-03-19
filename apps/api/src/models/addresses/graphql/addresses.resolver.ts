@@ -25,7 +25,7 @@ export class AddressesResolver {
   ) {}
 
   @AllowAuthenticated()
-  @Mutation(() => Address)
+  @Mutation(() => Address, { description: 'Create an address for a garage.' })
   async createAddress(
     @Args('createAddressInput') args: CreateAddressInput,
     @GetUser() user: GetUserType,
@@ -41,18 +41,26 @@ export class AddressesResolver {
     return this.addressesService.create(args)
   }
 
-  @Query(() => [Address], { name: 'addresses' })
+  @AllowAuthenticated()
+  @Query(() => [Address], {
+    name: 'addresses',
+    description: 'List addresses with optional filtering and pagination.',
+  })
   findAll(@Args() args: FindManyAddressArgs) {
     return this.addressesService.findAll(args)
   }
 
-  @Query(() => Address, { name: 'address' })
+  @AllowAuthenticated()
+  @Query(() => Address, {
+    name: 'address',
+    description: 'Get a single address by unique criteria.',
+  })
   findOne(@Args() args: FindUniqueAddressArgs) {
     return this.addressesService.findOne(args)
   }
 
   @AllowAuthenticated()
-  @Mutation(() => Address)
+  @Mutation(() => Address, { description: 'Update an existing address.' })
   async updateAddress(
     @Args('updateAddressInput') args: UpdateAddressInput,
     @GetUser() user: GetUserType,
@@ -73,7 +81,7 @@ export class AddressesResolver {
   }
 
   @AllowAuthenticated()
-  @Mutation(() => Address)
+  @Mutation(() => Address, { description: 'Delete an existing address.' })
   async removeAddress(
     @Args() args: FindUniqueAddressArgs,
     @GetUser() user: GetUserType,

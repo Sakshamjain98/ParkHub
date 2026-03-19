@@ -27,7 +27,7 @@ export class AdminsResolver {
     private readonly prisma: PrismaService,
   ) {}
 
-  @Mutation(() => Admin)
+  @Mutation(() => Admin, { description: 'Create an admin profile.' })
   createAdmin(
     @Args('createAdminInput') args: CreateAdminInput,
     @GetUser() user: GetUserType,
@@ -36,24 +36,33 @@ export class AdminsResolver {
     return this.adminsService.create(args)
   }
 
-  @Query(() => [Admin], { name: 'admins' })
+  @Query(() => [Admin], {
+    name: 'admins',
+    description: 'List admins with optional filtering and pagination.',
+  })
   findAll(@Args() args: FindManyAdminArgs) {
     return this.adminsService.findAll(args)
   }
 
-  @Query(() => Admin, { name: 'admin' })
+  @Query(() => Admin, {
+    name: 'admin',
+    description: 'Get a single admin by unique criteria.',
+  })
   findOne(@Args() args: FindUniqueAdminArgs) {
     return this.adminsService.findOne(args)
   }
 
   @AllowAuthenticated()
-  @Query(() => Admin, { name: 'adminMe' })
+  @Query(() => Admin, {
+    name: 'adminMe',
+    description: 'Get profile of the authenticated admin.',
+  })
   adminMe(@GetUser() user: GetUserType) {
     return this.adminsService.findOne({ where: { uid: user.uid } })
   }
 
   @AllowAuthenticated()
-  @Mutation(() => Admin)
+  @Mutation(() => Admin, { description: 'Update an existing admin.' })
   async updateAdmin(
     @Args('updateAdminInput') args: UpdateAdminInput,
     @GetUser() user: GetUserType,
@@ -65,7 +74,7 @@ export class AdminsResolver {
     return this.adminsService.update(args)
   }
 
-  @Mutation(() => Admin)
+  @Mutation(() => Admin, { description: 'Delete an existing admin.' })
   async removeAdmin(
     @Args() args: FindUniqueAdminArgs,
     @GetUser() user: GetUserType,
@@ -96,6 +105,7 @@ export class AdminsResolver {
 
   @Query(() => Number, {
     name: 'adminsCount',
+    description: 'Get total count of admins by optional filter.',
   })
   async adminsCount(
     @Args('where', { nullable: true })

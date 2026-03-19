@@ -19,7 +19,7 @@ export class VerificationsResolver {
   ) {}
 
   @AllowAuthenticated('admin')
-  @Mutation(() => Verification)
+  @Mutation(() => Verification, { description: 'Create a verification record.' })
   createVerification(
     @Args('createVerificationInput') args: CreateVerificationInput,
     @GetUser() user: GetUserType,
@@ -27,18 +27,26 @@ export class VerificationsResolver {
     return this.verificationsService.create(args, user.uid)
   }
 
-  @Query(() => [Verification], { name: 'verifications' })
+  @AllowAuthenticated('admin')
+  @Query(() => [Verification], {
+    name: 'verifications',
+    description: 'List verification records with optional filtering and pagination.',
+  })
   findAll(@Args() args: FindManyVerificationArgs) {
     return this.verificationsService.findAll(args)
   }
 
-  @Query(() => Verification, { name: 'verification' })
+  @AllowAuthenticated('admin')
+  @Query(() => Verification, {
+    name: 'verification',
+    description: 'Get a single verification record by unique criteria.',
+  })
   findOne(@Args() args: FindUniqueVerificationArgs) {
     return this.verificationsService.findOne(args)
   }
 
   @AllowAuthenticated('admin')
-  @Mutation(() => Verification)
+  @Mutation(() => Verification, { description: 'Update an existing verification record.' })
   async updateVerification(
     @Args('updateVerificationInput') args: UpdateVerificationInput,
   ) {
@@ -46,7 +54,7 @@ export class VerificationsResolver {
   }
 
   @AllowAuthenticated('admin')
-  @Mutation(() => Verification)
+  @Mutation(() => Verification, { description: 'Delete an existing verification record.' })
   async removeVerification(@Args() args: FindUniqueVerificationArgs) {
     return this.verificationsService.remove(args)
   }

@@ -10,35 +10,52 @@ import {
 } from '@nestjs/common'
 
 import { PrismaService } from 'src/common/prisma/prisma.service'
-import { ApiTags } from '@nestjs/swagger'
-import { CreateValet } from './dtos/create.dto'
-import { ValetQueryDto } from './dtos/query.dto'
-import { UpdateValet } from './dtos/update.dto'
 import {
+  ApiOperation,
+  ApiTags,
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiOkResponse,
+  ApiParam,
+  ApiQuery,
+  ApiBody,
+  ApiBadRequestResponse,
+  ApiForbiddenResponse,
+  ApiNotFoundResponse,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
+import { CreateValet } from './dtos/create.dto'
+import { ValetQueryDto } from './dtos/query.dto'
+import { UpdateValet } from './dtos/update.dto'
 import { ValetEntity } from './entity/valet.entity'
 import { AllowAuthenticated, GetUser } from 'src/common/auth/auth.decorator'
 import { GetUserType } from 'src/common/types'
 import { checkRowLevelPermission } from 'src/common/auth/util'
 
+@AllowAuthenticated()
+@ApiBearerAuth()
 @ApiTags('valets')
+@ApiUnauthorizedResponse({ description: 'Unauthorized - missing or invalid bearer token' })
+@ApiForbiddenResponse({ description: 'Forbidden - insufficient permissions' })
 @Controller('valets')
 export class ValetsController {
   constructor(private readonly prisma: PrismaService) {}
 
   @AllowAuthenticated()
   @ApiBearerAuth()
-  @ApiCreatedResponse({ type: ValetEntity })
+  @ApiOperation({ summary: 'Create a valet', description: 'Create a new valet profile. User must own the valet UID.' })
+  @ApiBody({ type: CreateValet, description: 'Valet creation data' })
+  @ApiCreatedResponse({ type: ValetEntity, description: 'Valet created successfully' })
+  @ApiBadRequestResponse({ description: 'Invalid valet data' })
   @Post()
   create(@Body() createValetDto: CreateValet, @GetUser() user: GetUserType) {
     checkRowLevelPermission(user, createValetDto.uid)
     return this.prisma.valet.create({ data: createValetDto })
   }
 
-  @ApiOkResponse({ type: [ValetEntity] })
+  @ApiOperation({ summary: 'List valets', description: 'Retrieve all valets with optional filtering and pagination' })
+  @ApiQuery({ type: ValetQueryDto, description: 'Filtering and pagination options' })
+  @ApiOkResponse({ type: [ValetEntity], description: 'List of valets' })
   @Get()
   findAll(@Query() { skip, take, order, sortBy }: ValetQueryDto) {
     return this.prisma.valet.findMany({
@@ -48,13 +65,21 @@ export class ValetsController {
     })
   }
 
-  @ApiOkResponse({ type: ValetEntity })
+  @ApiOperation({ summary: 'Get valet by UID', description: 'Retrieve a single valet by their unique identifier' })
+  @ApiParam({ name: 'uid', description: 'Valet UID', example: '550e8400-e29b-41d4-a716-446655440001' })
+  @ApiOkResponse({ type: ValetEntity, description: 'Valet found' })
+  @ApiNotFoundResponse({ description: 'Valet not found' })
   @Get(':uid')
   findOne(@Param('uid') uid: string) {
     return this.prisma.valet.findUnique({ where: { uid } })
   }
 
-  @ApiOkResponse({ type: ValetEntity })
+  @ApiOperation({ summary: 'Update valet by UID', description: 'Update an existing valet profile. User must own the UID.' })
+  @ApiParam({ name: 'uid', description: 'Valet UID', example: '550e8400-e29b-41d4-a716-446655440001' })
+  @ApiBody({ type: UpdateValet, description: 'Fields to update' })
+  @ApiOkResponse({ type: ValetEntity, description: 'Valet updated successfully' })
+  @ApiNotFoundResponse({ description: 'Valet not found' })
+  @ApiBadRequestResponse({ description: 'Invalid update data' })
   @ApiBearerAuth()
   @AllowAuthenticated()
   @Patch(':uid')
@@ -71,6 +96,10 @@ export class ValetsController {
     })
   }
 
+  @ApiOperation({ summary: 'Delete valet by UID', description: 'Delete an existing valet profile. User must own the UID.' })
+  @ApiParam({ name: 'uid', description: 'Valet UID', example: '550e8400-e29b-41d4-a716-446655440001' })
+  @ApiOkResponse({ type: ValetEntity, description: 'Valet deleted successfully' })
+  @ApiNotFoundResponse({ description: 'Valet not found' })
   @ApiBearerAuth()
   @AllowAuthenticated()
   @Delete(':uid')

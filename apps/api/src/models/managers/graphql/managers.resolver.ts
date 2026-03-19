@@ -25,7 +25,7 @@ export class ManagersResolver {
   ) {}
 
   @AllowAuthenticated()
-  @Mutation(() => Manager)
+  @Mutation(() => Manager, { description: 'Create a manager profile.' })
   createManager(
     @Args('createManagerInput') args: CreateManagerInput,
     @GetUser() user: GetUserType,
@@ -34,18 +34,26 @@ export class ManagersResolver {
     return this.managersService.create(args)
   }
 
-  @Query(() => [Manager], { name: 'managers' })
+  @AllowAuthenticated()
+  @Query(() => [Manager], {
+    name: 'managers',
+    description: 'List managers with optional filtering and pagination.',
+  })
   findAll(@Args() args: FindManyManagerArgs) {
     return this.managersService.findAll(args)
   }
 
-  @Query(() => Manager, { name: 'manager' })
+  @AllowAuthenticated()
+  @Query(() => Manager, {
+    name: 'manager',
+    description: 'Get a single manager by unique criteria.',
+  })
   findOne(@Args() args: FindUniqueManagerArgs) {
     return this.managersService.findOne(args)
   }
 
   @AllowAuthenticated()
-  @Mutation(() => Manager)
+  @Mutation(() => Manager, { description: 'Update an existing manager.' })
   async updateManager(
     @Args('updateManagerInput') args: UpdateManagerInput,
     @GetUser() user: GetUserType,
@@ -58,7 +66,7 @@ export class ManagersResolver {
   }
 
   @AllowAuthenticated()
-  @Mutation(() => Manager)
+  @Mutation(() => Manager, { description: 'Delete an existing manager.' })
   async removeManager(
     @Args() args: FindUniqueManagerArgs,
     @GetUser() user: GetUserType,

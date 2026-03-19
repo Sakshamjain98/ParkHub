@@ -26,7 +26,9 @@ export class CompaniesResolver {
   ) {}
 
   @AllowAuthenticated()
-  @Mutation(() => Company)
+  @Mutation(() => Company, {
+    description: 'Create a company and link its manager.',
+  })
   createCompany(
     @Args('createCompanyInput') args: CreateCompanyInput,
     @GetUser() user: GetUserType,
@@ -38,26 +40,35 @@ export class CompaniesResolver {
   }
 
   @AllowAuthenticated()
-  @Query(() => [Company], { name: 'companies' })
+  @Query(() => [Company], {
+    name: 'companies',
+    description: 'List companies with optional filtering and pagination.',
+  })
   findAll(@Args() args: FindManyCompanyArgs) {
     return this.companiesService.findAll(args)
   }
 
   @AllowAuthenticated()
-  @Query(() => Company)
+  @Query(() => Company, {
+    description: 'Get company for the authenticated manager.',
+  })
   myCompany(@GetUser() user: GetUserType) {
     return this.prisma.company.findFirst({
       where: { Managers: { some: { uid: user.uid } } },
     })
   }
 
-  @Query(() => Company, { name: 'company' })
+  @AllowAuthenticated()
+  @Query(() => Company, {
+    name: 'company',
+    description: 'Get a single company by unique criteria.',
+  })
   findOne(@Args() args: FindUniqueCompanyArgs) {
     return this.companiesService.findOne(args)
   }
 
   @AllowAuthenticated()
-  @Mutation(() => Company)
+  @Mutation(() => Company, { description: 'Update an existing company.' })
   async updateCompany(
     @Args('updateCompanyInput') args: UpdateCompanyInput,
     @GetUser() user: GetUserType,
@@ -74,7 +85,7 @@ export class CompaniesResolver {
   }
 
   @AllowAuthenticated()
-  @Mutation(() => Company)
+  @Mutation(() => Company, { description: 'Delete an existing company.' })
   async removeCompany(
     @Args() args: FindUniqueCompanyArgs,
     @GetUser() user: GetUserType,

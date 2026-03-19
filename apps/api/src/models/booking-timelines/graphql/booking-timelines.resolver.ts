@@ -20,7 +20,9 @@ export class BookingTimelinesResolver {
   ) {}
 
   @AllowAuthenticated('admin', 'manager')
-  @Mutation(() => BookingTimeline)
+  @Mutation(() => BookingTimeline, {
+    description: 'Create a booking timeline entry and update booking status.',
+  })
   async createBookingTimeline(
     @Args('createBookingTimelineInput')
     { bookingId, status }: CreateBookingTimelineInput,
@@ -59,18 +61,26 @@ export class BookingTimelinesResolver {
     return bookingTimeline
   }
 
-  @Query(() => [BookingTimeline], { name: 'bookingTimelines' })
+  @AllowAuthenticated('admin', 'manager')
+  @Query(() => [BookingTimeline], {
+    name: 'bookingTimelines',
+    description: 'List booking timeline events with optional filtering.',
+  })
   findAll(@Args() args: FindManyBookingTimelineArgs) {
     return this.bookingTimelinesService.findAll(args)
   }
 
-  @Query(() => BookingTimeline, { name: 'bookingTimeline' })
+  @AllowAuthenticated('admin', 'manager')
+  @Query(() => BookingTimeline, {
+    name: 'bookingTimeline',
+    description: 'Get a single booking timeline event by unique criteria.',
+  })
   findOne(@Args() args: FindUniqueBookingTimelineArgs) {
     return this.bookingTimelinesService.findOne(args)
   }
 
   @AllowAuthenticated('admin')
-  @Mutation(() => BookingTimeline)
+  @Mutation(() => BookingTimeline, { description: 'Update an existing booking timeline event.' })
   async updateBookingTimeline(
     @Args('updateBookingTimelineInput') args: UpdateBookingTimelineInput,
   ) {
@@ -78,7 +88,7 @@ export class BookingTimelinesResolver {
   }
 
   @AllowAuthenticated('admin')
-  @Mutation(() => BookingTimeline)
+  @Mutation(() => BookingTimeline, { description: 'Delete an existing booking timeline event.' })
   async removeBookingTimeline(@Args() args: FindUniqueBookingTimelineArgs) {
     return this.bookingTimelinesService.remove(args)
   }

@@ -816,52 +816,184 @@ type Review {
 }
 
 type Query {
-  whoami: User!
-  users(distinct: [UserScalarFieldEnum!]): [User!]!
-  user: User!
-  getAuthProvider(uid: String!): AuthProvider
-  admins(distinct: [AdminScalarFieldEnum!]): [Admin!]!
-  admin: Admin!
-  adminMe: Admin!
-  adminsCount(where: AdminWhereInput): Float!
-  customers(distinct: [CustomerScalarFieldEnum!]): [Customer!]!
-  customer: Customer!
-  managers(distinct: [ManagerScalarFieldEnum!]): [Manager!]!
-  manager: Manager!
-  valets(distinct: [ValetScalarFieldEnum!]): [Valet!]!
-  companyValets(distinct: [ValetScalarFieldEnum!]): [Valet!]!
-  companyValetsTotal(where: ValetWhereInput): Float!
-  valet: Valet!
-  valetMe: Valet
-  valetPickups(take: Int, skip: Int): [Booking!]!
-  valetPickupsTotal: Float!
-  valetDrops(take: Int, skip: Int): [Booking!]!
-  valetDropsTotal: Float!
-  companies(distinct: [CompanyScalarFieldEnum!]): [Company!]!
-  myCompany: Company!
-  company: Company!
-  garages(where: GarageWhereInput, orderBy: [GarageOrderByWithRelationInput!], take: Int, skip: Int, distinct: [GarageScalarFieldEnum!]): [Garage!]!
-  garage: Garage!
-  searchGarages(dateFilter: DateFilterInput!, locationFilter: LocationFilterInput!, slotsFilter: SlotWhereInput, garageFilter: GarageFilter): [Garage!]!
-  garagesCount(where: GarageWhereInput): AggregateCountOutput!
-  addresses(distinct: [AddressScalarFieldEnum!]): [Address!]!
-  address: Address!
-  slots(distinct: [SlotScalarFieldEnum!]): [Slot!]!
-  slot: Slot!
+  """List bookings (admin scope)."""
   bookings(where: BookingWhereInput, orderBy: [BookingOrderByWithRelationInput!], cursor: BookingWhereUniqueInput, take: Float, skip: Float, distinct: [BookingScalarFieldEnum!]): [Booking!]!
+
+  """List company bookings visible to the authenticated valet."""
   bookingsForValet(where: BookingWhereInput, orderBy: [BookingOrderByWithRelationInput!], cursor: BookingWhereUniqueInput, take: Float, skip: Float, distinct: [BookingScalarFieldEnum!]): [Booking!]!
+
+  """List bookings for the authenticated customer."""
   bookingsForCustomer(where: BookingWhereInput, orderBy: [BookingOrderByWithRelationInput!], cursor: BookingWhereUniqueInput, take: Float, skip: Float, distinct: [BookingScalarFieldEnum!]): [Booking!]!
+
+  """List bookings for a garage with manager/admin authorization."""
   bookingsForGarage(where: BookingWhereInput, orderBy: [BookingOrderByWithRelationInput!], cursor: BookingWhereUniqueInput, take: Float, skip: Float, distinct: [BookingScalarFieldEnum!]): [Booking!]!
+
+  """Get aggregated booking count by optional filter."""
   bookingsCount(where: BookingWhereInput): AggregateCountOutput!
+
+  """Get a single booking by unique criteria."""
   booking(where: BookingWhereUniqueInput!): Booking!
+
+  """Get the currently authenticated user profile."""
+  whoami: User!
+
+  """List users with optional filtering and pagination."""
+  users(distinct: [UserScalarFieldEnum!]): [User!]!
+
+  """Get a single user by unique criteria."""
+  user: User!
+
+  """Get the linked auth provider for a user id."""
+  getAuthProvider(uid: String!): AuthProvider
+
+  """List admins with optional filtering and pagination."""
+  admins(distinct: [AdminScalarFieldEnum!]): [Admin!]!
+
+  """Get a single admin by unique criteria."""
+  admin: Admin!
+
+  """Get profile of the authenticated admin."""
+  adminMe: Admin!
+
+  """Get total count of admins by optional filter."""
+  adminsCount(where: AdminWhereInput): Float!
+
+  """List customers with optional filtering and pagination."""
+  customers(distinct: [CustomerScalarFieldEnum!]): [Customer!]!
+
+  """Get a single customer by unique criteria."""
+  customer: Customer!
+
+  """List managers with optional filtering and pagination."""
+  managers(distinct: [ManagerScalarFieldEnum!]): [Manager!]!
+
+  """Get a single manager by unique criteria."""
+  manager: Manager!
+
+  """List valets with optional filtering and pagination."""
+  valets(distinct: [ValetScalarFieldEnum!]): [Valet!]!
+
+  """List valets for the authenticated manager/admin company."""
+  companyValets(distinct: [ValetScalarFieldEnum!]): [Valet!]!
+
+  """Get total count of valets for the authenticated company."""
+  companyValetsTotal(where: ValetWhereInput): Float!
+
+  """Get a single valet by unique criteria."""
+  valet: Valet!
+
+  """Get the profile of the authenticated valet."""
+  valetMe: Valet
+
+  """List pickup-eligible bookings for the authenticated valet."""
+  valetPickups(take: Int, skip: Int): [Booking!]!
+
+  """Get total count of pickup-eligible bookings."""
+  valetPickupsTotal: Float!
+
+  """List drop-eligible bookings for the authenticated valet."""
+  valetDrops(take: Int, skip: Int): [Booking!]!
+
+  """Get total count of drop-eligible bookings."""
+  valetDropsTotal: Float!
+
+  """List companies with optional filtering and pagination."""
+  companies(distinct: [CompanyScalarFieldEnum!]): [Company!]!
+
+  """Get company for the authenticated manager."""
+  myCompany: Company!
+
+  """Get a single company by unique criteria."""
+  company: Company!
+
+  """List garages with optional filtering and pagination."""
+  garages(where: GarageWhereInput, orderBy: [GarageOrderByWithRelationInput!], take: Int, skip: Int, distinct: [GarageScalarFieldEnum!]): [Garage!]!
+
+  """Get a single garage by unique criteria."""
+  garage: Garage!
+
+  """Search garages by location, date range, and slot constraints."""
+  searchGarages(dateFilter: DateFilterInput!, locationFilter: LocationFilterInput!, slotsFilter: SlotWhereInput, garageFilter: GarageFilter): [Garage!]!
+
+  """Get aggregated garage count by optional filter."""
+  garagesCount(where: GarageWhereInput): AggregateCountOutput!
+
+  """List addresses with optional filtering and pagination."""
+  addresses(distinct: [AddressScalarFieldEnum!]): [Address!]!
+
+  """Get a single address by unique criteria."""
+  address: Address!
+
+  """List slots with optional filtering and pagination."""
+  slots(distinct: [SlotScalarFieldEnum!]): [Slot!]!
+
+  """Get a single slot by unique criteria."""
+  slot: Slot!
+
+  """List valet assignments with optional filtering and pagination."""
   valetAssignments(distinct: [ValetAssignmentScalarFieldEnum!]): [ValetAssignment!]!
+
+  """Get a single valet assignment by unique criteria."""
   valetAssignment: ValetAssignment!
+
+  """List booking timeline events with optional filtering."""
   bookingTimelines(distinct: [BookingTimelineScalarFieldEnum!]): [BookingTimeline!]!
+
+  """Get a single booking timeline event by unique criteria."""
   bookingTimeline: BookingTimeline!
+
+  """List reviews with optional filtering and pagination."""
   reviews(distinct: [ReviewScalarFieldEnum!]): [Review!]!
+
+  """Get a single review by unique criteria."""
   review: Review!
+
+  """List verification records with optional filtering and pagination."""
   verifications(distinct: [VerificationScalarFieldEnum!]): [Verification!]!
+
+  """Get a single verification record by unique criteria."""
   verification: Verification!
+}
+
+input BookingOrderByWithRelationInput {
+  id: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  pricePerHour: SortOrder
+  totalPrice: SortOrder
+  startTime: SortOrder
+  endTime: SortOrder
+  vehicleNumber: SortOrder
+  phoneNumber: SortOrder
+  passcode: SortOrder
+  status: SortOrder
+  slotId: SortOrder
+  customerId: SortOrder
+}
+
+enum SortOrder {
+  asc
+  desc
+}
+
+input BookingWhereUniqueInput {
+  id: Int!
+}
+
+enum BookingScalarFieldEnum {
+  id
+  createdAt
+  updatedAt
+  pricePerHour
+  totalPrice
+  startTime
+  endTime
+  vehicleNumber
+  phoneNumber
+  passcode
+  status
+  slotId
+  customerId
 }
 
 enum UserScalarFieldEnum {
@@ -921,11 +1053,6 @@ input GarageOrderByWithRelationInput {
   companyId: SortOrder
 }
 
-enum SortOrder {
-  asc
-  desc
-}
-
 enum GarageScalarFieldEnum {
   id
   createdAt
@@ -973,42 +1100,6 @@ enum SlotScalarFieldEnum {
   garageId
 }
 
-input BookingOrderByWithRelationInput {
-  id: SortOrder
-  createdAt: SortOrder
-  updatedAt: SortOrder
-  pricePerHour: SortOrder
-  totalPrice: SortOrder
-  startTime: SortOrder
-  endTime: SortOrder
-  vehicleNumber: SortOrder
-  phoneNumber: SortOrder
-  passcode: SortOrder
-  status: SortOrder
-  slotId: SortOrder
-  customerId: SortOrder
-}
-
-input BookingWhereUniqueInput {
-  id: Int!
-}
-
-enum BookingScalarFieldEnum {
-  id
-  createdAt
-  updatedAt
-  pricePerHour
-  totalPrice
-  startTime
-  endTime
-  vehicleNumber
-  phoneNumber
-  passcode
-  status
-  slotId
-  customerId
-}
-
 enum ValetAssignmentScalarFieldEnum {
   bookingId
   createdAt
@@ -1049,52 +1140,165 @@ enum VerificationScalarFieldEnum {
 }
 
 type Mutation {
-  registerWithCredentials(registerWithCredentialsInput: RegisterWithCredentialsInput!): User!
-  registerWithProvider(registerWithProviderInput: RegisterWithProviderInput!): User!
-  login(loginInput: LoginInput!): LoginOutput!
-  updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser: User!
-  createAdmin(createAdminInput: CreateAdminInput!): Admin!
-  updateAdmin(updateAdminInput: UpdateAdminInput!): Admin!
-  removeAdmin: Admin!
-  createCustomer(createCustomerInput: CreateCustomerInput!): Customer!
-  updateCustomer(updateCustomerInput: UpdateCustomerInput!): Customer!
-  removeCustomer: Customer!
-  createManager(createManagerInput: CreateManagerInput!): Manager!
-  updateManager(updateManagerInput: UpdateManagerInput!): Manager!
-  removeManager: Manager!
-  createValet(createValetInput: CreateValetInput!): Valet!
-  assignValet(bookingId: Float!, status: String!): Booking!
-  updateValet(updateValetInput: UpdateValetInput!): Valet!
-  removeValet: Valet!
-  createCompany(createCompanyInput: CreateCompanyInput!): Company!
-  updateCompany(updateCompanyInput: UpdateCompanyInput!): Company!
-  removeCompany: Company!
-  createGarage(createGarageInput: CreateGarageInput!): Garage!
-  updateGarage(updateGarageInput: UpdateGarageInput!): Garage!
-  removeGarage: Garage!
-  createAddress(createAddressInput: CreateAddressInput!): Address!
-  updateAddress(updateAddressInput: UpdateAddressInput!): Address!
-  removeAddress: Address!
-  createSlot(createSlotInput: CreateSlotInput!): Slot!
-  createManySlots(createSlotInput: CreateSlotInput!, count: Float!): ReturnCount!
-  updateSlot(updateSlotInput: UpdateSlotInput!): Slot!
-  removeSlot: Slot!
+  """Create a new booking."""
   createBooking(createBookingInput: CreateBookingInput!): Booking!
+
+  """Update an existing booking."""
   updateBooking(updateBookingInput: UpdateBookingInput!): Booking!
+
+  """Delete an existing booking."""
   removeBooking(where: BookingWhereUniqueInput!): Booking!
+
+  """Register a new user with email and password."""
+  registerWithCredentials(registerWithCredentialsInput: RegisterWithCredentialsInput!): User!
+
+  """Register a new user using an external auth provider."""
+  registerWithProvider(registerWithProviderInput: RegisterWithProviderInput!): User!
+
+  """Authenticate a user and return an access token."""
+  login(loginInput: LoginInput!): LoginOutput!
+
+  """Update an existing user."""
+  updateUser(updateUserInput: UpdateUserInput!): User!
+
+  """Delete an existing user."""
+  removeUser: User!
+
+  """Create an admin profile."""
+  createAdmin(createAdminInput: CreateAdminInput!): Admin!
+
+  """Update an existing admin."""
+  updateAdmin(updateAdminInput: UpdateAdminInput!): Admin!
+
+  """Delete an existing admin."""
+  removeAdmin: Admin!
+
+  """Create a customer profile."""
+  createCustomer(createCustomerInput: CreateCustomerInput!): Customer!
+
+  """Update an existing customer."""
+  updateCustomer(updateCustomerInput: UpdateCustomerInput!): Customer!
+
+  """Delete an existing customer."""
+  removeCustomer: Customer!
+
+  """Create a manager profile."""
+  createManager(createManagerInput: CreateManagerInput!): Manager!
+
+  """Update an existing manager."""
+  updateManager(updateManagerInput: UpdateManagerInput!): Manager!
+
+  """Delete an existing manager."""
+  removeManager: Manager!
+
+  """Create a valet under the manager company."""
+  createValet(createValetInput: CreateValetInput!): Valet!
+
+  """Assign authenticated valet to a booking status transition."""
+  assignValet(bookingId: Float!, status: String!): Booking!
+
+  """Update an existing valet."""
+  updateValet(updateValetInput: UpdateValetInput!): Valet!
+
+  """Delete an existing valet."""
+  removeValet: Valet!
+
+  """Create a company and link its manager."""
+  createCompany(createCompanyInput: CreateCompanyInput!): Company!
+
+  """Update an existing company."""
+  updateCompany(updateCompanyInput: UpdateCompanyInput!): Company!
+
+  """Delete an existing company."""
+  removeCompany: Company!
+
+  """Create a garage under the authenticated manager company."""
+  createGarage(createGarageInput: CreateGarageInput!): Garage!
+
+  """Update an existing garage."""
+  updateGarage(updateGarageInput: UpdateGarageInput!): Garage!
+
+  """Delete an existing garage."""
+  removeGarage: Garage!
+
+  """Create an address for a garage."""
+  createAddress(createAddressInput: CreateAddressInput!): Address!
+
+  """Update an existing address."""
+  updateAddress(updateAddressInput: UpdateAddressInput!): Address!
+
+  """Delete an existing address."""
+  removeAddress: Address!
+
+  """Create a slot in a garage."""
+  createSlot(createSlotInput: CreateSlotInput!): Slot!
+
+  """Create multiple slots for a given garage and slot type."""
+  createManySlots(createSlotInput: CreateSlotInput!, count: Float!): ReturnCount!
+
+  """Update an existing slot."""
+  updateSlot(updateSlotInput: UpdateSlotInput!): Slot!
+
+  """Delete an existing slot."""
+  removeSlot: Slot!
+
+  """Create a valet assignment for a booking."""
   createValetAssignment(createValetAssignmentInput: CreateValetAssignmentInput!): ValetAssignment!
+
+  """Update an existing valet assignment."""
   updateValetAssignment(updateValetAssignmentInput: UpdateValetAssignmentInput!): ValetAssignment!
+
+  """Delete an existing valet assignment."""
   removeValetAssignment: ValetAssignment!
+
+  """Create a booking timeline entry and update booking status."""
   createBookingTimeline(createBookingTimelineInput: CreateBookingTimelineInput!): BookingTimeline!
+
+  """Update an existing booking timeline event."""
   updateBookingTimeline(updateBookingTimelineInput: UpdateBookingTimelineInput!): BookingTimeline!
+
+  """Delete an existing booking timeline event."""
   removeBookingTimeline: BookingTimeline!
+
+  """Create a review for a garage."""
   createReview(createReviewInput: CreateReviewInput!): Review!
+
+  """Update an existing review."""
   updateReview(updateReviewInput: UpdateReviewInput!): Review!
+
+  """Delete an existing review."""
   removeReview: Review!
+
+  """Create a verification record."""
   createVerification(createVerificationInput: CreateVerificationInput!): Verification!
+
+  """Update an existing verification record."""
   updateVerification(updateVerificationInput: UpdateVerificationInput!): Verification!
+
+  """Delete an existing verification record."""
   removeVerification: Verification!
+}
+
+input CreateBookingInput {
+  startTime: DateTime!
+  endTime: DateTime!
+  vehicleNumber: String!
+  phoneNumber: String
+  customerId: String!
+  type: SlotType!
+  pricePerHour: Float!
+  totalPrice: Float!
+}
+
+input UpdateBookingInput {
+  startTime: DateTime
+  endTime: DateTime
+  vehicleNumber: String
+  phoneNumber: String
+  customerId: String
+  type: SlotType
+  pricePerHour: Float
+  totalPrice: Float
 }
 
 input RegisterWithCredentialsInput {
@@ -1209,28 +1413,6 @@ input UpdateSlotInput {
   width: Float
   height: Float
   type: SlotType
-}
-
-input CreateBookingInput {
-  startTime: DateTime!
-  endTime: DateTime!
-  vehicleNumber: String!
-  phoneNumber: String
-  customerId: String!
-  type: SlotType!
-  pricePerHour: Float!
-  totalPrice: Float!
-}
-
-input UpdateBookingInput {
-  startTime: DateTime
-  endTime: DateTime
-  vehicleNumber: String
-  phoneNumber: String
-  customerId: String
-  type: SlotType
-  pricePerHour: Float
-  totalPrice: Float
 }
 
 input CreateValetAssignmentInput {

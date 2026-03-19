@@ -7,7 +7,7 @@ import { existsSync } from 'fs'
 import { execSync } from 'child_process'
 import { StructuredLoggerService } from './common/logging/structured-logger.service'
 import { ValidationPipe } from '@nestjs/common'
-import { json, urlencoded } from 'express'
+import { json, raw, urlencoded } from 'express'
 const port = process.env.PORT || 3000
 const LOGROTATE_SELF_CHECK =
   String(process.env.LOGROTATE_SELF_CHECK || 'true').toLowerCase() !== 'false'
@@ -92,6 +92,7 @@ async function bootstrap() {
   await runLogrotateSelfCheck(logger)
 
   app.enableShutdownHooks()
+  app.use('/stripe/webhook', raw({ type: 'application/json' }))
   app.use(json({ limit: bodyLimit }))
   app.use(urlencoded({ extended: true, limit: bodyLimit }))
   app.useGlobalPipes(

@@ -17,7 +17,7 @@ export class ReviewsResolver {
   ) {}
 
   @AllowAuthenticated()
-  @Mutation(() => Review)
+  @Mutation(() => Review, { description: 'Create a review for a garage.' })
   createReview(
     @Args('createReviewInput') args: CreateReviewInput,
     @GetUser() user: GetUserType,
@@ -26,18 +26,26 @@ export class ReviewsResolver {
     return this.reviewsService.create(args)
   }
 
-  @Query(() => [Review], { name: 'reviews' })
+  @AllowAuthenticated()
+  @Query(() => [Review], {
+    name: 'reviews',
+    description: 'List reviews with optional filtering and pagination.',
+  })
   findAll(@Args() args: FindManyReviewArgs) {
     return this.reviewsService.findAll(args)
   }
 
-  @Query(() => Review, { name: 'review' })
+  @AllowAuthenticated()
+  @Query(() => Review, {
+    name: 'review',
+    description: 'Get a single review by unique criteria.',
+  })
   findOne(@Args() args: FindUniqueReviewArgs) {
     return this.reviewsService.findOne(args)
   }
 
   @AllowAuthenticated()
-  @Mutation(() => Review)
+  @Mutation(() => Review, { description: 'Update an existing review.' })
   async updateReview(
     @Args('updateReviewInput') args: UpdateReviewInput,
     @GetUser() user: GetUserType,
@@ -50,7 +58,7 @@ export class ReviewsResolver {
   }
 
   @AllowAuthenticated()
-  @Mutation(() => Review)
+  @Mutation(() => Review, { description: 'Delete an existing review.' })
   async removeReview(
     @Args() args: FindUniqueReviewArgs,
     @GetUser() user: GetUserType,

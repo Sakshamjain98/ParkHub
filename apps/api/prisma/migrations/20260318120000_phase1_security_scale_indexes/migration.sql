@@ -1,0 +1,12 @@
+-- Phase 1: security and scale readiness indexes
+CREATE INDEX IF NOT EXISTS "Garage_companyId_idx" ON "Garage"("companyId");
+CREATE INDEX IF NOT EXISTS "Slot_garageId_idx" ON "Slot"("garageId");
+CREATE INDEX IF NOT EXISTS "Booking_slotId_idx" ON "Booking"("slotId");
+CREATE INDEX IF NOT EXISTS "Booking_customerId_idx" ON "Booking"("customerId");
+CREATE INDEX IF NOT EXISTS "ValetAssignment_pickupValetId_idx" ON "ValetAssignment"("pickupValetId");
+CREATE INDEX IF NOT EXISTS "ValetAssignment_returnValetId_idx" ON "ValetAssignment"("returnValetId");
+CREATE INDEX IF NOT EXISTS "BookingTimeline_valetId_idx" ON "BookingTimeline"("valetId");
+CREATE INDEX IF NOT EXISTS "BookingTimeline_managerId_idx" ON "BookingTimeline"("managerId");
+CREATE INDEX IF NOT EXISTS "Review_customerId_idx" ON "Review"("customerId");
+CREATE INDEX IF NOT EXISTS "Review_garageId_idx" ON "Review"("garageId");
+CREATE INDEX IF NOT EXISTS "Verification_adminId_idx" ON "Verification"("adminId");

@@ -10,28 +10,43 @@ import {
 } from '@nestjs/common'
 
 import { PrismaService } from 'src/common/prisma/prisma.service'
-import { ApiTags } from '@nestjs/swagger'
-import { CreateAddress } from './dtos/create.dto'
-import { AddressQueryDto } from './dtos/query.dto'
-import { UpdateAddress } from './dtos/update.dto'
 import {
+  ApiOperation,
+  ApiTags,
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiOkResponse,
+  ApiParam,
+  ApiQuery,
+  ApiBody,
+  ApiBadRequestResponse,
+  ApiForbiddenResponse,
+  ApiNotFoundResponse,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
+import { CreateAddress } from './dtos/create.dto'
+import { AddressQueryDto } from './dtos/query.dto'
+import { UpdateAddress } from './dtos/update.dto'
 import { AddressEntity } from './entity/address.entity'
 import { AllowAuthenticated, GetUser } from 'src/common/auth/auth.decorator'
 import { GetUserType } from 'src/common/types'
 import { checkRowLevelPermission } from 'src/common/auth/util'
 
+@AllowAuthenticated()
+@ApiBearerAuth()
 @ApiTags('addresses')
+@ApiUnauthorizedResponse({ description: 'Unauthorized - missing or invalid bearer token' })
+@ApiForbiddenResponse({ description: 'Forbidden - insufficient permissions' })
 @Controller('addresses')
 export class AddressesController {
   constructor(private readonly prisma: PrismaService) {}
 
   @AllowAuthenticated()
   @ApiBearerAuth()
-  @ApiCreatedResponse({ type: AddressEntity })
+  @ApiOperation({ summary: 'Create an address', description: 'Create a new address for a garage. Requires manager authorization.' })
+  @ApiBody({ type: CreateAddress, description: 'Address creation data' })
+  @ApiCreatedResponse({ type: AddressEntity, description: 'Address created successfully' })
+  @ApiBadRequestResponse({ description: 'Invalid input data' })
   @Post()
   async create(
     @Body() createAddressDto: CreateAddress,
@@ -48,7 +63,9 @@ export class AddressesController {
     return this.prisma.address.create({ data: createAddressDto })
   }
 
-  @ApiOkResponse({ type: [AddressEntity] })
+  @ApiOperation({ summary: 'List addresses', description: 'Retrieve all addresses with optional filtering and pagination' })
+  @ApiQuery({ type: AddressQueryDto, description: 'Filtering and pagination options' })
+  @ApiOkResponse({ type: [AddressEntity], description: 'List of addresses' })
   @Get()
   findAll(@Query() { skip, take, order, sortBy }: AddressQueryDto) {
     return this.prisma.address.findMany({
@@ -58,13 +75,21 @@ export class AddressesController {
     })
   }
 
-  @ApiOkResponse({ type: AddressEntity })
+  @ApiOperation({ summary: 'Get address by ID', description: 'Retrieve a single address by its unique identifier' })
+  @ApiParam({ name: 'id', description: 'Address ID', example: 1 })
+  @ApiOkResponse({ type: AddressEntity, description: 'Address found' })
+  @ApiNotFoundResponse({ description: 'Address not found' })
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.prisma.address.findUnique({ where: { id } })
   }
 
-  @ApiOkResponse({ type: AddressEntity })
+  @ApiOperation({ summary: 'Update address by ID', description: 'Update an existing address. Requires manager authorization.' })
+  @ApiParam({ name: 'id', description: 'Address ID', example: 1 })
+  @ApiBody({ type: UpdateAddress, description: 'Fields to update' })
+  @ApiOkResponse({ type: AddressEntity, description: 'Address updated successfully' })
+  @ApiNotFoundResponse({ description: 'Address not found' })
+  @ApiBadRequestResponse({ description: 'Invalid update data' })
   @ApiBearerAuth()
   @AllowAuthenticated()
   @Patch(':id')
@@ -89,6 +114,10 @@ export class AddressesController {
     })
   }
 
+  @ApiOperation({ summary: 'Delete address by ID', description: 'Delete an existing address. Requires manager authorization.' })
+  @ApiParam({ name: 'id', description: 'Address ID', example: 1 })
+  @ApiOkResponse({ type: AddressEntity, description: 'Address deleted successfully' })
+  @ApiNotFoundResponse({ description: 'Address not found' })
   @ApiBearerAuth()
   @AllowAuthenticated()
   @Delete(':id')

@@ -14,6 +14,7 @@ import { PaginationInput } from 'src/common/dtos/common.input'
 import { BookingStatus } from '@prisma/client'
 import { BadGatewayException } from '@nestjs/common'
 
+@AllowAuthenticated()
 @Resolver(() => Valet)
 export class ValetsResolver {
   constructor(
@@ -22,7 +23,7 @@ export class ValetsResolver {
   ) {}
 
   @AllowAuthenticated()
-  @Mutation(() => Valet)
+  @Mutation(() => Valet, { description: 'Create a valet under the manager company.' })
   async createValet(
     @Args('createValetInput') args: CreateValetInput,
     @GetUser() user: GetUserType,
@@ -37,13 +38,18 @@ export class ValetsResolver {
     return this.valetsService.create({ ...args, companyId: company.id })
   }
 
-  @Query(() => [Valet], { name: 'valets' })
+  @Query(() => [Valet], {
+    name: 'valets',
+    description: 'List valets with optional filtering and pagination.',
+  })
   findAll(@Args() args: FindManyValetArgs) {
     return this.valetsService.findAll(args)
   }
 
   @AllowAuthenticated()
-  @Mutation(() => Booking)
+  @Mutation(() => Booking, {
+    description: 'Assign authenticated valet to a booking status transition.',
+  })
   async assignValet(
     @Args('bookingId') bookingId: number,
     @Args('status') status: BookingStatus,
@@ -99,7 +105,10 @@ export class ValetsResolver {
   }
 
   @AllowAuthenticated('manager', 'admin')
-  @Query(() => [Valet], { name: 'companyValets' })
+  @Query(() => [Valet], {
+    name: 'companyValets',
+    description: 'List valets for the authenticated manager/admin company.',
+  })
   async companyValets(
     @Args() args: FindManyValetArgs,
     @GetUser() user: GetUserType,
@@ -114,7 +123,9 @@ export class ValetsResolver {
   }
 
   @AllowAuthenticated()
-  @Query(() => Number)
+  @Query(() => Number, {
+    description: 'Get total count of valets for the authenticated company.',
+  })
   async companyValetsTotal(
     @Args('where', { nullable: true }) where: ValetWhereInput,
     @GetUser() user: GetUserType,
@@ -128,19 +139,29 @@ export class ValetsResolver {
     })
   }
 
-  @Query(() => Valet, { name: 'valet' })
+  @Query(() => Valet, {
+    name: 'valet',
+    description: 'Get a single valet by unique criteria.',
+  })
   findOne(@Args() args: FindUniqueValetArgs) {
     return this.valetsService.findOne(args)
   }
 
   @AllowAuthenticated()
-  @Query(() => Valet, { name: 'valetMe', nullable: true })
+  @Query(() => Valet, {
+    name: 'valetMe',
+    nullable: true,
+    description: 'Get the profile of the authenticated valet.',
+  })
   valetMe(@GetUser() user: GetUserType) {
     return this.valetsService.findOne({ where: { uid: user.uid } })
   }
 
   @AllowAuthenticated('valet')
-  @Query(() => [Booking], { name: 'valetPickups' })
+  @Query(() => [Booking], {
+    name: 'valetPickups',
+    description: 'List pickup-eligible bookings for the authenticated valet.',
+  })
   async valetPickups(
     @Args() { skip, take }: PaginationInput,
     @GetUser() user: GetUserType,
@@ -160,7 +181,9 @@ export class ValetsResolver {
   }
 
   @AllowAuthenticated()
-  @Query(() => Number)
+  @Query(() => Number, {
+    description: 'Get total count of pickup-eligible bookings.',
+  })
   async valetPickupsTotal(@GetUser() user: GetUserType) {
     const valet = await this.valetsService.validValet(user.uid)
     return this.prisma.booking.count({
@@ -175,7 +198,10 @@ export class ValetsResolver {
   }
 
   @AllowAuthenticated()
-  @Query(() => [Booking], { name: 'valetDrops' })
+  @Query(() => [Booking], {
+    name: 'valetDrops',
+    description: 'List drop-eligible bookings for the authenticated valet.',
+  })
   async valetDrops(
     @Args() { skip, take }: PaginationInput,
     @GetUser() user: GetUserType,
@@ -196,7 +222,9 @@ export class ValetsResolver {
   }
 
   @AllowAuthenticated()
-  @Query(() => Number)
+  @Query(() => Number, {
+    description: 'Get total count of drop-eligible bookings.',
+  })
   async valetDropsTotal(@GetUser() user: GetUserType) {
     const valet = await this.valetsService.validValet(user.uid)
 
@@ -212,7 +240,7 @@ export class ValetsResolver {
   }
 
   @AllowAuthenticated()
-  @Mutation(() => Valet)
+  @Mutation(() => Valet, { description: 'Update an existing valet.' })
   async updateValet(
     @Args('updateValetInput') args: UpdateValetInput,
     @GetUser() user: GetUserType,
@@ -225,7 +253,7 @@ export class ValetsResolver {
   }
 
   @AllowAuthenticated()
-  @Mutation(() => Valet)
+  @Mutation(() => Valet, { description: 'Delete an existing valet.' })
   async removeValet(
     @Args() args: FindUniqueValetArgs,
     @GetUser() user: GetUserType,

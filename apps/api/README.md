@@ -58,6 +58,37 @@ sudo cp logrotate/autospace-api.conf /etc/logrotate.d/autospace-api
 sudo logrotate -f /etc/logrotate.d/autospace-api
 ```
 
+## Stripe Webhook Setup
+
+The API now creates bookings only from verified Stripe webhooks (`POST /stripe/webhook`).
+The redirect handler (`GET /stripe/success`) only validates session existence and redirects the user.
+
+### Required env values
+
+- `STRIPE_SECRET_KEY`
+- `STRIPE_WEBHOOK_SECRET`
+- `STRIPE_SUCCESS_URL`
+- `STRIPE_CANCEL_URL`
+- `BOOKINGS_REDIRECT_URL`
+
+### Local testing with Stripe CLI
+
+1. Start the API on `http://localhost:3000`.
+2. Start webhook forwarding:
+
+```bash
+stripe listen --forward-to http://localhost:3000/stripe/webhook
+```
+
+3. Copy the shown signing secret (`whsec_...`) into `.env` as `STRIPE_WEBHOOK_SECRET`.
+4. Trigger a test event:
+
+```bash
+stripe trigger checkout.session.completed
+```
+
+5. Verify webhook processing via API logs and booking records.
+
 ## Test
 
 ```bash

@@ -2,10 +2,11 @@ import { Module } from '@nestjs/common'
 
 import { StripeController } from './stripe.controller'
 import StripeService from './stripe.service'
-import { BookingsService } from '../bookings/graphql/bookings.service'
+import { BookingsModule } from '../bookings/bookings.module'
 
 @Module({
+  imports: [BookingsModule],
   controllers: [StripeController],
-  providers: [StripeService, BookingsService],
+  providers: [StripeService],
 })
 export class StripeModule {}

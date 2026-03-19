@@ -10,35 +10,67 @@ import {
 } from '@nestjs/common'
 
 import { PrismaService } from 'src/common/prisma/prisma.service'
-import { ApiTags } from '@nestjs/swagger'
-import { CreateUser } from './dtos/create.dto'
-import { UserQueryDto } from './dtos/query.dto'
-import { UpdateUser } from './dtos/update.dto'
 import {
+  ApiOperation,
+  ApiTags,
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiOkResponse,
+  ApiParam,
+  ApiQuery,
+  ApiBody,
+  ApiBadRequestResponse,
+  ApiForbiddenResponse,
+  ApiNotFoundResponse,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
+import { CreateUser } from './dtos/create.dto'
+import { UserQueryDto } from './dtos/query.dto'
+import { UpdateUser } from './dtos/update.dto'
 import { UserEntity } from './entity/user.entity'
 import { AllowAuthenticated, GetUser } from 'src/common/auth/auth.decorator'
 import { GetUserType } from 'src/common/types'
 import { checkRowLevelPermission } from 'src/common/auth/util'
 
+@AllowAuthenticated()
+@ApiBearerAuth()
 @ApiTags('users')
+@ApiUnauthorizedResponse({
+  description: 'Unauthorized - missing or invalid bearer token',
+})
+@ApiForbiddenResponse({ description: 'Forbidden - insufficient permissions' })
 @Controller('users')
 export class UsersController {
   constructor(private readonly prisma: PrismaService) {}
 
   @AllowAuthenticated()
   @ApiBearerAuth()
-  @ApiCreatedResponse({ type: UserEntity })
+  @ApiOperation({
+    summary: 'Create a user',
+    description:
+      'Create a new user profile. The UID must match the authenticated user.',
+  })
+  @ApiBody({ type: CreateUser, description: 'User creation data' })
+  @ApiCreatedResponse({
+    type: UserEntity,
+    description: 'User created successfully',
+  })
+  @ApiBadRequestResponse({ description: 'Invalid user data' })
   @Post()
   create(@Body() createUserDto: CreateUser, @GetUser() user: GetUserType) {
     checkRowLevelPermission(user, createUserDto.uid)
     return this.prisma.user.create({ data: createUserDto })
   }
 
-  @ApiOkResponse({ type: [UserEntity] })
+  @ApiOperation({
+    summary: 'List users',
+    description: 'Retrieve all users with optional filtering and pagination',
+  })
+  @ApiQuery({
+    type: UserQueryDto,
+    description: 'Filtering and pagination options',
+  })
+  @ApiOkResponse({ type: [UserEntity], description: 'List of users' })
   @Get()
   findAll(
     @Query() { skip, take, order, sortBy, search, searchBy }: UserQueryDto,
@@ -53,13 +85,35 @@ export class UsersController {
     })
   }
 
-  @ApiOkResponse({ type: UserEntity })
+  @ApiOperation({
+    summary: 'Get user by UID',
+    description: 'Retrieve a single user by their unique identifier',
+  })
+  @ApiParam({
+    name: 'uid',
+    description: 'User UID',
+    example: '550e8400-e29b-41d4-a716-446655440000',
+  })
+  @ApiOkResponse({ type: UserEntity, description: 'User found' })
+  @ApiNotFoundResponse({ description: 'User not found' })
   @Get(':uid')
   findOne(@Param('uid') uid: string) {
     return this.prisma.user.findUnique({ where: { uid } })
   }
 
-  @ApiOkResponse({ type: UserEntity })
+  @ApiOperation({
+    summary: 'Update user by UID',
+    description: 'Update an existing user profile. User must own the UID.',
+  })
+  @ApiParam({
+    name: 'uid',
+    description: 'User UID',
+    example: '550e8400-e29b-41d4-a716-446655440000',
+  })
+  @ApiBody({ type: UpdateUser, description: 'Fields to update' })
+  @ApiOkResponse({ type: UserEntity, description: 'User updated successfully' })
+  @ApiNotFoundResponse({ description: 'User not found' })
+  @ApiBadRequestResponse({ description: 'Invalid update data' })
   @ApiBearerAuth()
   @AllowAuthenticated()
   @Patch(':uid')
@@ -76,6 +130,17 @@ export class UsersController {
     })
   }
 
+  @ApiOperation({
+    summary: 'Delete user by UID',
+    description: 'Delete an existing user profile. User must own the UID.',
+  })
+  @ApiParam({
+    name: 'uid',
+    description: 'User UID',
+    example: '550e8400-e29b-41d4-a716-446655440000',
+  })
+  @ApiOkResponse({ type: UserEntity, description: 'User deleted successfully' })
+  @ApiNotFoundResponse({ description: 'User not found' })
   @ApiBearerAuth()
   @AllowAuthenticated()
   @Delete(':uid')

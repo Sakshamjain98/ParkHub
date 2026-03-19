@@ -32,7 +32,7 @@ export class UsersResolver {
     private readonly prisma: PrismaService,
   ) {}
 
-  @Mutation(() => User)
+  @Mutation(() => User, { description: 'Register a new user with email and password.' })
   async registerWithCredentials(
     @Args('registerWithCredentialsInput')
     args: RegisterWithCredentialsInput,
@@ -40,36 +40,44 @@ export class UsersResolver {
     return this.usersService.registerWithCredentials(args)
   }
 
-  @Mutation(() => User)
+  @Mutation(() => User, { description: 'Register a new user using an external auth provider.' })
   async registerWithProvider(
     @Args('registerWithProviderInput') args: RegisterWithProviderInput,
   ) {
     return this.usersService.registerWithProvider(args)
   }
 
-  @Mutation(() => LoginOutput)
+  @Mutation(() => LoginOutput, { description: 'Authenticate a user and return an access token.' })
   async login(@Args('loginInput') args: LoginInput) {
     return this.usersService.login(args)
   }
 
   @AllowAuthenticated()
-  @Query(() => User)
+  @Query(() => User, { description: 'Get the currently authenticated user profile.' })
   whoami(@GetUser() user: GetUserType) {
     return this.usersService.findOne({ where: { uid: user.uid } })
   }
 
-  @Query(() => [User], { name: 'users' })
+  @AllowAuthenticated()
+  @Query(() => [User], {
+    name: 'users',
+    description: 'List users with optional filtering and pagination.',
+  })
   findAll(@Args() args: FindManyUserArgs) {
     return this.usersService.findAll(args)
   }
 
-  @Query(() => User, { name: 'user' })
+  @AllowAuthenticated()
+  @Query(() => User, {
+    name: 'user',
+    description: 'Get a single user by unique criteria.',
+  })
   findOne(@Args() args: FindUniqueUserArgs) {
     return this.usersService.findOne(args)
   }
 
   @AllowAuthenticated()
-  @Mutation(() => User)
+  @Mutation(() => User, { description: 'Update an existing user.' })
   async updateUser(
     @Args('updateUserInput') args: UpdateUserInput,
     @GetUser() user: GetUserType,
@@ -82,7 +90,7 @@ export class UsersResolver {
   }
 
   @AllowAuthenticated()
-  @Mutation(() => User)
+  @Mutation(() => User, { description: 'Delete an existing user.' })
   async removeUser(
     @Args() args: FindUniqueUserArgs,
     @GetUser() user: GetUserType,
@@ -92,7 +100,12 @@ export class UsersResolver {
     return this.usersService.remove(args)
   }
 
-  @Query(() => AuthProvider, { name: 'getAuthProvider', nullable: true })
+  @AllowAuthenticated()
+  @Query(() => AuthProvider, {
+    name: 'getAuthProvider',
+    nullable: true,
+    description: 'Get the linked auth provider for a user id.',
+  })
   getAuthProvider(@Args('uid') uid: string) {
     return this.prisma.authProvider.findUnique({ where: { uid } })
   }

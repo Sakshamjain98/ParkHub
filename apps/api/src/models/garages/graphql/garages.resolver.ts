@@ -32,6 +32,7 @@ import { SlotWhereInput } from 'src/models/slots/graphql/dtos/where.args'
 import { BadRequestException } from '@nestjs/common'
 import { GarageWhereInput } from './dtos/where.args'
 
+@AllowAuthenticated()
 @Resolver(() => Garage)
 export class GaragesResolver {
   constructor(
@@ -40,7 +41,9 @@ export class GaragesResolver {
   ) {}
 
   @AllowAuthenticated('manager')
-  @Mutation(() => Garage)
+  @Mutation(() => Garage, {
+    description: 'Create a garage under the authenticated manager company.',
+  })
   async createGarage(
     @Args('createGarageInput') args: CreateGarageInput,
     @GetUser() user: GetUserType,
@@ -57,17 +60,27 @@ export class GaragesResolver {
     return this.garagesService.create({ ...args, companyId: company.id })
   }
 
-  @Query(() => [Garage], { name: 'garages' })
+  @Query(() => [Garage], {
+    name: 'garages',
+    description: 'List garages with optional filtering and pagination.',
+  })
   findAll(@Args() args: FindManyGarageArgs) {
     return this.garagesService.findAll(args)
   }
 
-  @Query(() => Garage, { name: 'garage' })
+  @Query(() => Garage, {
+    name: 'garage',
+    description: 'Get a single garage by unique criteria.',
+  })
   findOne(@Args() args: FindUniqueGarageArgs) {
     return this.garagesService.findOne(args)
   }
 
-  @Query(() => [Garage], { name: 'searchGarages' })
+  @Query(() => [Garage], {
+    name: 'searchGarages',
+    description:
+      'Search garages by location, date range, and slot constraints.',
+  })
   async searchGarages(
     @Args('dateFilter') dateFilter: DateFilterInput,
     @Args('locationFilter') locationFilter: LocationFilterInput,
@@ -194,7 +207,7 @@ export class GaragesResolver {
   }
 
   @AllowAuthenticated()
-  @Mutation(() => Garage)
+  @Mutation(() => Garage, { description: 'Update an existing garage.' })
   async updateGarage(
     @Args('updateGarageInput') args: UpdateGarageInput,
     @GetUser() user: GetUserType,
@@ -211,7 +224,7 @@ export class GaragesResolver {
   }
 
   @AllowAuthenticated()
-  @Mutation(() => Garage)
+  @Mutation(() => Garage, { description: 'Delete an existing garage.' })
   async removeGarage(
     @Args() args: FindUniqueGarageArgs,
     @GetUser() user: GetUserType,
@@ -251,6 +264,7 @@ export class GaragesResolver {
 
   @Query(() => AggregateCountOutput, {
     name: 'garagesCount',
+    description: 'Get aggregated garage count by optional filter.',
   })
   async garagesCount(
     @Args('where', { nullable: true })

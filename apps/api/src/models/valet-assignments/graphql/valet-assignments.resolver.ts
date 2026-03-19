@@ -28,7 +28,9 @@ export class ValetAssignmentsResolver {
   ) {}
 
   @AllowAuthenticated()
-  @Mutation(() => ValetAssignment)
+  @Mutation(() => ValetAssignment, {
+    description: 'Create a valet assignment for a booking.',
+  })
   createValetAssignment(
     @Args('createValetAssignmentInput') args: CreateValetAssignmentInput,
     @GetUser() user: GetUserType,
@@ -37,18 +39,28 @@ export class ValetAssignmentsResolver {
     return this.valetAssignmentsService.create(args)
   }
 
-  @Query(() => [ValetAssignment], { name: 'valetAssignments' })
+  @AllowAuthenticated()
+  @Query(() => [ValetAssignment], {
+    name: 'valetAssignments',
+    description: 'List valet assignments with optional filtering and pagination.',
+  })
   findAll(@Args() args: FindManyValetAssignmentArgs) {
     return this.valetAssignmentsService.findAll(args)
   }
 
-  @Query(() => ValetAssignment, { name: 'valetAssignment' })
+  @AllowAuthenticated()
+  @Query(() => ValetAssignment, {
+    name: 'valetAssignment',
+    description: 'Get a single valet assignment by unique criteria.',
+  })
   findOne(@Args() args: FindUniqueValetAssignmentArgs) {
     return this.valetAssignmentsService.findOne(args)
   }
 
   @AllowAuthenticated()
-  @Mutation(() => ValetAssignment)
+  @Mutation(() => ValetAssignment, {
+    description: 'Update an existing valet assignment.',
+  })
   async updateValetAssignment(
     @Args('updateValetAssignmentInput') args: UpdateValetAssignmentInput,
     @GetUser() user: GetUserType,
@@ -64,7 +76,9 @@ export class ValetAssignmentsResolver {
   }
 
   @AllowAuthenticated()
-  @Mutation(() => ValetAssignment)
+  @Mutation(() => ValetAssignment, {
+    description: 'Delete an existing valet assignment.',
+  })
   async removeValetAssignment(
     @Args() args: FindUniqueValetAssignmentArgs,
     @GetUser() user: GetUserType,

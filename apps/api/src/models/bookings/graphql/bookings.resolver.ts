@@ -23,6 +23,7 @@ import { BookingWhereInput } from './dtos/where.args'
 import { BookingTimeline } from 'src/models/booking-timelines/graphql/entity/booking-timeline.entity'
 import { BadRequestException } from '@nestjs/common'
 
+@AllowAuthenticated()
 @Resolver(() => Booking)
 export class BookingsResolver {
   constructor(
@@ -31,7 +32,7 @@ export class BookingsResolver {
   ) {}
 
   @AllowAuthenticated()
-  @Mutation(() => Booking)
+  @Mutation(() => Booking, { description: 'Create a new booking.' })
   createBooking(
     @Args('createBookingInput') args: CreateBookingInput,
     @GetUser() user: GetUserType,
@@ -41,13 +42,19 @@ export class BookingsResolver {
   }
 
   @AllowAuthenticated('admin')
-  @Query(() => [Booking], { name: 'bookings' })
+  @Query(() => [Booking], {
+    name: 'bookings',
+    description: 'List bookings (admin scope).',
+  })
   findAll(@Args() args: FindManyBookingArgs) {
     return this.bookingsService.findAll(args)
   }
 
   @AllowAuthenticated('valet')
-  @Query(() => [Booking], { name: 'bookingsForValet' })
+  @Query(() => [Booking], {
+    name: 'bookingsForValet',
+    description: 'List company bookings visible to the authenticated valet.',
+  })
   async bookingsForValet(
     @Args() args: FindManyBookingArgs,
     @GetUser() user: GetUserType,
@@ -65,7 +72,10 @@ export class BookingsResolver {
   }
 
   @AllowAuthenticated()
-  @Query(() => [Booking], { name: 'bookingsForCustomer' })
+  @Query(() => [Booking], {
+    name: 'bookingsForCustomer',
+    description: 'List bookings for the authenticated customer.',
+  })
   bookingsForCustomer(
     @Args() args: FindManyBookingArgs,
     @GetUser() user: GetUserType,
@@ -77,7 +87,10 @@ export class BookingsResolver {
   }
 
   @AllowAuthenticated('manager', 'admin')
-  @Query(() => [Booking], { name: 'bookingsForGarage' })
+  @Query(() => [Booking], {
+    name: 'bookingsForGarage',
+    description: 'List bookings for a garage with manager/admin authorization.',
+  })
   async bookingsForGarage(
     @Args()
     { cursor, distinct, orderBy, skip, take, where }: FindManyBookingArgs,
@@ -110,7 +123,9 @@ export class BookingsResolver {
     })
   }
 
-  @Query(() => AggregateCountOutput)
+  @Query(() => AggregateCountOutput, {
+    description: 'Get aggregated booking count by optional filter.',
+  })
   async bookingsCount(
     @Args('where', { nullable: true })
     where: BookingWhereInput,
@@ -122,13 +137,16 @@ export class BookingsResolver {
     return { count: bookings._count._all }
   }
 
-  @Query(() => Booking, { name: 'booking' })
+  @Query(() => Booking, {
+    name: 'booking',
+    description: 'Get a single booking by unique criteria.',
+  })
   findOne(@Args() args: FindUniqueBookingArgs) {
     return this.bookingsService.findOne(args)
   }
 
   @AllowAuthenticated()
-  @Mutation(() => Booking)
+  @Mutation(() => Booking, { description: 'Update an existing booking.' })
   async updateBooking(
     @Args('updateBookingInput') args: UpdateBookingInput,
     @GetUser() user: GetUserType,
@@ -141,7 +159,7 @@ export class BookingsResolver {
   }
 
   @AllowAuthenticated()
-  @Mutation(() => Booking)
+  @Mutation(() => Booking, { description: 'Delete an existing booking.' })
   async removeBooking(
     @Args() args: FindUniqueBookingArgs,
     @GetUser() user: GetUserType,

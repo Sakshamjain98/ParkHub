@@ -26,7 +26,7 @@ export class SlotsResolver {
   ) {}
 
   @AllowAuthenticated()
-  @Mutation(() => Slot)
+  @Mutation(() => Slot, { description: 'Create a slot in a garage.' })
   async createSlot(
     @Args('createSlotInput') args: CreateSlotInput,
     @GetUser() user: GetUserType,
@@ -43,7 +43,9 @@ export class SlotsResolver {
   }
 
   @AllowAuthenticated('manager')
-  @Mutation(() => ReturnCount)
+  @Mutation(() => ReturnCount, {
+    description: 'Create multiple slots for a given garage and slot type.',
+  })
   async createManySlots(
     @Args('createSlotInput') args: CreateSlotInput,
     @Args('count', {
@@ -78,18 +80,26 @@ export class SlotsResolver {
     return this.prisma.slot.createMany({ data: slots })
   }
 
-  @Query(() => [Slot], { name: 'slots' })
+  @AllowAuthenticated()
+  @Query(() => [Slot], {
+    name: 'slots',
+    description: 'List slots with optional filtering and pagination.',
+  })
   findAll(@Args() args: FindManySlotArgs) {
     return this.slotsService.findAll(args)
   }
 
-  @Query(() => Slot, { name: 'slot' })
+  @AllowAuthenticated()
+  @Query(() => Slot, {
+    name: 'slot',
+    description: 'Get a single slot by unique criteria.',
+  })
   findOne(@Args() args: FindUniqueSlotArgs) {
     return this.slotsService.findOne(args)
   }
 
   @AllowAuthenticated()
-  @Mutation(() => Slot)
+  @Mutation(() => Slot, { description: 'Update an existing slot.' })
   async updateSlot(
     @Args('updateSlotInput') args: UpdateSlotInput,
     @GetUser() user: GetUserType,
@@ -114,7 +124,7 @@ export class SlotsResolver {
   }
 
   @AllowAuthenticated()
-  @Mutation(() => Slot)
+  @Mutation(() => Slot, { description: 'Delete an existing slot.' })
   async removeSlot(
     @Args() args: FindUniqueSlotArgs,
     @GetUser() user: GetUserType,

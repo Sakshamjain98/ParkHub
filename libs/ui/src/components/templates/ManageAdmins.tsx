@@ -1,6 +1,6 @@
 'use client'
 import { useTakeSkip } from '@ParkHub/util/hooks/pagination'
-import { useMutation, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { AdminsDocument } from '@ParkHub/network/src/gql/generated'
 import { ShowData } from '../organisms/ShowData'
 import { AdminCard } from '../organisms/admin/AdminCard'
@@ -15,12 +15,13 @@ export const ManageAdmins = () => {
   })
 
   return (
-    <>
-      <div className="flex justify-end">
+    <div className="space-y-3">
+      <div className="flex justify-end mt-6 sm:mt-10 mr-2 sm:mr-0">
         <CreateAdmin />
       </div>
       <ShowData
         loading={loading}
+        childrenClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-6"
         pagination={{
           skip,
           take,
@@ -32,15 +33,13 @@ export const ManageAdmins = () => {
         title={'Manage admins'}
       >
         {data?.admins.map((admin) => (
-          <div key={admin.uid} className="pl-0.5 border-l-2  border-primary">
-            <AdminCard key={admin.uid} admin={admin}>
-              <div className="flex justify-end">
-                <RemoveAdminButton uid={admin.uid} />
-              </div>
-            </AdminCard>
-          </div>
+          <AdminCard key={admin.uid} admin={admin}>
+            <div className="flex justify-end">
+              <RemoveAdminButton uid={admin.uid} />
+            </div>
+          </AdminCard>
         ))}
       </ShowData>
-    </>
+    </div>
   )
 }

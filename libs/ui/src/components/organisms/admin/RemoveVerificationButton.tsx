@@ -23,7 +23,7 @@ export const RemoveVerificationButton = ({
       size="none"
       variant="text"
       loading={loading}
-      className="font-semibold"
+      className="rounded-full border border-red-300 bg-red-50 px-3 py-1 text-[11px] font-semibold tracking-wide text-red-700"
       onClick={async () => {
         await removeVerification({
           variables: {

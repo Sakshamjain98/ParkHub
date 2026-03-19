@@ -10,6 +10,7 @@ import { UpdateVerificationInput } from './dtos/update-verification.input'
 import { AllowAuthenticated, GetUser } from 'src/common/auth/auth.decorator'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { GetUserType } from 'src/common/types'
+import { VerificationWhereUniqueInput } from './dtos/where.args'
 
 @Resolver(() => Verification)
 export class VerificationsResolver {
@@ -41,8 +42,8 @@ export class VerificationsResolver {
     name: 'verification',
     description: 'Get a single verification record by unique criteria.',
   })
-  findOne(@Args() args: FindUniqueVerificationArgs) {
-    return this.verificationsService.findOne(args)
+  findOne(@Args('where') where: VerificationWhereUniqueInput) {
+    return this.verificationsService.findOne({ where })
   }
 
   @AllowAuthenticated('admin')
@@ -55,7 +56,10 @@ export class VerificationsResolver {
 
   @AllowAuthenticated('admin')
   @Mutation(() => Verification, { description: 'Delete an existing verification record.' })
-  async removeVerification(@Args() args: FindUniqueVerificationArgs) {
+  async removeVerification(
+    @Args('where') where: VerificationWhereUniqueInput,
+  ) {
+    const args = { where }
     return this.verificationsService.remove(args)
   }
 }

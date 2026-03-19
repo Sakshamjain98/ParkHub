@@ -1,5 +1,6 @@
 import { Field, InputType, Int, PartialType } from '@nestjs/graphql'
 import { Prisma } from '@prisma/client'
+import { IsInt } from 'class-validator'
 import {
   BoolFilter,
   DateTimeFilter,
@@ -12,6 +13,7 @@ import { GarageRelationFilter } from 'src/models/garages/graphql/dtos/where.args
 
 @InputType()
 export class VerificationWhereUniqueInput {
+  @IsInt()
   @Field(() => Int)
   garageId: number
 }

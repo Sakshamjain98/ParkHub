@@ -13,7 +13,6 @@ import {
 } from './dtos/create-user.input'
 import { UpdateUserInput } from './dtos/update-user.input'
 import * as bcrypt from 'bcryptjs'
-import { v4 as uuid } from 'uuid'
 import { JwtService } from '@nestjs/jwt'
 
 @Injectable()
@@ -22,6 +21,31 @@ export class UsersService {
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
   ) {}
+
+  private async generateCredentialUserUid() {
+    const currentDate = new Date()
+    const year = String(currentDate.getFullYear()).slice(-2)
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0')
+    const day = String(currentDate.getDate()).padStart(2, '0')
+    const shortDate = `${year}${month}${day}`
+
+    for (let attempt = 0; attempt < 20; attempt++) {
+      const suffix = String(Math.floor(Math.random() * 10000)).padStart(4, '0')
+      const uid = `USER-${shortDate}-${suffix}`
+
+      const existingUser = await this.prisma.user.findUnique({
+        where: { uid },
+        select: { uid: true },
+      })
+
+      if (!existingUser) {
+        return uid
+      }
+    }
+
+    throw new BadRequestException('Unable to generate unique user id.')
+  }
+
   registerWithProvider({ image, name, uid, type }: RegisterWithProviderInput) {
     return this.prisma.user.create({
       data: {
@@ -42,7 +66,9 @@ export class UsersService {
     name,
     password,
     image,
-  }: RegisterWithCredentialsInput) {
+  }: RegisterWithCredentialsInput,
+  options?: { assignAdmin?: boolean },
+  ) {
     const existingUser = await this.prisma.credentials.findUnique({
       where: { email },
     })
@@ -55,7 +81,7 @@ export class UsersService {
     const salt = bcrypt.genSaltSync()
     const passwordHash = bcrypt.hashSync(password, salt)
 
-    const uid = uuid()
+    const uid = await this.generateCredentialUserUid()
 
     return this.prisma.user.create({
       data: {
@@ -73,6 +99,13 @@ export class UsersService {
             type: 'CREDENTIALS',
           },
         },
+        ...(options?.assignAdmin
+          ? {
+              Admin: {
+                create: {},
+              },
+            }
+          : {}),
       },
       include: {
         Credentials: true,

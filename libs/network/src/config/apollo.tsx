@@ -13,8 +13,13 @@ export interface IApolloProviderProps {
 }
 
 export const ApolloProvider = ({ children }: IApolloProviderProps) => {
+  const apiUrl =
+    process.env.NEXT_PUBLIC_API_URL ||
+    process.env.API_URL ||
+    'http://localhost:3000'
+
   const httpLink = new HttpLink({
-    uri: process.env.NEXT_PUBLIC_API_URL + '/graphql',
+    uri: apiUrl + '/graphql',
   })
 
   const authLink = setContext(async (_, { headers }) => {

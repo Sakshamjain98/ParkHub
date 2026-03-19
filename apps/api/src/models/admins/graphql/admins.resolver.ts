@@ -17,7 +17,7 @@ import { AllowAuthenticated, GetUser } from 'src/common/auth/auth.decorator'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { User } from 'src/models/users/graphql/entity/user.entity'
 import { Verification } from 'src/models/verifications/graphql/entity/verification.entity'
-import { AdminWhereInput } from './dtos/where.args'
+import { AdminWhereInput, AdminWhereUniqueInput } from './dtos/where.args'
 
 @AllowAuthenticated('admin')
 @Resolver(() => Admin)
@@ -48,8 +48,8 @@ export class AdminsResolver {
     name: 'admin',
     description: 'Get a single admin by unique criteria.',
   })
-  findOne(@Args() args: FindUniqueAdminArgs) {
-    return this.adminsService.findOne(args)
+  findOne(@Args('where') where: AdminWhereUniqueInput) {
+    return this.adminsService.findOne({ where })
   }
 
   @AllowAuthenticated()
@@ -76,9 +76,10 @@ export class AdminsResolver {
 
   @Mutation(() => Admin, { description: 'Delete an existing admin.' })
   async removeAdmin(
-    @Args() args: FindUniqueAdminArgs,
+    @Args('where') where: AdminWhereUniqueInput,
     @GetUser() user: GetUserType,
   ) {
+    const args = { where }
     const admin = await this.prisma.admin.findUnique(args)
     checkRowLevelPermission(user, admin.uid)
     return this.adminsService.remove(args)

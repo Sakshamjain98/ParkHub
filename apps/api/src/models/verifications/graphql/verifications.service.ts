@@ -11,8 +11,12 @@ import { UpdateVerificationInput } from './dtos/update-verification.input'
 export class VerificationsService {
   constructor(private readonly prisma: PrismaService) {}
   create(createVerificationInput: CreateVerificationInput, adminId: string) {
-    return this.prisma.verification.create({
-      data: { ...createVerificationInput, adminId },
+    const { garageId, verified } = createVerificationInput
+
+    return this.prisma.verification.upsert({
+      where: { garageId },
+      create: { garageId, verified, adminId },
+      update: { verified, adminId },
     })
   }
 

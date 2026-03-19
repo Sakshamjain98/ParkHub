@@ -1,9 +1,13 @@
-import { InputType, OmitType, PickType } from '@nestjs/graphql'
-import { Verification } from '../entity/verification.entity'
+import { Field, InputType, Int } from '@nestjs/graphql'
+import { IsBoolean, IsInt } from 'class-validator'
 
 @InputType()
-export class CreateVerificationInput extends OmitType(
-  Verification,
-  ['createdAt', 'updatedAt', 'adminId'],
-  InputType,
-) {}
+export class CreateVerificationInput {
+  @IsBoolean()
+  @Field(() => Boolean)
+  verified: boolean
+
+  @IsInt()
+  @Field(() => Int)
+  garageId: number
+}

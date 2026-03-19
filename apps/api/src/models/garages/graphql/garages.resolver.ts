@@ -34,7 +34,7 @@ import {
 } from 'src/common/dtos/common.input'
 import { SlotWhereInput } from 'src/models/slots/graphql/dtos/where.args'
 import { BadRequestException } from '@nestjs/common'
-import { GarageWhereInput } from './dtos/where.args'
+import { GarageWhereInput, GarageWhereUniqueInput } from './dtos/where.args'
 
 @AllowAuthenticated()
 @Resolver(() => Garage)
@@ -76,8 +76,8 @@ export class GaragesResolver {
     name: 'garage',
     description: 'Get a single garage by unique criteria.',
   })
-  findOne(@Args() args: FindUniqueGarageArgs) {
-    return this.garagesService.findOne(args)
+  findOne(@Args('where') where: GarageWhereUniqueInput) {
+    return this.garagesService.findOne({ where })
   }
 
   @Query(() => [Garage], {
@@ -232,9 +232,10 @@ export class GaragesResolver {
   @AllowAuthenticated()
   @Mutation(() => Garage, { description: 'Delete an existing garage.' })
   async removeGarage(
-    @Args() args: FindUniqueGarageArgs,
+    @Args('where') where: GarageWhereUniqueInput,
     @GetUser() user: GetUserType,
   ) {
+    const args = { where }
     const garage = await this.prisma.garage.findUnique({
       where: { id: args.where.id },
       include: { Company: { include: { Managers: true } } },

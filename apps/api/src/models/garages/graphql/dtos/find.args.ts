@@ -1,7 +1,6 @@
 import {
   ArgsType,
   Field,
-  Int,
   registerEnumType,
   PartialType,
 } from '@nestjs/graphql'
@@ -26,10 +25,11 @@ class FindManyGarageArgsStrict
   where: GarageWhereInput
   @Field(() => [GarageOrderByWithRelationInput], { nullable: true })
   orderBy: GarageOrderByWithRelationInput[]
+  @Field(() => GarageWhereUniqueInput, { nullable: true })
   cursor: GarageWhereUniqueInput
-  @Field(() => Int, { nullable: true })
+  @Field({ nullable: true })
   take: number
-  @Field(() => Int, { nullable: true })
+  @Field({ nullable: true })
   skip: number
   @Field(() => [Prisma.GarageScalarFieldEnum])
   distinct: Prisma.GarageScalarFieldEnum[]
@@ -40,5 +40,6 @@ export class FindManyGarageArgs extends PartialType(FindManyGarageArgsStrict) {}
 
 @ArgsType()
 export class FindUniqueGarageArgs {
+  @Field(() => GarageWhereUniqueInput)
   where: GarageWhereUniqueInput
 }

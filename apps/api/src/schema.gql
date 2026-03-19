@@ -27,10 +27,17 @@ type LoginOutput {
 
 type Admin {
   uid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   user: User
   verifications: [Verification!]!
   verificationsCount: Float!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type Manager {
   displayName: String
@@ -47,15 +54,14 @@ type Valet {
   companyId: Float
 }
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
 type Customer {
   displayName: String
   user: User
   bookings: [Booking!]!
+}
+
+type AggregateCountOutput {
+  count: Int!
 }
 
 type Verification {
@@ -64,10 +70,6 @@ type Verification {
   verified: Boolean!
   adminId: String!
   garageId: Float!
-}
-
-type AggregateCountOutput {
-  count: Int!
 }
 
 type Booking {
@@ -853,10 +855,10 @@ type Query {
   getAuthProvider(uid: String!): AuthProvider
 
   """List admins with optional filtering and pagination."""
-  admins(distinct: [AdminScalarFieldEnum!]): [Admin!]!
+  admins(where: AdminWhereInput, orderBy: [AdminOrderByWithRelationInput!], cursor: AdminWhereUniqueInput, take: Float, skip: Float, distinct: [AdminScalarFieldEnum!]): [Admin!]!
 
   """Get a single admin by unique criteria."""
-  admin: Admin!
+  admin(where: AdminWhereUniqueInput!): Admin!
 
   """Get profile of the authenticated admin."""
   adminMe: Admin!
@@ -913,10 +915,10 @@ type Query {
   company: Company!
 
   """List garages with optional filtering and pagination."""
-  garages(where: GarageWhereInput, orderBy: [GarageOrderByWithRelationInput!], take: Int, skip: Int, distinct: [GarageScalarFieldEnum!]): [Garage!]!
+  garages(where: GarageWhereInput, orderBy: [GarageOrderByWithRelationInput!], cursor: GarageWhereUniqueInput, take: Float, skip: Float, distinct: [GarageScalarFieldEnum!]): [Garage!]!
 
   """Get a single garage by unique criteria."""
-  garage: Garage!
+  garage(where: GarageWhereUniqueInput!): Garage!
 
   """Search garages by location, date range, and slot constraints."""
   searchGarages(dateFilter: DateFilterInput!, locationFilter: LocationFilterInput!, slotsFilter: SlotWhereInput, garageFilter: GarageFilter): [Garage!]!
@@ -955,10 +957,10 @@ type Query {
   review: Review!
 
   """List verification records with optional filtering and pagination."""
-  verifications(distinct: [VerificationScalarFieldEnum!]): [Verification!]!
+  verifications(where: VerificationWhereInput, orderBy: [VerificationOrderByWithRelationInput!], cursor: VerificationWhereUniqueInput, take: Float, skip: Float, distinct: [VerificationScalarFieldEnum!]): [Verification!]!
 
   """Get a single verification record by unique criteria."""
-  verification: Verification!
+  verification(where: VerificationWhereUniqueInput!): Verification!
 }
 
 input BookingOrderByWithRelationInput {
@@ -1010,6 +1012,16 @@ enum UserScalarFieldEnum {
   image
 }
 
+input AdminOrderByWithRelationInput {
+  uid: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input AdminWhereUniqueInput {
+  uid: String!
+}
+
 enum AdminScalarFieldEnum {
   uid
   createdAt
@@ -1059,6 +1071,10 @@ input GarageOrderByWithRelationInput {
   companyId: SortOrder
 }
 
+input GarageWhereUniqueInput {
+  id: Int!
+}
+
 enum GarageScalarFieldEnum {
   id
   createdAt
@@ -1079,8 +1095,8 @@ input LocationFilterInput {
 input GarageFilter {
   where: GarageWhereInput
   orderBy: [GarageOrderByWithRelationInput!]
-  take: Int
-  skip: Int
+  take: Float
+  skip: Float
 }
 
 enum AddressScalarFieldEnum {
@@ -1137,6 +1153,18 @@ enum ReviewScalarFieldEnum {
   garageId
 }
 
+input VerificationOrderByWithRelationInput {
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  verified: SortOrder
+  adminId: SortOrder
+  garageId: SortOrder
+}
+
+input VerificationWhereUniqueInput {
+  garageId: Int!
+}
+
 enum VerificationScalarFieldEnum {
   createdAt
   updatedAt
@@ -1177,7 +1205,7 @@ type Mutation {
   updateAdmin(updateAdminInput: UpdateAdminInput!): Admin!
 
   """Delete an existing admin."""
-  removeAdmin: Admin!
+  removeAdmin(where: AdminWhereUniqueInput!): Admin!
 
   """Create a customer profile."""
   createCustomer(createCustomerInput: CreateCustomerInput!): Customer!
@@ -1225,7 +1253,7 @@ type Mutation {
   updateGarage(updateGarageInput: UpdateGarageInput!): Garage!
 
   """Delete an existing garage."""
-  removeGarage: Garage!
+  removeGarage(where: GarageWhereUniqueInput!): Garage!
 
   """Create an address for a garage."""
   createAddress(createAddressInput: CreateAddressInput!): Address!
@@ -1282,7 +1310,7 @@ type Mutation {
   updateVerification(updateVerificationInput: UpdateVerificationInput!): Verification!
 
   """Delete an existing verification record."""
-  removeVerification: Verification!
+  removeVerification(where: VerificationWhereUniqueInput!): Verification!
 }
 
 input CreateBookingInput {
@@ -1464,10 +1492,10 @@ input UpdateReviewInput {
 
 input CreateVerificationInput {
   verified: Boolean!
-  garageId: Float!
+  garageId: Int!
 }
 
 input UpdateVerificationInput {
   verified: Boolean
-  garageId: Float
+  garageId: Int!
 }

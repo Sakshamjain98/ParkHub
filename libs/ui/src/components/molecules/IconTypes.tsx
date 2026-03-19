@@ -11,10 +11,10 @@ import {
 } from '@tabler/icons-react'
 
 export const IconTypes = {
-  [SlotType.Bicycle]: <IconBike className="w-6 h-6 " />,
-  [SlotType.Bike]: <IconMotorbike className="w-6 h-6 " />,
-  [SlotType.Car]: <IconCar className="w-6 h-6 " />,
-  [SlotType.Heavy]: <IconTir className="w-6 h-6 " />,
+  [SlotType.Bicycle]: <IconBike className="w-4 h-4 " />,
+  [SlotType.Bike]: <IconMotorbike className="w-4 h-4 " />,
+  [SlotType.Car]: <IconCar className="w-4 h-4 " />,
+  [SlotType.Heavy]: <IconTir className="w-4 h-4 " />,
 }
 
 export const IconType = ({

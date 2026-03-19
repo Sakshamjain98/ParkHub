@@ -1,8 +1,12 @@
 import { PrismaClient } from '@prisma/client'
 import { garages } from './data'
+import * as bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
 const MIN_ENTRIES = 20
+const DEFAULT_ADMIN_UID = 'admin-default'
+const DEFAULT_ADMIN_EMAIL = 'admin@autospace.dev'
+const DEFAULT_ADMIN_PASSWORD = 'Admin@12345678'
 
 const makeUid = (prefix: string, index: number) => `${prefix}-${index + 1}`
 
@@ -55,10 +59,18 @@ async function seedGarages(companyIds: number[]) {
 }
 
 async function seedRoleUsers(companyIds: number[]) {
-  const adminUids = Array.from({ length: MIN_ENTRIES }, (_, i) => makeUid('admin', i))
-  const customerUids = Array.from({ length: MIN_ENTRIES }, (_, i) => makeUid('customer', i))
-  const managerUids = Array.from({ length: MIN_ENTRIES }, (_, i) => makeUid('manager', i))
-  const valetUids = Array.from({ length: MIN_ENTRIES }, (_, i) => makeUid('valet', i))
+  const adminUids = Array.from({ length: MIN_ENTRIES }, (_, i) =>
+    makeUid('admin', i),
+  )
+  const customerUids = Array.from({ length: MIN_ENTRIES }, (_, i) =>
+    makeUid('customer', i),
+  )
+  const managerUids = Array.from({ length: MIN_ENTRIES }, (_, i) =>
+    makeUid('manager', i),
+  )
+  const valetUids = Array.from({ length: MIN_ENTRIES }, (_, i) =>
+    makeUid('valet', i),
+  )
 
   const allUsers = [...adminUids, ...customerUids, ...managerUids, ...valetUids]
 
@@ -117,6 +129,35 @@ async function seedRoleUsers(companyIds: number[]) {
   return { adminUids, customerUids, managerUids, valetUids }
 }
 
+async function seedDefaultAdmin() {
+  const passwordHash = bcrypt.hashSync(
+    DEFAULT_ADMIN_PASSWORD,
+    bcrypt.genSaltSync(),
+  )
+
+  await prisma.user.create({
+    data: {
+      uid: DEFAULT_ADMIN_UID,
+      name: 'Default Admin',
+      image: null,
+      Credentials: {
+        create: {
+          email: DEFAULT_ADMIN_EMAIL,
+          passwordHash,
+        },
+      },
+      AuthProvider: {
+        create: {
+          type: 'CREDENTIALS',
+        },
+      },
+      Admin: {
+        create: {},
+      },
+    },
+  })
+}
+
 async function seedTransactionalData(input: {
   adminUids: string[]
   customerUids: string[]
@@ -124,7 +165,10 @@ async function seedTransactionalData(input: {
   valetUids: string[]
   garages: { id: number }[]
 }) {
-  const slots = await prisma.slot.findMany({ orderBy: { id: 'asc' }, take: MIN_ENTRIES })
+  const slots = await prisma.slot.findMany({
+    orderBy: { id: 'asc' },
+    take: MIN_ENTRIES,
+  })
 
   for (let index = 0; index < MIN_ENTRIES; index++) {
     const startTime = new Date(Date.now() + index * 60 * 60 * 1000)
@@ -192,11 +236,16 @@ async function main() {
 
   const seededGarages = await seedGarages(companyIds)
   const roleUsers = await seedRoleUsers(companyIds)
+  await seedDefaultAdmin()
 
   await seedTransactionalData({
     ...roleUsers,
     garages: seededGarages,
   })
+
+  console.log('Default admin seeded')
+  console.log(`email: ${DEFAULT_ADMIN_EMAIL}`)
+  console.log(`password: ${DEFAULT_ADMIN_PASSWORD}`)
 }
 
 main()

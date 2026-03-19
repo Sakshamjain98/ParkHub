@@ -23,7 +23,7 @@ export const CreateVerificationButton = ({
       size="none"
       variant="text"
       loading={loading}
-      className="font-semibold underline underline-offset-4"
+      className="rounded-full border border-green-300 bg-green-50 px-3 py-1 text-[11px] font-semibold tracking-wide text-green-700"
       onClick={async () => {
         await createVerification({
           variables: {

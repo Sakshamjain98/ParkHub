@@ -1,5 +1,6 @@
 import { Field, InputType, PartialType } from '@nestjs/graphql'
 import { Prisma } from '@prisma/client'
+import { IsString } from 'class-validator'
 import {
   DateTimeFilter,
   RestrictProperties,
@@ -10,6 +11,7 @@ import { VerificationListRelationFilter } from 'src/models/verifications/graphql
 
 @InputType()
 export class AdminWhereUniqueInput {
+  @IsString()
   @Field(() => String)
   uid: string
 }

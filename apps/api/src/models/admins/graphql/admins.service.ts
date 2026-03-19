@@ -30,6 +30,13 @@ export class AdminsService {
   }
 
   remove(args: FindUniqueAdminArgs) {
-    return this.prisma.admin.delete(args)
+    const uid = args.where.uid
+    return this.prisma.$transaction(async (tx) => {
+      await tx.verification.deleteMany({
+        where: { adminId: uid },
+      })
+
+      return tx.admin.delete(args)
+    })
   }
 }

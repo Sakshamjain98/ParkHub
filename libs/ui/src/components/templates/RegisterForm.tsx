@@ -9,6 +9,8 @@ import { HtmlLabel } from '../atoms/HtmlLabel'
 import { HtmlInput } from '../atoms/HtmlInput'
 import { Button } from '../atoms/Button'
 import Link from 'next/link'
+import { IconEye, IconEyeOff } from '@tabler/icons-react'
+import { useState } from 'react'
 
 export interface ISignupFormProps {
   className?: string
@@ -24,6 +26,7 @@ export const RegisterForm = ({ className, role }: ISignupFormProps) => {
   const [registerWithCredentials, { loading }] = useMutation(
     RegisterWithCredentialsDocument,
   )
+  const [showPassword, setShowPassword] = useState(false)
 
   return (
     <Form
@@ -57,12 +60,22 @@ export const RegisterForm = ({ className, role }: ISignupFormProps) => {
         />
       </HtmlLabel>
       <HtmlLabel className="text-white" title="Password" error={errors.password?.message}>
-        <HtmlInput
-          className="border-white/20 bg-white/10 text-white placeholder:text-white/50 focus:border-primary"
-          type="password"
-          placeholder="Create a password"
-          {...register('password')}
-        />
+        <div className="relative">
+          <HtmlInput
+            className="border-white/20 bg-white/10 pr-10 text-white placeholder:text-white/50 focus:border-primary"
+            type={showPassword ? 'text' : 'password'}
+            placeholder="Create a password"
+            {...register('password')}
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((state) => !state)}
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-white/70 hover:text-white"
+            aria-label={showPassword ? 'Hide password' : 'Show password'}
+          >
+            {showPassword ? <IconEyeOff size={18} /> : <IconEye size={18} />}
+          </button>
+        </div>
       </HtmlLabel>
       <HtmlLabel className="text-white" title="Display name" error={errors.name?.message}>
         <HtmlInput

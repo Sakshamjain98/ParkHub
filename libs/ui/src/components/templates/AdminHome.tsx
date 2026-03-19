@@ -4,8 +4,7 @@ import { useQuery } from '@apollo/client'
 import { GaragesDocument } from '@ParkHub/network/src/gql/generated'
 import { ShowData } from '../organisms/ShowData'
 import { GarageAdminCard } from '../organisms/GarageAdminCard'
-import { CreateVerificationButton } from '../organisms/admin/CreateVerificationButton'
-import { RemoveVerificationButton } from '../organisms/admin/RemoveVerificationButton'
+import { VerificationToggle } from '../organisms/admin/VerificationToggle'
 
 export const AdminHome = () => {
   return <ShowGarages />
@@ -21,6 +20,7 @@ export const ShowGarages = () => {
     <ShowData
       error={error?.message}
       title="Garages"
+      childrenClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-3"
       loading={loading}
       pagination={{
         resultCount: data?.garages.length || 0,
@@ -34,11 +34,10 @@ export const ShowGarages = () => {
       {data?.garages.map((garage) => (
         <GarageAdminCard key={garage.id} garage={garage}>
           <div className="flex justify-end">
-            {!garage?.verification?.verified ? (
-              <CreateVerificationButton garageId={garage.id} />
-            ) : (
-              <RemoveVerificationButton garageId={garage.id} />
-            )}
+            <VerificationToggle
+              garageId={garage.id}
+              verified={Boolean(garage?.verification?.verified)}
+            />
           </div>
         </GarageAdminCard>
       ))}

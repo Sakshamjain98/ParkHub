@@ -13,6 +13,8 @@ import { JWT } from 'next-auth/jwt'
 
 const MAX_AGE = 1 * 24 * 60 * 60
 const MIN_SECRET_LENGTH = 32
+const DEV_FALLBACK_NEXTAUTH_SECRET =
+  'dev-only-nextauth-secret-change-this-2026'
 
 const parseSecretList = (value?: string) =>
   (value || '')
@@ -33,10 +35,14 @@ const hostName = new URL(process.env.NEXTAUTH_URL || '').hostname
 const rootDomain = 'karthicktech.com'
 const cookieDomain = hostName === 'localhost' ? undefined : '.' + rootDomain
 
-const authSecretCurrent =
+const envAuthSecretCurrent =
   process.env.NEXTAUTH_SECRET_CURRENT || process.env.NEXTAUTH_SECRET || ''
 
-if (!authSecretCurrent) {
+const authSecretCurrent =
+  envAuthSecretCurrent ||
+  (process.env.NODE_ENV === 'production' ? '' : DEV_FALLBACK_NEXTAUTH_SECRET)
+
+if (!authSecretCurrent && process.env.NODE_ENV === 'production') {
   throw new Error(
     'Missing NextAuth secret. Set NEXTAUTH_SECRET_CURRENT (recommended) or NEXTAUTH_SECRET.',
   )

@@ -5,6 +5,7 @@ import {
   Args,
   ResolveField,
   Parent,
+  Context,
 } from '@nestjs/graphql'
 import { UsersService } from './users.service'
 import { AuthProvider, User } from './entity/user.entity'
@@ -32,28 +33,57 @@ export class UsersResolver {
     private readonly prisma: PrismaService,
   ) {}
 
-  @Mutation(() => User, { description: 'Register a new user with email and password.' })
+  @Mutation(() => User, {
+    description: 'Register a new user with email and password.',
+  })
   async registerWithCredentials(
     @Args('registerWithCredentialsInput')
     args: RegisterWithCredentialsInput,
+    @Context()
+    context: { req?: { headers?: Record<string, string | string[]> } },
   ) {
-    return this.usersService.registerWithCredentials(args)
+    const originHeader = context?.req?.headers?.origin
+    const refererHeader = context?.req?.headers?.referer
+    const hostHeader = context?.req?.headers?.host
+
+    const origin = Array.isArray(originHeader)
+      ? originHeader.join(' ')
+      : originHeader || ''
+    const referer = Array.isArray(refererHeader)
+      ? refererHeader.join(' ')
+      : refererHeader || ''
+    const host = Array.isArray(hostHeader)
+      ? hostHeader.join(' ')
+      : hostHeader || ''
+
+    const adminRequestSource = `${origin} ${referer} ${host}`
+    const assignAdmin =
+      adminRequestSource.includes('localhost:3004') ||
+      adminRequestSource.includes('web-admin')
+
+    return this.usersService.registerWithCredentials(args, { assignAdmin })
   }
 
-  @Mutation(() => User, { description: 'Register a new user using an external auth provider.' })
+  @Mutation(() => User, {
+    description: 'Register a new user using an external auth provider.',
+  })
   async registerWithProvider(
     @Args('registerWithProviderInput') args: RegisterWithProviderInput,
   ) {
     return this.usersService.registerWithProvider(args)
   }
 
-  @Mutation(() => LoginOutput, { description: 'Authenticate a user and return an access token.' })
+  @Mutation(() => LoginOutput, {
+    description: 'Authenticate a user and return an access token.',
+  })
   async login(@Args('loginInput') args: LoginInput) {
     return this.usersService.login(args)
   }
 
   @AllowAuthenticated()
-  @Query(() => User, { description: 'Get the currently authenticated user profile.' })
+  @Query(() => User, {
+    description: 'Get the currently authenticated user profile.',
+  })
   whoami(@GetUser() user: GetUserType) {
     return this.usersService.findOne({ where: { uid: user.uid } })
   }

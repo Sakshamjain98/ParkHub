@@ -1,0 +1,105 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "API: Docker + Prisma",
+      "type": "shell",
+      "command": "cd apps/api && docker compose up -d && yarn prisma studio",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": { "panel": "new", "group": "api" }
+    },
+    {
+      "label": "API: Dev",
+      "type": "shell",
+      "command": "cd apps/api && yarn dev",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": { "panel": "new", "group": "api" }
+    },
+    {
+      "label": "API: Shell",
+      "type": "shell",
+      "command": "cd apps/api",
+      "presentation": { "panel": "new", "group": "api" }
+    },
+
+    {
+      "label": "Web: Dev",
+      "type": "shell",
+      "command": "cd apps/web && yarn dev",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": { "panel": "new", "group": "web" }
+    },
+    {
+      "label": "Web: Shell",
+      "type": "shell",
+      "command": "cd apps/web",
+      "presentation": { "panel": "new", "group": "web" }
+    },
+
+    {
+      "label": "Web Admin: Dev",
+      "type": "shell",
+      "command": "cd apps/web-admin && yarn dev",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": { "panel": "new", "group": "admin" }
+    },
+    {
+      "label": "Web Admin: Shell",
+      "type": "shell",
+      "command": "cd apps/web-admin",
+      "presentation": { "panel": "new", "group": "admin" }
+    },
+
+    {
+      "label": "Web Manager: Dev",
+      "type": "shell",
+      "command": "cd apps/web-manager && yarn dev",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": { "panel": "new", "group": "manager" }
+    },
+    {
+      "label": "Web Manager: Shell",
+      "type": "shell",
+      "command": "cd apps/web-manager",
+      "presentation": { "panel": "new", "group": "manager" }
+    },
+
+    {
+      "label": "Web Valet: Dev",
+      "type": "shell",
+      "command": "cd apps/web-valet && yarn dev",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": { "panel": "new", "group": "valet" }
+    },
+    {
+      "label": "Web Valet: Shell",
+      "type": "shell",
+      "command": "cd apps/web-valet",
+      "presentation": { "panel": "new", "group": "valet" }
+    },
+
+    {
+      "label": "Dev: All",
+      "dependsOn": [
+        "API: Docker + Prisma",
+        "API: Dev",
+        "API: Shell",
+        "Web: Dev",
+        "Web: Shell",
+        "Web Admin: Dev",
+        "Web Admin: Shell",
+        "Web Manager: Dev",
+        "Web Manager: Shell",
+        "Web Valet: Dev",
+        "Web Valet: Shell"
+      ],
+      "dependsOrder": "parallel"
+    }
+  ]
+}

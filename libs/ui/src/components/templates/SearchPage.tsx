@@ -23,7 +23,6 @@ export const SearchPage = () => {
     formState: { errors },
     trigger,
   } = useFormContext<FormTypeSearchGarage>()
-  console.log('errors ', errors)
   const formData = watch()
 
   const handleMapChange = useCallback(
@@ -50,17 +49,17 @@ export const SearchPage = () => {
     >
       <ShowGarages />
       <Panel position="left-top">
-        <div className="flex flex-col items-stretch">
+        <div className="flex max-w-[22rem] flex-col items-stretch gap-2">
           <SearchPlaceBox />
-          <div className="flex relative pl-1 flex-col mt-1 bg-white border border-gray-200 shadow items-center gap-1">
-            <div className=" absolute left-[1px] top-1/2 -translate-y-1/2 ">
-              <IconArrowDown className="p-1" />
+          <div className="relative flex flex-col gap-1 rounded-lg border border-gray-200 bg-white p-2 shadow-sm">
+            <div className="absolute left-2 top-1/2 -translate-y-1/2">
+              <IconArrowDown className="p-1 text-gray-500" />
             </div>
-            <div className="flex gap-1 items-center">
+            <div className="flex items-center gap-1.5 rounded-md border border-gray-100 bg-gray-50 px-2">
               <IconType time={formData.startTime} />
               <HtmlInput
                 type="datetime-local"
-                className="w-full p-2 text-lg font-light border-0"
+                className="w-full border-0 bg-transparent py-2 text-sm font-medium"
                 min={toLocalISOString(new Date()).slice(0, 16)}
                 {...register('startTime', {
                   onChange(event) {
@@ -70,12 +69,12 @@ export const SearchPage = () => {
                 })}
               />
             </div>
-            <div className="flex gap-1 items-center">
+            <div className="flex items-center gap-1.5 rounded-md border border-gray-100 bg-gray-50 px-2">
               <IconType time={formData.endTime} />
               <HtmlInput
                 min={toLocalISOString(new Date()).slice(0, 16)}
                 type="datetime-local"
-                className="w-full p-2 text-lg font-light border-0"
+                className="w-full border-0 bg-transparent py-2 text-sm font-medium"
                 {...register('endTime', {
                   onChange(event) {
                     trigger('endTime')
@@ -93,7 +92,10 @@ export const SearchPage = () => {
         <Panel position="center-bottom">
           {Object.entries(errors).map(([key, value]) => {
             return (
-              <div className="text-red-800 p-2 shadow bg-white" key={key}>
+              <div
+                className="rounded-md border border-red-200 bg-white px-3 py-2 text-sm font-medium text-red-800 shadow-sm"
+                key={key}
+              >
                 {key}: {value.message}
               </div>
             )

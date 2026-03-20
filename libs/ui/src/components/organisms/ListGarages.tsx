@@ -6,7 +6,6 @@ import { useTakeSkip } from '@ParkHub/util/hooks/pagination'
 import { useQuery } from '@apollo/client'
 import {} from '@ParkHub/network/src/gql/generated'
 import { ShowData } from './ShowData'
-import { dividerClasses } from '@mui/material'
 import { IconPlus } from '@tabler/icons-react'
 import Link from 'next/link'
 import { GarageCard } from './GarageCard'
@@ -38,13 +37,13 @@ export const ListGarages = ({
         setSkip,
         setTake,
       }}
-      childrenClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-3"
+      childrenClassName="grid grid-cols-1 gap-4 pt-3 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3"
       title={
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <div>Garages</div>
           <Link
             href="/new-garage"
-            className="rounded-full border border-black p-0.5"
+            className="rounded-full border border-gray-300 bg-white p-0.5 shadow-sm"
           >
             <IconPlus />
           </Link>

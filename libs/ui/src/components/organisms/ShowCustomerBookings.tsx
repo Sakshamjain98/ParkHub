@@ -10,8 +10,10 @@ import { ShowData } from './ShowData'
 import { CustomerBookingCard } from './CustomerBookingCard'
 
 export const ShowCustomerBookings = ({
+  title,
   statuses,
 }: {
+  title: string
   statuses: BookingStatus[]
 }) => {
   const session = useSession()
@@ -35,6 +37,8 @@ export const ShowCustomerBookings = ({
     <ShowData
       error={error?.message}
       loading={loading}
+      title={title}
+      childrenClassName="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3"
       pagination={{
         skip,
         take,

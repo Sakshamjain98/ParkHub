@@ -11,18 +11,21 @@ export const ListGarageBookings = ({ garageId }: IListBookingsProps) => {
   const [value, setValue] = useState<0 | 1 | 2>(0)
 
   return (
-    <div>
-      <Tabs
-        value={value}
-        onChange={(e, v) => setValue(v)}
-        aria-label="bookings"
-      >
-        <Tab label={'IN'} />
-        <Tab label={'OUT'} />
-        <Tab label={'RESOLVED'} />
-      </Tabs>
+    <div className="space-y-2 sm:space-y-3">
+      <div className="rounded-lg border border-gray-200 bg-white px-3 shadow-sm sm:px-4">
+        <Tabs
+          value={value}
+          onChange={(e, v) => setValue(v)}
+          aria-label="bookings"
+        >
+          <Tab label={'IN'} />
+          <Tab label={'OUT'} />
+          <Tab label={'RESOLVED'} />
+        </Tabs>
+      </div>
       <TabPanel value={value} index={0}>
         <ShowGarageBookings
+          title={'Inbound bookings'}
           garageId={garageId}
           statuses={[
             BookingStatus.Booked,
@@ -34,6 +37,7 @@ export const ListGarageBookings = ({ garageId }: IListBookingsProps) => {
       </TabPanel>
       <TabPanel value={value} index={1}>
         <ShowGarageBookings
+          title={'Outbound bookings'}
           garageId={garageId}
           statuses={[
             BookingStatus.CheckedIn,
@@ -44,6 +48,7 @@ export const ListGarageBookings = ({ garageId }: IListBookingsProps) => {
       </TabPanel>
       <TabPanel value={value} index={2}>
         <ShowGarageBookings
+          title={'Resolved bookings'}
           garageId={garageId}
           statuses={[BookingStatus.CheckedOut]}
         />

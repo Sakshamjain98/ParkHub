@@ -10,7 +10,7 @@ export default function Page({
   const garageId = Number(searchParams['garageId'])
 
   return (
-    <main>
+    <main className="mx-auto w-full max-w-7xl px-3 pb-8 pt-3 sm:px-6 sm:pt-4">
       <IsLoggedIn>
         <IsManager>
           <ListGarageBookings garageId={garageId} />

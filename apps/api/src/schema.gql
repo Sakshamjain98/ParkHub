@@ -1507,13 +1507,14 @@ input UpdateValetAssignmentInput {
 }
 
 input CreateBookingTimelineInput {
-  status: BookingStatus!
   bookingId: Int!
+  status: BookingStatus!
 }
 
 input UpdateBookingTimelineInput {
-  status: BookingStatus
   bookingId: Int
+  status: BookingStatus
+  id: Int!
 }
 
 input CreateReviewInput {

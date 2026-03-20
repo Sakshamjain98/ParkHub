@@ -19,7 +19,7 @@ export const ListValets = () => {
         setSkip,
         setTake,
       }}
-      childrenClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-3"
+      childrenClassName="grid grid-cols-1 gap-4 pt-3 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3"
       title="Valets"
     >
       {data?.companyValets.map((valet) => (

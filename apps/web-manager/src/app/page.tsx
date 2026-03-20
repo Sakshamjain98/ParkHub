@@ -7,7 +7,11 @@ export default function Home() {
   return (
     <IsLoggedIn>
       <IsManager>
-        {(companyId) => <ListGarages companyId={companyId} />}
+        {(companyId) => (
+          <main className="mx-auto w-full max-w-7xl px-3 pb-8 pt-3 sm:px-6 sm:pt-4">
+            <ListGarages companyId={companyId} />
+          </main>
+        )}
       </IsManager>
     </IsLoggedIn>
   )

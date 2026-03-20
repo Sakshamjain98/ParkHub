@@ -2294,12 +2294,6 @@ export type CreateValetMutation = {
 
 export type CompanyValetsQueryVariables = Exact<{
   distinct?: InputMaybe<Array<ValetScalarFieldEnum> | ValetScalarFieldEnum>
-  skip?: InputMaybe<Scalars['Float']['input']>
-  take?: InputMaybe<Scalars['Float']['input']>
-  cursor?: InputMaybe<ValetWhereUniqueInput>
-  orderBy?: InputMaybe<
-    Array<ValetOrderByWithRelationInput> | ValetOrderByWithRelationInput
-  >
   where?: InputMaybe<ValetWhereInput>
 }>
 
@@ -4597,44 +4591,6 @@ export const CompanyValetsDocument = {
         },
         {
           kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
-          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Float' } },
-        },
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
-          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Float' } },
-        },
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'cursor' },
-          },
-          type: {
-            kind: 'NamedType',
-            name: { kind: 'Name', value: 'ValetWhereUniqueInput' },
-          },
-        },
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'orderBy' },
-          },
-          type: {
-            kind: 'ListType',
-            type: {
-              kind: 'NonNullType',
-              type: {
-                kind: 'NamedType',
-                name: { kind: 'Name', value: 'ValetOrderByWithRelationInput' },
-              },
-            },
-          },
-        },
-        {
-          kind: 'VariableDefinition',
           variable: {
             kind: 'Variable',
             name: { kind: 'Name', value: 'where' },
@@ -4658,46 +4614,6 @@ export const CompanyValetsDocument = {
                 value: {
                   kind: 'Variable',
                   name: { kind: 'Name', value: 'distinct' },
-                },
-              },
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'skip' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'skip' },
-                },
-              },
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'take' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'take' },
-                },
-              },
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'cursor' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'cursor' },
-                },
-              },
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'orderBy' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'orderBy' },
-                },
-              },
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'where' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'where' },
                 },
               },
             ],

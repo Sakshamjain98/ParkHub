@@ -9,7 +9,7 @@ export default function Home() {
       <IsLoggedIn>
         {(uid) => (
           <IsValet uid={uid}>
-            <ValetHome />
+            <ValetHome uid={uid} />
           </IsValet>
         )}
       </IsLoggedIn>

@@ -34,6 +34,9 @@ export const AddValet = () => {
       reset()
       setOpen(false)
     },
+    onError(error) {
+      toast(error.message)
+    },
     awaitRefetchQueries: true,
     refetchQueries: [namedOperations.Query.companyValets],
   })

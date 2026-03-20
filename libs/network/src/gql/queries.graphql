@@ -301,22 +301,8 @@ mutation CreateValet($createValetInput: CreateValetInput!) {
   }
 }
 
-query companyValets(
-  $distinct: [ValetScalarFieldEnum!]
-  $skip: Float
-  $take: Float
-  $cursor: ValetWhereUniqueInput
-  $orderBy: [ValetOrderByWithRelationInput!]
-  $where: ValetWhereInput
-) {
-  companyValets(
-    distinct: $distinct
-    skip: $skip
-    take: $take
-    cursor: $cursor
-    orderBy: $orderBy
-    where: $where
-  ) {
+query companyValets($distinct: [ValetScalarFieldEnum!], $where: ValetWhereInput) {
+  companyValets(distinct: $distinct) {
     displayName
     uid
     createdAt

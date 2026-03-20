@@ -1,3 +1,4 @@
+```mermaid
 flowchart LR
   Customer((Customer))
   Manager((Manager))
@@ -28,3 +29,4 @@ flowchart LR
   Valet --> UC9
 
   Admin --> UC10
+```

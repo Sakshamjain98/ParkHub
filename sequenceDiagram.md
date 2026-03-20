@@ -1,3 +1,4 @@
+```mermaid
 sequenceDiagram
   autonumber
   actor Customer
@@ -36,3 +37,4 @@ sequenceDiagram
   Valet->>API: Update assignment/status transitions
   API->>DB: Append booking timeline and new status
   API-->>Web: Updated status visible to customer
+```

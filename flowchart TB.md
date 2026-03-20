@@ -1,3 +1,4 @@
+```mermaid
 flowchart TB
   subgraph Clients
     C[Customer Portal\napps/web :3001]
@@ -32,3 +33,4 @@ flowchart TB
   API --> DB[(PostgreSQL)]
   API --> REDIS[(Redis)]
   API --> STRIPE[[Stripe]]
+```

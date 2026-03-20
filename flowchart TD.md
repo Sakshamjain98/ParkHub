@@ -1,3 +1,4 @@
+```mermaid
 flowchart TD
   subgraph Frontend
     FE1[Next.js Portals]
@@ -24,3 +25,4 @@ flowchart TD
   A2 --> S2
   A3 --> S3
   S3 --> A3
+```

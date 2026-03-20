@@ -39,7 +39,7 @@ export const ShowData = ({
   const totalPages = Math.ceil((totalCount || 0) / take)
 
   return (
-    <section className="space-y-2.5 px-2 pb-16 pt-4 sm:px-0 sm:pb-4 sm:pt-5">
+    <section className="space-y-2.5 px-2 pb-4 pt-4 sm:px-0 sm:pt-5">
       <div className="flex items-end justify-between gap-3">
         <h2 className="text-xl font-semibold tracking-tight text-black">{title}</h2>
         <p className="text-xs font-medium uppercase tracking-wide text-gray-500">

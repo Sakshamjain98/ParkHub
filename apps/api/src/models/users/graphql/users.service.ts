@@ -14,6 +14,11 @@ import {
 import { UpdateUserInput } from './dtos/update-user.input'
 import * as bcrypt from 'bcryptjs'
 import { JwtService } from '@nestjs/jwt'
+import { createHash, randomBytes, randomUUID } from 'crypto'
+import { Prisma } from '@prisma/client'
+
+const ACCESS_TOKEN_TTL_SECONDS = 24 * 60 * 60
+const REFRESH_TOKEN_TTL_SECONDS = 7 * 24 * 60 * 60
 
 @Injectable()
 export class UsersService {
@@ -21,6 +26,79 @@ export class UsersService {
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
   ) {}
+
+  private hashRefreshToken(token: string) {
+    return createHash('sha256').update(token).digest('hex')
+  }
+
+  private generateRefreshToken() {
+    return randomBytes(64).toString('hex')
+  }
+
+  private async getUserRoles(uid: string, tx?: Prisma.TransactionClient) {
+    const db = tx || this.prisma
+    const [admin, manager, valet] = await Promise.all([
+      db.admin.findUnique({ where: { uid }, select: { uid: true } }),
+      db.manager.findUnique({ where: { uid }, select: { uid: true } }),
+      db.valet.findUnique({ where: { uid }, select: { uid: true } }),
+    ])
+
+    return [
+      ...(admin ? ['admin'] : []),
+      ...(manager ? ['manager'] : []),
+      ...(valet ? ['valet'] : []),
+    ]
+  }
+
+  private createAccessToken(uid: string, roles: string[]) {
+    return this.jwtService.sign(
+      { uid, roles },
+      {
+        algorithm: 'HS256',
+        expiresIn: ACCESS_TOKEN_TTL_SECONDS,
+      },
+    )
+  }
+
+  private async createRefreshTokenRecord(
+    uid: string,
+    familyId?: string,
+    parentId?: string,
+    tx?: Prisma.TransactionClient,
+  ) {
+    const db = tx || this.prisma
+    const refreshToken = this.generateRefreshToken()
+    const tokenHash = this.hashRefreshToken(refreshToken)
+    const expiresAt = new Date(Date.now() + REFRESH_TOKEN_TTL_SECONDS * 1000)
+
+    const created = await db.refreshToken.create({
+      data: {
+        uid,
+        tokenHash,
+        familyId: familyId || randomUUID(),
+        parentId,
+        expiresAt,
+      },
+    })
+
+    return { refreshToken, created }
+  }
+
+  private async buildLoginOutput(uid: string, refreshToken: string): Promise<LoginOutput> {
+    const user = await this.prisma.user.findUnique({ where: { uid } })
+    if (!user) {
+      throw new UnauthorizedException('User not found while issuing login output.')
+    }
+
+    const roles = await this.getUserRoles(uid)
+    const token = this.createAccessToken(uid, roles)
+
+    return {
+      token,
+      refreshToken,
+      user,
+    }
+  }
 
   private async generateCredentialUserUid() {
     const currentDate = new Date()
@@ -66,9 +144,8 @@ export class UsersService {
     name,
     password,
     image,
-  }: RegisterWithCredentialsInput,
-  options?: { assignAdmin?: boolean },
-  ) {
+    role,
+  }: RegisterWithCredentialsInput) {
     const existingUser = await this.prisma.credentials.findUnique({
       where: { email },
     })
@@ -88,6 +165,15 @@ export class UsersService {
         uid,
         name,
         image,
+        ...(role === 'manager'
+          ? {
+              Manager: {
+                create: {
+                  displayName: name,
+                },
+              },
+            }
+          : {}),
         Credentials: {
           create: {
             email,
@@ -99,13 +185,6 @@ export class UsersService {
             type: 'CREDENTIALS',
           },
         },
-        ...(options?.assignAdmin
-          ? {
-              Admin: {
-                create: {},
-              },
-            }
-          : {}),
       },
       include: {
         Credentials: true,
@@ -136,14 +215,62 @@ export class UsersService {
       throw new UnauthorizedException('Invalid email or password.')
     }
 
-    const jwtToken = this.jwtService.sign(
-      { uid: user.uid },
-      {
-        algorithm: 'HS256',
-      },
-    )
+    const { refreshToken } = await this.createRefreshTokenRecord(user.uid)
 
-    return { token: jwtToken, user }
+    return this.buildLoginOutput(user.uid, refreshToken)
+  }
+
+  async refreshLogin(refreshToken: string): Promise<LoginOutput> {
+    if (!refreshToken) {
+      throw new UnauthorizedException('Missing refresh token.')
+    }
+
+    const tokenHash = this.hashRefreshToken(refreshToken)
+    const currentToken = await this.prisma.refreshToken.findUnique({
+      where: { tokenHash },
+    })
+
+    if (!currentToken) {
+      throw new UnauthorizedException('Invalid refresh token.')
+    }
+
+    if (currentToken.revokedAt) {
+      await this.prisma.refreshToken.updateMany({
+        where: { familyId: currentToken.familyId, revokedAt: null },
+        data: { revokedAt: new Date() },
+      })
+      throw new UnauthorizedException('Refresh token reuse detected.')
+    }
+
+    if (currentToken.expiresAt.getTime() <= Date.now()) {
+      await this.prisma.refreshToken.update({
+        where: { id: currentToken.id },
+        data: { revokedAt: new Date() },
+      })
+      throw new UnauthorizedException('Refresh token expired.')
+    }
+
+    const result = await this.prisma.$transaction(async (tx) => {
+      const { refreshToken: nextRefreshToken, created } =
+        await this.createRefreshTokenRecord(
+          currentToken.uid,
+          currentToken.familyId,
+          currentToken.id,
+          tx,
+        )
+
+      await tx.refreshToken.update({
+        where: { id: currentToken.id },
+        data: { revokedAt: new Date() },
+      })
+
+      return {
+        uid: currentToken.uid,
+        refreshToken: nextRefreshToken,
+      }
+    })
+
+    return this.buildLoginOutput(result.uid, result.refreshToken)
   }
 
   findAll(args: FindManyUserArgs) {

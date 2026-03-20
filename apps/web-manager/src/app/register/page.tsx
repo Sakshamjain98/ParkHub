@@ -4,7 +4,7 @@ import { AuthLayout } from '@ParkHub/ui/src/components/molecules/AuthLayout'
 export default function Page() {
   return (
     <AuthLayout title={'Register'}>
-      <RegisterForm />
+      <RegisterForm role="manager" />
     </AuthLayout>
   )
 }

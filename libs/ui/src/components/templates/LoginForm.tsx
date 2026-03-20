@@ -12,8 +12,12 @@ import { IconEye, IconEyeOff } from '@tabler/icons-react'
 
 export interface ILoginFormProps {
   className?: string
+  showRegisterLink?: boolean
 }
-export const LoginForm = ({ className }: ILoginFormProps) => {
+export const LoginForm = ({
+  className,
+  showRegisterLink = true,
+}: ILoginFormProps) => {
   const {
     register,
     handleSubmit,
@@ -74,17 +78,19 @@ export const LoginForm = ({ className }: ILoginFormProps) => {
       <Button type="submit" fullWidth size="lg" loading={loading}>
         Login
       </Button>
-      <div className="mt-1 text-sm text-white/80">
-        Don&apos;t have a ParkHub account?
-        <br />
-        <Link
-          href="/register"
-          className="font-semibold text-primary underline underline-offset-4"
-        >
-          Create one
-        </Link>{' '}
-        now.
-      </div>
+      {showRegisterLink ? (
+        <div className="mt-1 text-sm text-white/80">
+          Don&apos;t have a ParkHub account?
+          <br />
+          <Link
+            href="/register"
+            className="font-semibold text-primary underline underline-offset-4"
+          >
+            Create one
+          </Link>{' '}
+          now.
+        </div>
+      ) : null}
     </Form>
   )
 }

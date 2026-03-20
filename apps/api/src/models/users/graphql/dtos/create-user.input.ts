@@ -9,6 +9,7 @@ import { User } from '../entity/user.entity'
 import { AuthProviderType } from '@prisma/client'
 import {
   IsEmail,
+  IsIn,
   IsEnum,
   IsOptional,
   IsString,
@@ -66,6 +67,12 @@ export class RegisterWithCredentialsInput extends PickType(
   @MinLength(6)
   @Field()
   password: string
+
+  @IsOptional()
+  @IsString()
+  @IsIn(['admin', 'manager', 'valet'])
+  @Field(() => String, { nullable: true })
+  role?: 'admin' | 'manager' | 'valet'
 }
 
 @InputType()
@@ -78,6 +85,10 @@ export class LoginInput extends PickType(RegisterWithCredentialsInput, [
 export class LoginOutput {
   @Field()
   token: string
+
+  @Field(() => String)
+  refreshToken: string
+
   @Field(() => User)
   user: User
 }

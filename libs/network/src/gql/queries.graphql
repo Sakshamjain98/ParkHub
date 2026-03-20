@@ -42,6 +42,18 @@ query Companies(
 mutation Login($loginInput: LoginInput!) {
   login(loginInput: $loginInput) {
     token
+    refreshToken
+    user {
+      name
+      image
+    }
+  }
+}
+
+mutation RefreshLogin($refreshToken: String!) {
+  refreshLogin(refreshToken: $refreshToken) {
+    token
+    refreshToken
     user {
       name
       image

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getToken } from 'next-auth/jwt'
 
+const PUBLIC_PATHS = ['/login', '/register']
+
 const getSessionCookieName = () => {
   const secure = (process.env.NEXTAUTH_URL || '').startsWith('https://')
   const prefix = secure ? '__Secure-' : ''
@@ -33,18 +35,19 @@ async function handleMiddleware(request: NextRequest) {
   const roles = Array.isArray(decodedToken?.roles)
     ? (decodedToken.roles as string[])
     : []
-  const hasAdminRole = roles.includes('admin')
+  const hasValetRole = roles.includes('valet')
 
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api') ||
-    pathname === '/favicon.ico'
+    pathname === '/favicon.ico' ||
+    pathname.startsWith('/register')
   ) {
     return NextResponse.next()
   }
 
   if (pathname.startsWith('/login')) {
-    if (decodedToken && hasAdminRole) {
+    if (decodedToken && hasValetRole) {
       const rootUrl = request.nextUrl.clone()
       rootUrl.pathname = '/'
       return NextResponse.redirect(rootUrl)
@@ -53,13 +56,7 @@ async function handleMiddleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  if (pathname.startsWith('/register')) {
-    const loginUrl = request.nextUrl.clone()
-    loginUrl.pathname = '/login'
-    return NextResponse.redirect(loginUrl)
-  }
-
-  if (!decodedToken || !hasAdminRole) {
+  if (!decodedToken || !hasValetRole) {
     const loginUrl = request.nextUrl.clone()
     loginUrl.pathname = '/login'
     loginUrl.searchParams.set('callbackUrl', pathname)

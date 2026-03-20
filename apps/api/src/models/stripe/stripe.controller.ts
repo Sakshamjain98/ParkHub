@@ -49,6 +49,17 @@ class StripeWebhookAckDto {
   duplicate?: boolean
 }
 
+class StripeSuccessResponseDto {
+  @ApiProperty({ example: true })
+  received: boolean
+
+  @ApiProperty({ required: false, example: true })
+  ignored?: boolean
+
+  @ApiProperty({ required: false, example: true })
+  duplicate?: boolean
+}
+
 @ApiTags('stripe')
 @Controller('stripe')
 export class StripeController {
@@ -117,6 +128,31 @@ export class StripeController {
     return bookingInput
   }
 
+  private async persistBookingFromSession(session: Stripe.Checkout.Session) {
+    if (session.payment_status !== 'paid') {
+      return { received: true, ignored: true }
+    }
+
+    const bookingInput = this.parseBookingInputFromSession(session)
+
+    const existingBooking = await this.bookingService.findAll({
+      where: {
+        customerId: { equals: bookingInput.customerId },
+        vehicleNumber: { equals: bookingInput.vehicleNumber },
+        startTime: { equals: new Date(bookingInput.startTime).toISOString() },
+        endTime: { equals: new Date(bookingInput.endTime).toISOString() },
+      },
+      take: 1,
+    })
+
+    if (existingBooking.length > 0) {
+      return { received: true, duplicate: true }
+    }
+
+    await this.bookingService.create(bookingInput)
+    return { received: true }
+  }
+
   @Post('webhook')
   @HttpCode(200)
   @ApiOperation({
@@ -155,28 +191,7 @@ export class StripeController {
 
     const session = event.data.object as Stripe.Checkout.Session
 
-    if (session.payment_status !== 'paid') {
-      return { received: true, ignored: true }
-    }
-
-    const bookingInput = this.parseBookingInputFromSession(session)
-
-    const existingBooking = await this.bookingService.findAll({
-      where: {
-        customerId: { equals: bookingInput.customerId },
-        vehicleNumber: { equals: bookingInput.vehicleNumber },
-        startTime: { equals: new Date(bookingInput.startTime).toISOString() },
-        endTime: { equals: new Date(bookingInput.endTime).toISOString() },
-      },
-      take: 1,
-    })
-
-    if (existingBooking.length > 0) {
-      return { received: true, duplicate: true }
-    }
-
-    await this.bookingService.create(bookingInput)
-    return { received: true }
+    return this.persistBookingFromSession(session)
   }
 
   @Get('success')
@@ -193,6 +208,7 @@ export class StripeController {
   })
   @ApiOkResponse({
     description: 'Redirects user after successful session validation.',
+    type: StripeSuccessResponseDto,
   })
   @ApiBadRequestResponse({ description: 'Missing or invalid Stripe session id.' })
   async handleStripeSuccess(
@@ -210,6 +226,8 @@ export class StripeController {
     if (!session.id) {
       throw new BadRequestException('Invalid Stripe session.')
     }
+
+    await this.persistBookingFromSession(session)
 
     res.redirect(process.env.BOOKINGS_REDIRECT_URL)
   }

@@ -1314,6 +1314,7 @@ export type RegisterWithCredentialsInput = {
   image?: InputMaybe<Scalars['String']['input']>
   name?: InputMaybe<Scalars['String']['input']>
   password: Scalars['String']['input']
+  role?: InputMaybe<Scalars['String']['input']>
 }
 
 export type RegisterWithProviderInput = {

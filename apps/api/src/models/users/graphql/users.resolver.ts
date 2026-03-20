@@ -5,7 +5,6 @@ import {
   Args,
   ResolveField,
   Parent,
-  Context,
 } from '@nestjs/graphql'
 import { UsersService } from './users.service'
 import { AuthProvider, User } from './entity/user.entity'
@@ -39,29 +38,8 @@ export class UsersResolver {
   async registerWithCredentials(
     @Args('registerWithCredentialsInput')
     args: RegisterWithCredentialsInput,
-    @Context()
-    context: { req?: { headers?: Record<string, string | string[]> } },
   ) {
-    const originHeader = context?.req?.headers?.origin
-    const refererHeader = context?.req?.headers?.referer
-    const hostHeader = context?.req?.headers?.host
-
-    const origin = Array.isArray(originHeader)
-      ? originHeader.join(' ')
-      : originHeader || ''
-    const referer = Array.isArray(refererHeader)
-      ? refererHeader.join(' ')
-      : refererHeader || ''
-    const host = Array.isArray(hostHeader)
-      ? hostHeader.join(' ')
-      : hostHeader || ''
-
-    const adminRequestSource = `${origin} ${referer} ${host}`
-    const assignAdmin =
-      adminRequestSource.includes('localhost:3004') ||
-      adminRequestSource.includes('web-admin')
-
-    return this.usersService.registerWithCredentials(args, { assignAdmin })
+    return this.usersService.registerWithCredentials(args)
   }
 
   @Mutation(() => User, {
@@ -78,6 +56,13 @@ export class UsersResolver {
   })
   async login(@Args('loginInput') args: LoginInput) {
     return this.usersService.login(args)
+  }
+
+  @Mutation(() => LoginOutput, {
+    description: 'Rotate refresh token and issue a new access token.',
+  })
+  async refreshLogin(@Args('refreshToken') refreshToken: string) {
+    return this.usersService.refreshLogin(refreshToken)
   }
 
   @AllowAuthenticated()

@@ -10,9 +10,14 @@ import { GoogleButton } from './GoogleButton'
 export interface IAuthLayoutProps {
   children: ReactNode
   title: string
+  showBackToHome?: boolean
 }
 
-export const AuthLayout = ({ title, children }: IAuthLayoutProps) => {
+export const AuthLayout = ({
+  title,
+  children,
+  showBackToHome = true,
+}: IAuthLayoutProps) => {
   return (
     <div className="relative left-1/2 right-1/2 h-[calc(100svh-4rem)] min-h-[calc(100vh-4rem)] w-screen -ml-[50vw] -mr-[50vw] overflow-hidden">
       <CarScene
@@ -41,10 +46,15 @@ export const AuthLayout = ({ title, children }: IAuthLayoutProps) => {
               </div>
               <GoogleButton />
             </div>
-            <Link href="/" className="mx-auto flex w-fit items-center gap-2 text-white/80 transition-colors hover:text-white">
-              <IconArrowBack className="h-4 w-4" />
-              Back to home
-            </Link>
+            {showBackToHome ? (
+              <Link
+                href="/"
+                className="mx-auto flex w-fit items-center gap-2 text-white/80 transition-colors hover:text-white"
+              >
+                <IconArrowBack className="h-4 w-4" />
+                Back to home
+              </Link>
+            ) : null}
           </div>
         </div>
       </div>

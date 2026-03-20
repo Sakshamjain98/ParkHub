@@ -8,22 +8,34 @@ export interface IValetCardProps {
 
 export const ValetCard = ({ valet }: IValetCardProps) => {
   return (
-    <div className="space-y-2">
-      <div className="p-1 border-2 shadow-lg border-primary">
+    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-shadow hover:shadow-md">
+      <div className="aspect-square overflow-hidden bg-gray-100">
         <Image
-          className="object-cover w-full aspect-square "
-          width={200}
+          className="h-full w-full object-cover"
+          width={300}
           height={300}
           src={valet.image || '/valet.jpeg'}
-          alt={''}
+          alt={valet.displayName}
         />
       </div>
-      <div>
-        <div className="font-semibold ">{valet.displayName}</div>
-        <div className="mb-1 text-xs ">{valet.uid}</div>
-        <div className="mb-1 text-xs ">{valet.licenceID}</div>
-        <div className="text-xs text-gray">
-          {format(new Date(valet.createdAt), 'PP')}
+      <div className="flex flex-col gap-2 p-3">
+        <div className="flex items-start justify-between gap-2">
+          <p className="text-[11px] font-medium text-gray-600">#{valet.uid}</p>
+          <span className="rounded-full bg-blue-50 px-2 py-0.5 text-[11px] font-medium text-blue-700">
+            Active
+          </span>
+        </div>
+
+        <div>
+          <h2 className="text-md font-semibold leading-tight text-black">
+            {valet.displayName}
+          </h2>
+          <p className="mt-0.5 text-xs text-gray-600">
+            License: {valet.licenceID}
+          </p>
+          <p className="mt-1 text-xs text-gray-500">
+            Joined {format(new Date(valet.createdAt), 'MMM dd, yyyy')}
+          </p>
         </div>
       </div>
     </div>

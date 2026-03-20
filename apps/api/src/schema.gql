@@ -22,6 +22,7 @@ enum AuthProviderType {
 
 type LoginOutput {
   token: String!
+  refreshToken: String!
   user: User!
 }
 
@@ -103,6 +104,9 @@ enum BookingStatus {
 }
 
 type Company {
+  id: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   displayName: String
   description: String
   garages: [Garage!]!
@@ -764,6 +768,17 @@ type SlotTypeCount {
   count: Int
 }
 
+type Address {
+  id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  address: String
+  lat: Float
+  lng: Float
+  garageId: Float
+  garage: Garage
+}
+
 type Slot {
   displayName: String
   pricePerHour: Float!
@@ -777,17 +792,6 @@ type Slot {
 
 type ReturnCount {
   count: Int!
-}
-
-type Address {
-  id: Int!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  address: String
-  lat: Float
-  lng: Float
-  garageId: Float
-  garage: Garage
 }
 
 type MinimalSlotGroupBy {
@@ -1192,6 +1196,9 @@ type Mutation {
   """Authenticate a user and return an access token."""
   login(loginInput: LoginInput!): LoginOutput!
 
+  """Rotate refresh token and issue a new access token."""
+  refreshLogin(refreshToken: String!): LoginOutput!
+
   """Update an existing user."""
   updateUser(updateUserInput: UpdateUserInput!): User!
 
@@ -1340,6 +1347,7 @@ input RegisterWithCredentialsInput {
   name: String
   email: String!
   password: String!
+  role: String
 }
 
 input RegisterWithProviderInput {
@@ -1391,7 +1399,7 @@ input CreateValetInput {
 }
 
 input UpdateValetInput {
-  uid: String
+  uid: String!
   displayName: String
   image: String
   licenceID: String
@@ -1401,23 +1409,47 @@ input UpdateValetInput {
 input CreateCompanyInput {
   displayName: String
   description: String
+  managerId: String!
+  managerName: String
 }
 
 input UpdateCompanyInput {
   displayName: String
   description: String
+  managerId: String
+  managerName: String
 }
 
 input CreateGarageInput {
   displayName: String
   description: String
   images: [String!]
+  Address: CreateAddressInputWithoutGarageId!
+  Slots: [CreateSlotInputWithoutGarageId!]!
+}
+
+input CreateAddressInputWithoutGarageId {
+  address: String
+  lat: Float
+  lng: Float
+}
+
+input CreateSlotInputWithoutGarageId {
+  displayName: String
+  pricePerHour: Float!
+  length: Float
+  width: Float
+  height: Float
+  type: SlotType!
+  count: Int!
 }
 
 input UpdateGarageInput {
   displayName: String
   description: String
   images: [String!]
+  Address: CreateAddressInputWithoutGarageId
+  Slots: [CreateSlotInputWithoutGarageId!]
 }
 
 input CreateAddressInput {
@@ -1441,6 +1473,7 @@ input CreateSlotInput {
   width: Float
   height: Float
   type: SlotType!
+  garageId: Int!
 }
 
 input UpdateSlotInput {
@@ -1450,6 +1483,7 @@ input UpdateSlotInput {
   width: Float
   height: Float
   type: SlotType
+  garageId: Int
 }
 
 input CreateValetAssignmentInput {

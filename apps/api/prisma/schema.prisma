@@ -21,12 +21,13 @@ model User {
     name  String?
     image String?
 
-    Credentials  Credentials?
-    AuthProvider AuthProvider?
-    Admin        Admin?
-    Manager      Manager?
-    Valet        Valet?
-    Customer     Customer?
+    Credentials   Credentials?
+    AuthProvider  AuthProvider?
+    Admin         Admin?
+    Manager       Manager?
+    Valet         Valet?
+    Customer      Customer?
+    RefreshTokens RefreshToken[]
 }
 
 model Admin {
@@ -54,6 +55,29 @@ model AuthProvider {
 
     type AuthProviderType
     User User             @relation(fields: [uid], references: [uid])
+}
+
+model RefreshToken {
+    id String @id @default(cuid())
+
+    uid  String
+    User User   @relation(fields: [uid], references: [uid])
+
+    tokenHash String @unique
+    familyId  String
+
+    parentId String?
+    Parent   RefreshToken?  @relation("RefreshTokenRotation", fields: [parentId], references: [id])
+    Children RefreshToken[] @relation("RefreshTokenRotation")
+
+    revokedAt DateTime?
+    expiresAt DateTime
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([uid])
+    @@index([familyId])
 }
 
 enum AuthProviderType {

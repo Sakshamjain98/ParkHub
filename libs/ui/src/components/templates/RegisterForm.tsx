@@ -34,7 +34,10 @@ export const RegisterForm = ({ className, role }: ISignupFormProps) => {
       onSubmit={handleSubmit(async (formData) => {
         const { data, errors } = await registerWithCredentials({
           variables: {
-            registerWithCredentialsInput: formData,
+            registerWithCredentialsInput: {
+              ...formData,
+              ...(role ? { role } : {}),
+            },
           },
         })
 

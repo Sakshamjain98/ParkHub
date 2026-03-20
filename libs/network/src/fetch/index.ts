@@ -28,10 +28,11 @@ export async function fetchGraphQL<TData, V>({
   config,
   token,
 }: GraphqlRequestOptions<TData, V>): Promise<FetchResult<TData>> {
-  const apiUrl =
-    process.env.NEXT_PUBLIC_API_URL ||
-    process.env.API_URL ||
-    'http://localhost:3000'
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || process.env.API_URL
+
+  if (!apiUrl) {
+    return { error: 'Missing NEXT_PUBLIC_API_URL/API_URL.' }
+  }
 
   const query = print(document)
 

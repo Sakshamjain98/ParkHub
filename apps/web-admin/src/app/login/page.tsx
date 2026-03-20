@@ -3,8 +3,8 @@ import { AuthLayout } from '@ParkHub/ui/src/components/molecules/AuthLayout'
 
 export default function Page() {
   return (
-    <AuthLayout title={'Login'}>
-      <LoginForm />
+    <AuthLayout title={'Login'} showBackToHome={false}>
+      <LoginForm showRegisterLink={false} />
     </AuthLayout>
   )
 }

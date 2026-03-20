@@ -1,76 +1,91 @@
-# ParkHub Workshop
+# ParkHub Quickstart
 
-This repository contains the ParkHub Workshop project, which includes multiple applications and libraries. This guide will help you set up the project locally and run the applications.
+This guide helps you set up and run ParkHub locally. For full architecture, workflows, and diagrams, see [docs/architecture.md](docs/architecture.md).
+
+---
 
 ## Prerequisites
+- Node.js 18+
+- Yarn 1.x
+- Docker + Docker Compose
+- (Optional) Stripe CLI for webhook testing
 
-Before you begin, ensure you have the following installed on your system:
+---
 
-- Node.js (>= 14.x)
-- Yarn (>= 1.22.x)
-- Docker
-- Git
+## Setup
 
-## Getting Started
+1. Clone the repo:
+	 ```bash
+	 git clone <repo-url>
+	 cd ParkHub
+	 ```
+2. Install dependencies:
+	 ```bash
+	 yarn install
+	 ```
+3. Create `.env` files in each app (see [docs/architecture.md](docs/architecture.md#environment-variables) for details).
+4. Start DB/Redis/Nginx:
+	 ```bash
+	 cd apps/api
+	 docker compose up -d
+	 ```
+5. Run API:
+	 ```bash
+	 cd apps/api
+	 yarn dev
+	 ```
+6. Run portals (in separate terminals):
+	 ```bash
+	 cd apps/web && yarn dev
+	 cd apps/web-manager && yarn dev
+	 cd apps/web-valet && yarn dev
+	 cd apps/web-admin && yarn dev
+	 ```
+7. (Optional) Open Prisma Studio:
+	 ```bash
+	 cd apps/api
+	 yarn prisma studio
+	 ```
 
-### 1. Clone the Repository
+---
 
-Clone the repository to your local machine using Git.
+## Useful Commands
+
+From repo root:
+```bash
+yarn format:write   # Format code
+yarn tsc            # TypeScript check
+yarn lint           # Lint code
+yarn build          # Build all apps
+yarn validate       # Full pipeline
+yarn cloc           # Count lines of code
+```
+
+From `apps/api`:
+```bash
+yarn test           # Unit tests
+yarn test:e2e       # E2E tests
+yarn entity:gql     # Generate GraphQL DTOs
+yarn entity:rest    # Generate REST DTOs
+yarn entity:complete
+```
+
+---
+
+## Stripe Webhook Testing (Local)
 
 ```bash
-git clone https://github.com/Sakshamjain98/ParkHub.git
-cd ParkHub-workshop
+# Terminal 1
+cd apps/api && yarn dev
+# Terminal 2
+stripe listen --forward-to http://localhost:3000/stripe/webhook
+# Terminal 3
+stripe trigger checkout.session.completed
 ```
+Set the printed `whsec_...` secret into `STRIPE_WEBHOOK_SECRET`.
 
-### 2. Install Dependencies
+---
 
-Install the project dependencies using Yarn.
+## More Info
 
-```
-yarn install
-```
-
-### 3. Set Up Environment Variables
-
-Create a .env file in the root directory and add the necessary environment variables. Refer to .env.example for the required variables.
-
-### 4. Run the Database with Docker Compose
-
-Start the PostgreSQL database using Docker Compose.
-
-```
-docker-compose up -d
-```
-
-### 5. Run Prisma Migrations
-
-After the database is running, apply Prisma migrations to set up the database schema.
-
-```
-yarn prisma migrate dev
-```
-
-### 6. Run the Applications
-
-You can run the individual applications using the following commands:
-
-#### API Application
-
-Navigate to the apps/api directory and start the API server.
-
-```
-cd apps/api
-yarn dev
-```
-
-#### WEB Applications
-
-Navigate to the apps/web directory and start the WEB server.
-
-```
-cd apps/web
-yarn dev
-```
-
-License
-This project is licensed under the MIT License.
+For full architecture, business flows, and diagrams, see [docs/architecture.md](docs/architecture.md).

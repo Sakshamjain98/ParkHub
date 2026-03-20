@@ -16,7 +16,7 @@ This guide helps you set up and run ParkHub locally. For full architecture, work
 
 1. Clone the repo:
 	 ```bash
-	 git clone <repo-url>
+	 git clone https://github.com/Sakshamjain98/ParkHub.git
 	 cd ParkHub
 	 ```
 2. Install dependencies:

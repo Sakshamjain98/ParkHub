@@ -1,0 +1,18 @@
+# Render service template — fill in your repo and names before applying
+services:
+  - type: web
+    name: parkhub-api
+    env: docker
+    dockerfilePath: apps/api/Dockerfile
+    repo: https://github.com/YOUR_ORG/YOUR_REPO
+    branch: main
+
+databases:
+  - type: postgres
+    name: parkhub-db
+    plan: starter
+    region: oregon
+
+# Note: either create these services from the Render dashboard or adapt this
+# template for render.yaml usage. You'll need to supply repository, build
+# commands and any environment variables (DATABASE_URL, etc.).

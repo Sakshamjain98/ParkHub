@@ -1,0 +1,98 @@
+name: CI Build & Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build & push API image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./apps/api
+          file: ./apps/api/Dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository }}/api:latest
+
+      - name: Build & push web image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./apps/web
+          file: ./apps/web/Dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository }}/web:latest
+
+      - name: Build & push web-admin image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./apps/web-admin
+          file: ./apps/web-admin/Dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository }}/web-admin:latest
+
+      - name: Build & push web-manager image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./apps/web-manager
+          file: ./apps/web-manager/Dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository }}/web-manager:latest
+
+      - name: Build & push web-valet image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./apps/web-valet
+          file: ./apps/web-valet/Dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository }}/web-valet:latest
+
+  deploy-backend:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    steps:
+      - name: Trigger Render deploy for API
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_API_SERVICE_ID: ${{ secrets.RENDER_API_SERVICE_ID }}
+        run: |
+          curl -X POST "https://api.render.com/v1/services/${RENDER_API_SERVICE_ID}/deploys" \
+            -H "Authorization: Bearer ${RENDER_API_KEY}" \
+            -H "Content-Type: application/json" \
+            -d '{"clearCache":false}'
+
+  deploy-vercel:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Vercel CLI
+        run: npm i -g vercel
+
+      - name: Deploy apps to Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          vercel --prod --confirm --token=$VERCEL_TOKEN --cwd=apps/web
+          vercel --prod --confirm --token=$VERCEL_TOKEN --cwd=apps/web-admin
+          vercel --prod --confirm --token=$VERCEL_TOKEN --cwd=apps/web-manager
+          vercel --prod --confirm --token=$VERCEL_TOKEN --cwd=apps/web-valet

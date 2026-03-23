@@ -96,3 +96,87 @@ jobs:
           vercel --prod --confirm --token=$VERCEL_TOKEN --cwd=apps/web-admin
           vercel --prod --confirm --token=$VERCEL_TOKEN --cwd=apps/web-manager
           vercel --prod --confirm --token=$VERCEL_TOKEN --cwd=apps/web-valet
+
+  one-shot-prisma-seed:
+    name: One-shot Prisma seed on Render
+    runs-on: ubuntu-latest
+    needs: deploy-backend
+    steps:
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq curl
+
+      - name: Create RUN_PRISMA_SETUP env var on Render
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_API_SERVICE_ID: ${{ secrets.RENDER_API_SERVICE_ID }}
+        id: create_env
+        run: |
+          set -e
+          echo "Creating RUN_PRISMA_SETUP=true as an env var on Render service ${RENDER_API_SERVICE_ID}"
+          resp=$(curl -s -X POST "https://api.render.com/v1/services/${RENDER_API_SERVICE_ID}/env-vars" \
+            -H "Authorization: Bearer ${RENDER_API_KEY}" \
+            -H "Content-Type: application/json" \
+            -d '{"key":"RUN_PRISMA_SETUP","value":"true","isSecret":false}')
+          echo "$resp"
+          env_id=$(echo "$resp" | jq -r '.id')
+          if [ "$env_id" = "null" ] || [ -z "$env_id" ]; then
+            echo "Failed to create env var: $resp"
+            exit 1
+          fi
+          echo "env_id=$env_id" >> $GITHUB_OUTPUT
+
+      - name: Trigger Render deploy
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_API_SERVICE_ID: ${{ secrets.RENDER_API_SERVICE_ID }}
+        id: trigger_deploy
+        run: |
+          set -e
+          echo "Triggering deploy for Render service ${RENDER_API_SERVICE_ID}"
+          resp=$(curl -s -X POST "https://api.render.com/v1/services/${RENDER_API_SERVICE_ID}/deploys" \
+            -H "Authorization: Bearer ${RENDER_API_KEY}" \
+            -H "Content-Type: application/json" \
+            -d '{"clearCache":false}')
+          echo "$resp"
+          deploy_id=$(echo "$resp" | jq -r '.id')
+          if [ "$deploy_id" = "null" ] || [ -z "$deploy_id" ]; then
+            echo "Failed to create deploy: $resp"
+            exit 1
+          fi
+          echo "deploy_id=$deploy_id" >> $GITHUB_OUTPUT
+
+      - name: Wait for deploy to complete
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_API_SERVICE_ID: ${{ secrets.RENDER_API_SERVICE_ID }}
+        run: |
+          set -e
+          deploy_id=${{ steps.trigger_deploy.outputs.deploy_id }}
+          echo "Waiting for deploy $deploy_id to finish..."
+          for i in $(seq 1 60); do
+            status=$(curl -s -H "Authorization: Bearer ${RENDER_API_KEY}" "https://api.render.com/v1/deploys/$deploy_id" | jq -r '.state')
+            echo "Deploy status: $status"
+            if [ "$status" = "active" ]; then
+              echo "Deploy succeeded"
+              exit 0
+            fi
+            if [ "$status" = "failed" ]; then
+              echo "Deploy failed"
+              exit 1
+            fi
+            sleep 10
+          done
+          echo "Timed out waiting for deploy"
+          exit 1
+
+      - name: Delete RUN_PRISMA_SETUP env var from Render
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_API_SERVICE_ID: ${{ secrets.RENDER_API_SERVICE_ID }}
+        run: |
+          set -e
+          env_id=${{ steps.create_env.outputs.env_id }}
+          echo "Deleting env var id $env_id"
+          resp=$(curl -s -X DELETE "https://api.render.com/v1/services/${RENDER_API_SERVICE_ID}/env-vars/$env_id" \
+            -H "Authorization: Bearer ${RENDER_API_KEY}")
+          echo "$resp"

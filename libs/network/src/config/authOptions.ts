@@ -94,7 +94,7 @@ type AuthApiLoginResponse = {
 }
 
 const authApiUrl =
-  process.env.NEXT_PUBLIC_API_URL || process.env.API_URL || 'http://localhost:3000'
+  process.env.NEXT_PUBLIC_API_URL || process.env.API_URL || 'https://parkhub-4pzm.onrender.com'
 
 const callAuthGraphQL = async <TData,>(query: string, variables: Record<string, unknown>) => {
   const response = await fetch(`${authApiUrl}/graphql`, {

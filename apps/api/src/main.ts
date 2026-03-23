@@ -116,8 +116,7 @@ async function bootstrap() {
   )
 
   const corsOrigins = (
-    process.env.CORS_ORIGINS ||
-    'http://localhost:3001,http://localhost:3002,http://localhost:3003,http://localhost:3004'
+    process.env.CORS_ORIGINS || 'https://parkhub-4pzm.onrender.com'
   )
     .split(',')
     .map((x) => x.trim())

@@ -12,7 +12,10 @@ COPY libs libs
 RUN apk add --no-cache bash git python3 make gcc g++ libc6-compat
 
 # Install all dependencies (yarn workspaces)
-RUN yarn --frozen-lockfile --network-timeout 100000
+# Use a non-frozen install in the Docker build so rendered builds don't fail
+# when the lockfile needs to be updated. Update `yarn.lock` in the repo
+# separately to re-enable `--frozen-lockfile` if desired.
+RUN yarn install --network-timeout 100000 --non-interactive
 
 # Generate Prisma client for API
 WORKDIR /usr/src/app/apps/api

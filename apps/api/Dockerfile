@@ -18,7 +18,7 @@ RUN corepack enable && corepack prepare yarn@stable --activate
 # Use a non-frozen install in the Docker build so rendered builds don't fail
 # when the lockfile needs to be updated. Update `yarn.lock` in the repo
 # separately to re-enable `--frozen-lockfile` if desired.
-RUN yarn install --network-timeout 100000 --non-interactive
+RUN yarn install --network-timeout 100000
 
 # Generate Prisma client for API
 WORKDIR /usr/src/app/apps/api

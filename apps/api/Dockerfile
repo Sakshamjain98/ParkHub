@@ -1,4 +1,4 @@
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 
 WORKDIR /usr/src/app
 
@@ -10,6 +10,9 @@ COPY apps apps
 COPY libs libs
 
 RUN apk add --no-cache bash git python3 make gcc g++ libc6-compat
+
+# Ensure modern Yarn is available via Corepack (recommended for Yarn v3+)
+RUN corepack enable && corepack prepare yarn@stable --activate
 
 # Install all dependencies (yarn workspaces)
 # Use a non-frozen install in the Docker build so rendered builds don't fail
@@ -24,7 +27,7 @@ RUN npx prisma generate --schema=prisma/schema.prisma
 # Build the Nest app
 RUN yarn build
 
-FROM node:18-alpine AS runner
+FROM node:20-alpine AS runner
 WORKDIR /usr/src/app
 
 # Copy built app and node_modules

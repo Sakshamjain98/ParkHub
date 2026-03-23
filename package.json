@@ -21,7 +21,7 @@
     "lint": "yarn nx run-many -t lint",
     "build": "yarn nx run-many -t build",
     "validate": "yarn format:write && yarn tsc && yarn lint && yarn build",
-    "prepare": "husky install || true",
+    "prepare": "if [ -x ./node_modules/.bin/husky ]; then ./node_modules/.bin/husky install; fi",
     "cloc": "npx cloc --exclude-dir=node_modules,dist,build,yarn.lock,package.json,generated.tsx,.next,.nx ."
   },
   "keywords": [],

@@ -2,6 +2,9 @@ FROM node:18-alpine AS builder
 WORKDIR /repo
 COPY . .
 RUN yarn install --frozen-lockfile
+# Generate Prisma client before building the app so generated client
+# is included in the built artifacts / node_modules.
+RUN npx prisma generate --schema=apps/api/prisma/schema.prisma || true
 RUN yarn --cwd apps/api build
 
 FROM node:18-alpine AS runner

@@ -4,14 +4,13 @@ services:
     name: parkhub-api
     env: docker
     dockerfilePath: apps/api/Dockerfile
-    repo: https://github.com/YOUR_ORG/YOUR_REPO
-    branch: main
+    repo: https://github.com/Sakshamjain98/ParkHub.git
+    branch: master
     envVars:
       - key: DATABASE_URL
         value: "postgresql://my_db_l5px_user:suXEZ3YLX3Tl21vzeK18iTryiKNRFZ0s@dpg-d70i5iqa214c73eaj640-a.oregon-postgres.render.com/my_db_l5px"
       - key: REDIS_URL
-        # Set your Upstash or Redis connection here (example placeholder)
-        value: "redis://:password@your-redis-host:6379"
+        value: "redis://default:AZVrAAIncDFlOTZiMzU5OTAwZDM0MTQ5Yjc0MGYwYTI4ZTNlMTIzYXAxMzgyNTE@exotic-muskox-38251.upstash.io:6379"
 
 databases:
   - type: postgres

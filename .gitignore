@@ -1,8 +1,9 @@
-node_modules
-build
-dist
-.next
+node_modules
+build
+dist
+.next
+
+
+.nx/cache
+config.bat
 .env
-
-
-.nx/cache

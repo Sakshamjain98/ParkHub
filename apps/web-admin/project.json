@@ -6,7 +6,7 @@
   "targets": {
     "build": {
       "executor": "nx:run-commands",
-      "outputs": ["apps/web-admin/.next"],
+      "outputs": ["{projectRoot}/.next"],
       "options": {
         "command": "cd apps/web-admin && yarn build"
       }

@@ -1,0 +1,33 @@
+{
+  "name": "web-manager",
+  "root": "apps/web-manager",
+  "sourceRoot": "apps/web-manager/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": ["apps/web-manager/.next"],
+      "options": {
+        "command": "cd apps/web-manager && yarn build"
+      }
+    },
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd apps/web-manager && yarn dev"
+      }
+    },
+    "start": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd apps/web-manager && yarn start"
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd apps/web-manager && yarn lint"
+      }
+    }
+  }
+}

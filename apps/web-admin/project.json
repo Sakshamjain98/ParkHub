@@ -1,0 +1,33 @@
+{
+  "name": "web-admin",
+  "root": "apps/web-admin",
+  "sourceRoot": "apps/web-admin/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": ["apps/web-admin/.next"],
+      "options": {
+        "command": "cd apps/web-admin && yarn build"
+      }
+    },
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd apps/web-admin && yarn dev"
+      }
+    },
+    "start": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd apps/web-admin && yarn start"
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd apps/web-admin && yarn lint"
+      }
+    }
+  }
+}

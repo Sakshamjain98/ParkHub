@@ -3,7 +3,9 @@ services:
   - type: web
     name: parkhub-api
     env: docker
-    dockerfilePath: apps/api/Dockerfile
+    # Dockerfile path must be relative to the `rootDirectory` below.
+    # Because `rootDirectory: ./apps/api` is set, use the Dockerfile name only.
+    dockerfilePath: Dockerfile
     repo: https://github.com/Sakshamjain98/ParkHub.git
     branch: master
     # If your Render service Root Directory is set to ./apps/api (monorepo),

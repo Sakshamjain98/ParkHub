@@ -1,22 +1,41 @@
 FROM node:18-alpine AS builder
-WORKDIR /repo
-COPY . .
-RUN yarn install --frozen-lockfile
-# Generate Prisma client before building the app so generated client
-# is included in the built artifacts / node_modules.
-RUN npx prisma generate --schema=apps/api/prisma/schema.prisma || true
-RUN yarn --cwd apps/api build
+
+WORKDIR /usr/src/app
+
+# Copy workspace files
+COPY package.json yarn.lock ./
+COPY .yarn .yarn
+COPY .yarnrc.yml .yarnrc.yml
+COPY apps apps
+COPY libs libs
+
+RUN apk add --no-cache bash git python3 make gcc g++ libc6-compat
+
+# Install all dependencies (yarn workspaces)
+RUN yarn --frozen-lockfile --network-timeout 100000
+
+# Generate Prisma client for API
+WORKDIR /usr/src/app/apps/api
+RUN npx prisma generate --schema=prisma/schema.prisma
+
+# Build the Nest app
+RUN yarn build
 
 FROM node:18-alpine AS runner
-WORKDIR /app
+WORKDIR /usr/src/app
+
+# Copy built app and node_modules
+COPY --from=builder /usr/src/app/apps/api/dist ./dist
+COPY --from=builder /usr/src/app/node_modules ./node_modules
+COPY --from=builder /usr/src/app/apps/api/package.json ./package.json
+COPY --from=builder /usr/src/app/apps/api/prisma ./prisma
+COPY --from=builder /usr/src/app/apps/api/prisma/seed ./prisma/seed
+
 ENV NODE_ENV=production
-COPY --from=builder /repo/apps/api/dist ./dist
-COPY --from=builder /repo/apps/api/package.json ./package.json
-COPY --from=builder /repo/node_modules ./node_modules
-COPY --from=builder /repo/apps/api/prisma ./prisma
-COPY --from=builder /repo/apps/api/prisma ./prisma
-COPY --from=builder /repo/apps/api/prisma/seed ./prisma/seed
-COPY --from=builder /repo/apps/api/docker-entrypoint.sh ./docker-entrypoint.sh
-RUN chmod +x ./docker-entrypoint.sh
 EXPOSE 3000
-CMD ["./docker-entrypoint.sh"]
+
+# Entrypoint will run migrations/seeds then start
+COPY apps/api/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+CMD ["/entrypoint.sh"]

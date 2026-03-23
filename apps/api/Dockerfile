@@ -1,4 +1,4 @@
-FROM node:20-alpine AS builder
+FROM node:20-bullseye-slim AS builder
 
 WORKDIR /usr/src/app
 
@@ -9,7 +9,16 @@ COPY .yarnrc.yml .yarnrc.yml
 COPY apps apps
 COPY libs libs
 
-RUN apk add --no-cache bash git python3 make gcc g++ libc6-compat
+# Install build tools and OpenSSL (needed for Prisma native engines)
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends \
+		bash \
+		git \
+		python3 \
+		build-essential \
+		ca-certificates \
+		openssl \
+	&& rm -rf /var/lib/apt/lists/*
 
 # Ensure modern Yarn is available via Corepack (recommended for Yarn v3+)
 RUN corepack enable && corepack prepare yarn@stable --activate
@@ -27,8 +36,13 @@ RUN npx prisma generate --schema=prisma/schema.prisma
 # Build the Nest app
 RUN yarn build
 
-FROM node:20-alpine AS runner
+FROM node:20-bullseye-slim AS runner
 WORKDIR /usr/src/app
+
+# Ensure OpenSSL is available at runtime for Prisma
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends ca-certificates openssl \
+	&& rm -rf /var/lib/apt/lists/*
 
 # Copy built app and node_modules
 COPY --from=builder /usr/src/app/apps/api/dist ./dist
